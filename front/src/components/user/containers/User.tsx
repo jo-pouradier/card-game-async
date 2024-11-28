@@ -1,15 +1,21 @@
-import { UserSimpleDisplay } from "../components/UserSimpleDisplay";
-import { UserShortDisplay } from "../components/UserShortDisplay";
 import { useSelector } from "react-redux";
+import IUser from "../../../types/IUser";
+import { UserDisplayLabelEnums } from "../../../types/UserDisplayLabelEnums";
+import { UserShortDisplay } from "../components/UserShortDisplay";
+import { UserSimpleDisplay } from "../components/UserSimpleDisplay";
+import { RootState } from "../../../store";
 
-const FULL_LABEL = "FULL";
-const SHORT_LABEL = "SHORT";
+export interface UserProps extends IUser {
+  display_type: UserDisplayLabelEnums;
+}
 
-const User = (props) => {
-  let current_user = useSelector((state) => state.userReducer.user);
-  let display = "";
+const User = (props: UserProps) => {
+  const current_user: IUser = useSelector(
+    (state: RootState) => state.userReducer.user
+  );
+  let display: JSX.Element = <></>;
   switch (props.display_type) {
-    case SHORT_LABEL:
+    case UserDisplayLabelEnums.SHORT:
       display = (
         <UserShortDisplay
           surname={current_user.surname}
@@ -20,7 +26,7 @@ const User = (props) => {
       );
 
       break;
-    case FULL_LABEL:
+    case UserDisplayLabelEnums.FULL:
       display = (
         <UserSimpleDisplay
           id={current_user.id}
@@ -36,6 +42,7 @@ const User = (props) => {
     default:
       display = <h4>No Display Available</h4>;
   }
+
   return display;
 };
 

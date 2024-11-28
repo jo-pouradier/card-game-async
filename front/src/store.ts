@@ -1,7 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice";
 
-export default configureStore({
+export interface RootState {
+  userReducer: ReturnType<typeof userReducer>;
+}
+
+export default configureStore<RootState>({
   reducer: {
     userReducer: userReducer,
   },

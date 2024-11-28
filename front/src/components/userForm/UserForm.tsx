@@ -1,12 +1,16 @@
 import { useState } from "react";
-import { Form, Header, Button } from "semantic-ui-react";
+import { Form, Header, Button, ButtonProps } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
 import { update_user_action, submit_user_action } from "../../slices/userSlice";
+import { ChangeEvent } from "react";
+import { InputOnChangeData } from "semantic-ui-react";
+import IUser from "../../types/IUser";
 
-export const UserForm = (props) => {
+
+export const UserForm = (props: {redirect: Function, handleChange: Function }) => {
   const dispatch = useDispatch();
-  const [currentUser, setCurrentUser] = useState({
-    id: "",
+  const [currentUser, setCurrentUser] = useState<IUser>({
+    id: 0,
     surname: "",
     lastname: "",
     img: "",
@@ -15,19 +19,25 @@ export const UserForm = (props) => {
     money: 0,
   });
 
-  function processInput(event, { valueData }) {
-    const target = event.currentTarget;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    console.log(event.target.value);
-    let currentVal = currentUser;
-    setCurrentUser({ ...currentUser, [name]: value });
-    currentVal[name] = value;
-    //props.handleChange(currentVal);
-    dispatch(update_user_action({ user: currentVal }));
+  function processInput(
+    event: ChangeEvent<HTMLInputElement>,
+    data: InputOnChangeData
+  ) {
+    const name = event.currentTarget.name;
+    const value = name === "money" ? parseFloat(data.value) : data.value;
+
+    setCurrentUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
+
+    dispatch(update_user_action({ user: { ...currentUser, [name]: value } }));
   }
 
-  function submitOrder(data) {
+  function submitOrder(
+    _event: React.MouseEvent<HTMLButtonElement>,
+    _data: ButtonProps
+  ) {
     // props.submitUserHandler(data);
     dispatch(submit_user_action({ user: currentUser }));
     props.redirect(currentUser);

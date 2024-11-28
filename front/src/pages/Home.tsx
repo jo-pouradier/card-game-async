@@ -1,9 +1,9 @@
-import { Container } from 'semantic-ui-react'
+import { Container } from "semantic-ui-react";
 
-export const Home =(props) =>{
+export const Home = (_props: unknown) => {
   return (
     <Container>
       <h1>HOME</h1>
-      </Container>
+    </Container>
   );
-}
+};

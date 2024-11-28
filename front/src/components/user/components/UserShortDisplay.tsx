@@ -1,6 +1,13 @@
 import { Feed, Icon } from "semantic-ui-react";
 
-export const UserShortDisplay = (props) => {
+export type UserShortDisplayProps = {
+  img: string;
+  surname: string;
+  lastname: string;
+  money: number;
+};
+
+export const UserShortDisplay = (props: UserShortDisplayProps) => {
   return (
     <Feed>
       <Feed.Event>

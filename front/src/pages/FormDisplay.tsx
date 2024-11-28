@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Container, Grid, Segment } from "semantic-ui-react";
-import User from "../components/user/containers/User";
-import { UserForm } from "../components/userform/UserForm";
+import { UserForm } from "../components/userForm/UserForm";
 import { useNavigate } from "react-router-dom";
+import User from "../components/user/containers/User";
+import { UserDisplayLabelEnums } from "../types/UserDisplayLabelEnums";
+import IUser from "../types/IUser";
 
-export const FormDisplay = (props) => {
+export const FormDisplay = (_props: unknown) => {
   const [currentUser, setCurrentUser] = useState({
     id: 12,
     surname: "John",
@@ -14,12 +16,14 @@ export const FormDisplay = (props) => {
     img: "https://www.nicepng.com/png/full/982-9820051_heart-2352306885-deadpool-png.png",
     money: 1000,
   });
-  const navigate = useNavigate();
-  function callbackErr(data) {
-    console.log(data);
-  }
 
-  function handleChange(data) {
+  const navigate = useNavigate();
+
+  // function callbackErr(data: Error) {
+  //   console.log(data);
+  // }
+
+  function handleChange(data: IUser) {
     console.log(data);
     setCurrentUser({
       id: data.id,
@@ -32,7 +36,7 @@ export const FormDisplay = (props) => {
     });
   }
 
-  function redirectHandler(data) {
+  function redirectHandler(data: unknown) {
     console.log("user to submit" + data);
     navigate("/display");
   }
@@ -58,7 +62,7 @@ export const FormDisplay = (props) => {
               pwd={currentUser.pwd}
               money={currentUser.money}
               img={currentUser.img}
-              display_type="FULL"
+              display_type={UserDisplayLabelEnums.FULL}
             ></User>
           </Grid.Column>
           <Grid.Column>
@@ -70,7 +74,7 @@ export const FormDisplay = (props) => {
               pwd={currentUser.pwd}
               money={currentUser.money}
               img={currentUser.img}
-              display_type="SHORT"
+              display_type={UserDisplayLabelEnums.SHORT}
             ></User>
           </Grid.Column>
         </Grid.Row>

@@ -1,14 +1,12 @@
-import { useState } from "react";
-import { BrowserRouter, Route, Routes, NavLink } from "react-router-dom";
-import { Menu } from "semantic-ui-react";
 import { Provider } from "react-redux";
-import { Home } from "./pages/Home";
+import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
+import { Menu } from "semantic-ui-react";
 import { Display } from "./pages/Display";
 import { FormDisplay } from "./pages/FormDisplay";
+import { Home } from "./pages/Home";
 import store from "./store";
-//Create function component
-export const App = (_props) => {
 
+export const App = (_props: unknown) => {
   return (
     <Provider store={store}>
       <BrowserRouter>

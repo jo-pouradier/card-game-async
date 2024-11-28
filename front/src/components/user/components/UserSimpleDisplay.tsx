@@ -1,6 +1,9 @@
 import { Card, Image, Icon } from "semantic-ui-react";
+import IUser from "../../../types/IUser";
 
-export const UserSimpleDisplay = (props) => {
+export type UserSimpleDisplayProps = IUser;
+
+export const UserSimpleDisplay = (props: UserSimpleDisplayProps) => {
   return (
     <Card>
       <Image
