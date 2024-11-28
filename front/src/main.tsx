@@ -1,10 +1,13 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+import {App} from './App.js';
+import store from './store.js';
+
+import 'semantic-ui-css/semantic.min.css'
+
+  ReactDOM.createRoot(document.getElementById('root')).render(
+      <Provider store={store} >
+        <App />
+      </Provider>
+  )

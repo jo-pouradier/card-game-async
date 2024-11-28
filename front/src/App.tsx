@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
+import { useState } from "react";
+import { BrowserRouter, Route, Routes, NavLink } from "react-router-dom";
+import { Menu } from "semantic-ui-react";
+import { Provider } from "react-redux";
+import { Home } from "./pages/Home";
+import { Display } from "./pages/Display";
+import { FormDisplay } from "./pages/FormDisplay";
+import store from "./store";
+//Create function component
+export const App = (_props) => {
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
-
-export default App
+    <Provider store={store}>
+      <BrowserRouter>
+        <Menu>
+          <Menu.Item name="heropres">
+            <NavLink to="/">Home</NavLink>
+          </Menu.Item>
+          <Menu.Item name="heropres">
+            <NavLink to="/display">Display</NavLink>
+          </Menu.Item>
+          <Menu.Item name="heropres">
+            <NavLink to="/form"> Form</NavLink>
+          </Menu.Item>
+        </Menu>
+        <div>
+          {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+          <Routes>
+            <Route path="/display" element={<Display />} />
+            <Route path="/form" element={<FormDisplay />} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </Provider>
+  );
+};
