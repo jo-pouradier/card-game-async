@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 import IUser from "../types/IUser";
 import {
   UserSlice,
   UserSliceActions,
   UserSliceState,
 } from "../types/UserSlice";
-import { UserReducer } from "../types/UserReducer";
 
 const initialState: UserSliceState = {
   user: {} as IUser,
@@ -31,5 +31,5 @@ export const userSlice: UserSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { update_user_action, submit_user_action } = userSlice.actions;
-
-export default userSlice.reducer as UserReducer;
+export const selectUser = (state: RootState) => state.userReducer.user;
+export default userSlice.reducer;

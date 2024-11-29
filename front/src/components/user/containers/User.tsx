@@ -1,18 +1,16 @@
 import { useSelector } from "react-redux";
+import { selectUser } from "../../../slices/userSlice";
 import IUser from "../../../types/IUser";
 import { UserDisplayLabelEnums } from "../../../types/UserDisplayLabelEnums";
 import { UserShortDisplay } from "../components/UserShortDisplay";
 import { UserSimpleDisplay } from "../components/UserSimpleDisplay";
-import { RootState } from "../../../store";
 
 export interface UserProps extends IUser {
   display_type: UserDisplayLabelEnums;
 }
 
 const User = (props: UserProps) => {
-  const current_user: IUser = useSelector(
-    (state: RootState) => state.userReducer.user
-  );
+  const current_user: IUser = useSelector(selectUser);
   let display: JSX.Element = <></>;
   switch (props.display_type) {
     case UserDisplayLabelEnums.SHORT:

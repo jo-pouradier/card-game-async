@@ -1,14 +1,11 @@
-import { useSelector } from "react-redux";
-import User from "../components/user/containers/User";
 import { Container } from "semantic-ui-react";
-import IUser from "../types/IUser";
+import User from "../components/user/containers/User";
+import { useAppSelector } from "../hooks";
+import { selectUser } from "../slices/userSlice";
 import { UserDisplayLabelEnums } from "../types/UserDisplayLabelEnums";
-import { RootState } from "../store";
 
 export const Display = (_props: unknown) => {
-  const current_user: IUser = useSelector(
-    (state: RootState) => state.userReducer.user as IUser
-  );
+  const current_user = useAppSelector(selectUser);
 
   return (
     <Container>

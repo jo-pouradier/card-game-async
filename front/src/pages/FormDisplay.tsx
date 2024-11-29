@@ -7,7 +7,7 @@ import { UserDisplayLabelEnums } from "../types/UserDisplayLabelEnums";
 import IUser from "../types/IUser";
 
 export const FormDisplay = (_props: unknown) => {
-  const [currentUser, setCurrentUser] = useState({
+  const [currentUser, setCurrentUser] = useState<IUser>({
     id: 12,
     surname: "John",
     lastname: "Doe",

@@ -1,14 +1,12 @@
-import { useState } from "react";
-import { Form, Header, Button, ButtonProps } from "semantic-ui-react";
-import { useDispatch } from "react-redux";
-import { update_user_action, submit_user_action } from "../../slices/userSlice";
-import { ChangeEvent } from "react";
-import { InputOnChangeData } from "semantic-ui-react";
+import { ChangeEvent, useState } from "react";
+import { Button, ButtonProps, Form, Header, InputOnChangeData } from "semantic-ui-react";
+import { useAppDispatch } from "../../hooks";
+import { submit_user_action, update_user_action } from "../../slices/userSlice";
 import IUser from "../../types/IUser";
 
 
 export const UserForm = (props: {redirect: Function, handleChange: Function }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [currentUser, setCurrentUser] = useState<IUser>({
     id: 0,
     surname: "",
