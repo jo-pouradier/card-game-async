@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { Container, Grid, Segment } from "semantic-ui-react";
 import { UserForm } from "../components/userForm/UserForm";
+import { UserForm2 } from "../components/userForm/UserForm2";
 import { useNavigate } from "react-router-dom";
 import User from "../components/user/containers/User";
 import { UserDisplayLabelEnums } from "../types/UserDisplayLabelEnums";
 import IUser from "../types/IUser";
 
-export const FormDisplay = (_props: unknown) => {
+export type FormDisplayProps = {
+  id?: number;
+};
+
+export const FormDisplay = (props: FormDisplayProps) => {
   const [currentUser, setCurrentUser] = useState<IUser>({
     id: 12,
     surname: "John",
@@ -41,44 +46,56 @@ export const FormDisplay = (_props: unknown) => {
     navigate("/display");
   }
 
-  return (
-    <Container>
-      <Grid divided="vertically">
-        <Grid.Row columns={3}>
-          <Grid.Column>
-            <Segment>
-              <UserForm
-                handleChange={handleChange}
-                redirect={redirectHandler}
-              ></UserForm>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column>
-            <User
-              id={currentUser.id}
-              surname={currentUser.surname}
-              lastname={currentUser.lastname}
-              login={currentUser.login}
-              pwd={currentUser.pwd}
-              money={currentUser.money}
-              img={currentUser.img}
-              display_type={UserDisplayLabelEnums.FULL}
-            ></User>
-          </Grid.Column>
-          <Grid.Column>
-            <User
-              id={currentUser.id}
-              surname={currentUser.surname}
-              lastname={currentUser.lastname}
-              login={currentUser.login}
-              pwd={currentUser.pwd}
-              money={currentUser.money}
-              img={currentUser.img}
-              display_type={UserDisplayLabelEnums.SHORT}
-            ></User>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Container>
-  );
+  const id = props.id ?? -1;
+  let content;
+  switch (id) {
+    case -1:
+      content = (
+        <Container>
+          <Grid divided="vertically">
+            <Grid.Row columns={3}>
+              <Grid.Column>
+                <Segment>
+                  <UserForm
+                    handleChange={handleChange}
+                    redirect={redirectHandler}
+                  ></UserForm>
+                </Segment>
+              </Grid.Column>
+              <Grid.Column>
+                <User
+                  id={currentUser.id}
+                  surname={currentUser.surname}
+                  lastname={currentUser.lastname}
+                  login={currentUser.login}
+                  pwd={currentUser.pwd}
+                  money={currentUser.money}
+                  img={currentUser.img}
+                  display_type={UserDisplayLabelEnums.FULL}
+                ></User>
+              </Grid.Column>
+              <Grid.Column>
+                <User
+                  id={currentUser.id}
+                  surname={currentUser.surname}
+                  lastname={currentUser.lastname}
+                  login={currentUser.login}
+                  pwd={currentUser.pwd}
+                  money={currentUser.money}
+                  img={currentUser.img}
+                  display_type={UserDisplayLabelEnums.SHORT}
+                ></User>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Container>
+      );
+      break;
+    case 2:
+      content = <UserForm2 />;
+      break;
+    default:
+      content = <div>Invalid id</div>;
+  }
+  return content;
 };
