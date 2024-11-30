@@ -1,11 +1,21 @@
 import { ChangeEvent, useState } from "react";
-import { Button, ButtonProps, Form, Header, InputOnChangeData } from "semantic-ui-react";
+import {
+  Button,
+  ButtonProps,
+  Form,
+  Header,
+  InputOnChangeData,
+} from "semantic-ui-react";
 import { useAppDispatch } from "../../hooks";
 import { submit_user_action, update_user_action } from "../../slices/userSlice";
 import IUser from "../../types/IUser";
 
+export type UserFormProps = {
+  redirect: (user: IUser) => void;
+  handleChange: (user: IUser) => void;
+};
 
-export const UserForm = (props: {redirect: Function, handleChange: Function }) => {
+export const UserForm = (props: UserFormProps) => {
   const dispatch = useAppDispatch();
   const [currentUser, setCurrentUser] = useState<IUser>({
     id: 0,
