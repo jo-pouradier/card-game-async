@@ -1,29 +1,52 @@
+import { useState } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
-import { Menu } from "semantic-ui-react";
+import { Menu, MenuItem } from "semantic-ui-react";
+import { LoginLogout } from "./components/login/LoginLogout";
 import { Display } from "./pages/Display";
 import { FormDisplay } from "./pages/FormDisplay";
 import { Home } from "./pages/Home";
-import { store } from "./store";
 import { Login } from "./pages/Login";
+import { store } from "./store";
 
 export const App = (_props: unknown) => {
+  const [activeItem, setActiveItem] = useState("home");
+  const linkStyle = { color: "black" };
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <Menu>
-          <Menu.Item name="heropres">
-            <NavLink to="/">Home</NavLink>
+        <Menu pointing secondary>
+          <Menu.Item
+            name="home"
+            active={activeItem === "home"}
+            onClick={() => setActiveItem("home")}
+          >
+            <NavLink to="/" style={linkStyle}>Home</NavLink>
           </Menu.Item>
-          <Menu.Item name="heropres">
-            <NavLink to="/display">Display</NavLink>
+          <Menu.Item
+            name="display"
+            active={activeItem === "display"}
+            onClick={() => setActiveItem("display")}
+          >
+            <NavLink to="/display" style={linkStyle}>Display</NavLink>
           </Menu.Item>
-          <Menu.Item name="heropres">
-            <NavLink to="/form"> Form</NavLink>
+          <Menu.Item
+            name="form"
+            active={activeItem === "form"}
+            onClick={() => setActiveItem("form")}
+          >
+            <NavLink to="/form" style={linkStyle}> Form</NavLink>
           </Menu.Item>
-          <Menu.Item name="heropres">
-            <NavLink to="/form2"> Form2</NavLink>
+          <Menu.Item
+            name="formUser"
+            active={activeItem === "formUser"}
+            onClick={() => setActiveItem("formUser")}
+          >
+            <NavLink to="/form2" style={linkStyle}> Form2</NavLink>
           </Menu.Item>
+          <MenuItem position="right">
+            <LoginLogout />
+          </MenuItem>
         </Menu>
         <div>
           {/* A <Switch> looks through its children <Route>s and
