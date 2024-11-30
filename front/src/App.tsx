@@ -5,6 +5,7 @@ import { Display } from "./pages/Display";
 import { FormDisplay } from "./pages/FormDisplay";
 import { Home } from "./pages/Home";
 import { store } from "./store";
+import { Login } from "./pages/Login";
 
 export const App = (_props: unknown) => {
   return (
@@ -31,6 +32,7 @@ export const App = (_props: unknown) => {
             <Route path="/display" element={<Display />} />
             <Route path="/form" element={<FormDisplay />} />
             <Route path="/form2" element={<FormDisplay id={2} />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/" element={<Home />} />
           </Routes>
         </div>

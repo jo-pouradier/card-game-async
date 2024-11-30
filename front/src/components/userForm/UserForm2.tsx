@@ -92,6 +92,7 @@ export const UserForm2 = (_props: unknown) => {
             label="Email"
             placeholder="email"
             onChange={processInput}
+            autoComplete="email"
             name="email"
             value={currentUser.email}
           />
@@ -103,6 +104,7 @@ export const UserForm2 = (_props: unknown) => {
             placeholder=""
             onChange={processInput}
             name="pwd"
+            autoComplete="new-password"
             value={currentUser.pwd}
             icon={<Icon name="eye" circular link onClick={() => setPasswordType1(!passwordType1)} />}
           />
@@ -114,6 +116,7 @@ export const UserForm2 = (_props: unknown) => {
             placeholder=""
             onChange={processInput}
             name="repwd"
+            autoComplete="new-password"
             value={currentUser.repwd}
             icon={<Icon name="eye" circular link onClick={() => setPasswordType2(!passwordType2)} />}
           />
