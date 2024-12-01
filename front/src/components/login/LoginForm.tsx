@@ -7,7 +7,11 @@ type LoginData = {
   password: string;
 };
 
-export const LoginForm = () => {
+export type LoginFormProps = {
+  returnTo?: string;
+};
+
+export const LoginForm = (props: LoginFormProps) => {
   const [loginData, setLoginData] = useState<LoginData>({
     email: localStorage.getItem("lastEmail") ?? "",
     password: "",
@@ -18,7 +22,7 @@ export const LoginForm = () => {
     if (loginData) {
       localStorage.setItem("lastEmail", loginData.email as string); // save email to storage
       document.cookie = "loggedIn=true;max-age=60*1000"; // set cookie to expire
-      navigate("/");
+      navigate("/" + (props.returnTo ?? ""));
     } else {
       console.log("no data");
     }
