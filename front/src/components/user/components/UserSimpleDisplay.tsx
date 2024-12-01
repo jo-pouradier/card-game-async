@@ -1,22 +1,17 @@
-import { Card, Image, Icon } from "semantic-ui-react";
+import { Card, Icon } from "semantic-ui-react";
 import IUser from "../../../types/IUser";
 
-export type UserSimpleDisplayProps = IUser;
+export type UserSimpleDisplayProps = Omit<IUser, "password" | "repassword">;
 
 export const UserSimpleDisplay = (props: UserSimpleDisplayProps) => {
   return (
     <Card>
-      <Image
-        src="https://www.nicepng.com/png/full/982-9820051_heart-2352306885-deadpool-png.png"
-        wrapped
-        ui={false}
-      />
       <Card.Content>
         <Card.Header>
           {props.surname} {props.lastname}{" "}
         </Card.Header>
         <Card.Meta>
-          <span className="date">login: {props.login}</span>
+          <span className="date">login: {props.email}</span>
         </Card.Meta>
         <Card.Description>User In DataBase</Card.Description>
       </Card.Content>

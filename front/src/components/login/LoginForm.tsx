@@ -39,11 +39,10 @@ export const LoginForm = (props: LoginFormProps) => {
   };
 
   return (
-    <Form>
+    <Form equal>
       <Header as="h3" dividing>
         Login
       </Header>
-      <Form.Group widths="equal">
         <Form.Input
           fluid
           label="Email"
@@ -62,7 +61,6 @@ export const LoginForm = (props: LoginFormProps) => {
           onChange={setLoginDataField}
           value={loginData.password}
         />
-      </Form.Group>
       <Button type="submit" onClick={submitLogin}>
         Submit
       </Button>

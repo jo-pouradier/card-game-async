@@ -1,47 +1,32 @@
 import { useState } from "react";
 import { Container, Grid, Segment } from "semantic-ui-react";
-import { UserForm } from "../components/userForm/UserForm";
-import { UserForm2 } from "../components/userForm/UserForm2";
+// import { UserForm } from "../components/userForm/UserForm";
 import { useNavigate } from "react-router-dom";
+import { UserForm } from "../components/user/components/UserForm";
 import User from "../components/user/containers/User";
-import { UserDisplayLabelEnums } from "../types/UserDisplayLabelEnums";
 import IUser from "../types/IUser";
+import { UserDisplayLabelEnums } from "../types/UserDisplayLabelEnums";
 
 export type FormDisplayProps = {
   id?: number;
 };
 
 export const FormDisplay = (props: FormDisplayProps) => {
-  const [currentUser, setCurrentUser] = useState<IUser>({
+  const [user, _setCurrentUser] = useState<IUser>({
     id: 12,
     surname: "John",
     lastname: "Doe",
-    login: "jDoe",
-    pwd: "jdoepwd",
-    img: "https://www.nicepng.com/png/full/982-9820051_heart-2352306885-deadpool-png.png",
+    email: "jDoe@example.fr",
+    password: "jdoepwd",
     money: 1000,
   });
-
   const navigate = useNavigate();
 
   // function callbackErr(data: Error) {
   //   console.log(data);
   // }
 
-  function handleChange(data: IUser) {
-    console.log(data);
-    setCurrentUser({
-      id: data.id,
-      surname: data.surname,
-      lastname: data.lastname,
-      login: data.login,
-      pwd: data.pwd,
-      money: data.money,
-      img: data.img,
-    });
-  }
-
-  function redirectHandler(data: unknown) {
+  function redirectHandler(data: IUser) {
     console.log("user to submit" + data);
     navigate("/display");
   }
@@ -56,33 +41,28 @@ export const FormDisplay = (props: FormDisplayProps) => {
             <Grid.Row columns={3}>
               <Grid.Column>
                 <Segment>
-                  <UserForm
-                    handleChange={handleChange}
-                    redirect={redirectHandler}
-                  ></UserForm>
+                  <UserForm redirect={redirectHandler}></UserForm>
                 </Segment>
               </Grid.Column>
               <Grid.Column>
                 <User
-                  id={currentUser.id}
-                  surname={currentUser.surname}
-                  lastname={currentUser.lastname}
-                  login={currentUser.login}
-                  pwd={currentUser.pwd}
-                  money={currentUser.money}
-                  img={currentUser.img}
+                  id={user.id}
+                  surname={user.surname}
+                  lastname={user.lastname}
+                  email={user.email}
+                  password={user.password}
+                  money={user.money}
                   display_type={UserDisplayLabelEnums.FULL}
                 ></User>
               </Grid.Column>
               <Grid.Column>
                 <User
-                  id={currentUser.id}
-                  surname={currentUser.surname}
-                  lastname={currentUser.lastname}
-                  login={currentUser.login}
-                  pwd={currentUser.pwd}
-                  money={currentUser.money}
-                  img={currentUser.img}
+                  id={user.id}
+                  surname={user.surname}
+                  lastname={user.lastname}
+                  email={user.email}
+                  password={user.password}
+                  money={user.money}
                   display_type={UserDisplayLabelEnums.SHORT}
                 ></User>
               </Grid.Column>
@@ -92,7 +72,13 @@ export const FormDisplay = (props: FormDisplayProps) => {
       );
       break;
     case 2:
-      content = <UserForm2 />;
+      content = (
+        <Container>
+          <Segment>
+            <UserForm redirect={redirectHandler} />
+          </Segment>
+        </Container>
+      );
       break;
     default:
       content = <div>Invalid id</div>;

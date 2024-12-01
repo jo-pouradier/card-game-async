@@ -18,7 +18,6 @@ const User = (props: UserProps) => {
         <UserShortDisplay
           surname={current_user.surname}
           lastname={current_user.lastname}
-          img={current_user.img}
           money={current_user.money}
         ></UserShortDisplay>
       );
@@ -30,10 +29,8 @@ const User = (props: UserProps) => {
           id={current_user.id}
           surname={current_user.surname}
           lastname={current_user.lastname}
-          login={current_user.login}
-          pwd={current_user.pwd}
+          email={current_user.email}
           money={current_user.money}
-          img={current_user.img}
         ></UserSimpleDisplay>
       );
       break;

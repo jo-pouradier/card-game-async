@@ -14,6 +14,7 @@ import { FormDisplay } from "./pages/FormDisplay";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { store } from "./store";
+import { UserRegister } from "./pages/UserRegister";
 
 export const App = (_props: unknown) => {
   const [activeItem, setActiveItem] = useState("home");
@@ -51,16 +52,6 @@ export const App = (_props: unknown) => {
             </NavLink>
           </Menu.Item>
           <Menu.Item
-            name="formUser"
-            active={activeItem === "formUser"}
-            onClick={() => setActiveItem("formUser")}
-          >
-            <NavLink to="/form2" style={linkStyle}>
-              {" "}
-              Form2
-            </NavLink>
-          </Menu.Item>
-          <Menu.Item
             name="shop"
             active={activeItem === "shop"}
             onClick={() => setActiveItem("shop")}
@@ -87,8 +78,9 @@ export const App = (_props: unknown) => {
 
             <Route path="/display" element={<Display />} />
             <Route path="/form" element={<FormDisplay />} />
-            <Route path="/form2" element={<FormDisplay id={2} />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login />}>
+              <Route path="register" element={<UserRegister />} />
+            </Route>
             <Route path="/" element={<Home />} />
           </Routes>
         </div>
