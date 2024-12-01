@@ -3,18 +3,13 @@ import { Provider } from "react-redux";
 import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
 import { Menu, MenuItem } from "semantic-ui-react";
 import { LoginLogout } from "./components/login/LoginLogout";
-import {
-  ShopBuyDisplay,
-  ShopCreateDisplay,
-  ShopDisplay,
-  ShopSellDisplay,
-} from "./components/shop";
 import { Display } from "./pages/Display";
 import { FormDisplay } from "./pages/FormDisplay";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
-import { store } from "./store";
+import { ShopPage } from "./pages/ShopPage";
 import { UserRegister } from "./pages/UserRegister";
+import { store } from "./store";
 
 export const App = (_props: unknown) => {
   const [activeItem, setActiveItem] = useState("home");
@@ -69,13 +64,7 @@ export const App = (_props: unknown) => {
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Routes>
-            <Route path="/shop">
-              <Route index element={<ShopDisplay />} />
-              <Route path="create" element={<ShopCreateDisplay />} />
-              <Route path="buy" element={<ShopBuyDisplay />} />
-              <Route path="sell" element={<ShopSellDisplay />} />
-            </Route>
-
+            <Route path="/shop/:id?" element={<ShopPage />} />
             <Route path="/display" element={<Display />} />
             <Route path="/form" element={<FormDisplay />} />
             <Route path="/login" element={<Login />}>
