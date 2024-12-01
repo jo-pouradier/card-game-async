@@ -8,7 +8,7 @@ export type ShopLayoutProps = {
 };
 
 export const ShopLayout = (props: ShopLayoutProps) => {
-  console.log("call ShopLayout");
+  console.log("call ShopLayout with children: ", props.children);
   const navigate = useNavigate();
   // verify the user is logged in from cookie
   useEffect(() => {

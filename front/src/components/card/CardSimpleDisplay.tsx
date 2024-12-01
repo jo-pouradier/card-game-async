@@ -1,44 +1,44 @@
 import { Card, Icon, Image } from "semantic-ui-react";
 import ICard from "../../types/ICard";
 
-export type CardSimpleDisplayProps = ICard;
+export type CardSimpleDisplayProps = ICard | null;
 
 export const CardSimpleDisplay = (props: CardSimpleDisplayProps) => {
   return (
     <Card>
       <Image
-        src={props.image}
+        src={props?.image}
         wrapped
         ui={false}
       />
       <Card.Content>
         <Card.Header>
-          {props.name} {props.family}
+          {props?.name} {props?.family}
         </Card.Header>
-        <Card.Description>{props.description}</Card.Description>
+        <Card.Description>{props?.description}</Card.Description>
       </Card.Content>
       <Card.Content extra>
         <p>
           <Icon name="heart" />
-          {props.hp}
+          {props?.hp}
         </p>
         <p>
           <Icon name="bolt" />
-          {props.energy}
+          {props?.energy}
         </p>
         <p>
           <Icon name="shield" />
-          {props.defense}
+          {props?.defense}
         </p>
         <p>
           <Icon name="fire" />
-          {props.attack}
+          {props?.attack}
         </p>
       </Card.Content>
       <Card.Content extra>
         <a>
           <Icon name="money bill alternate outline" />
-          {props.price} $
+          {props?.price} $
         </a>
       </Card.Content>
     </Card>

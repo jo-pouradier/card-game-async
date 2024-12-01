@@ -1,10 +1,9 @@
 import { ChangeEvent, useState } from "react";
 import {
   Button,
-  ButtonProps,
   Form,
   Header,
-  InputOnChangeData,
+  InputOnChangeData
 } from "semantic-ui-react";
 
 export interface ICardForm {
@@ -12,7 +11,12 @@ export interface ICardForm {
   imagePrompt: string;
 }
 
-export const CardForm = (_props: unknown) => {
+export type CardFormProps = {
+  submitCardHandler?: (card: ICardForm) => void;
+  generateCardHanlder?: (card: ICardForm) => void;
+};
+
+export const CardForm = (props: CardFormProps) => {
   const [currentCardPrompt, setCurrentCardPrompt] = useState<ICardForm>({
     descriptionPrompt: "",
     imagePrompt: "",
@@ -30,17 +34,21 @@ export const CardForm = (_props: unknown) => {
     }));
   }
 
-  const submitCard = (
-    _event: React.MouseEvent<HTMLButtonElement>,
-    _data: ButtonProps,
+  const submitCardHandler = (
+    currentCardPrompt: ICardForm,
   ) => {
     console.log(currentCardPrompt);
-    // props.submitUserHandler(data);
-  }
+    if (props.submitCardHandler) {
+      props.submitCardHandler(currentCardPrompt);
+    }
+  };
 
   const generateCard = () => {
     console.log("generate card");
-  }
+    if (props.generateCardHanlder) {
+      props.generateCardHanlder(currentCardPrompt);
+    }
+  };
 
   return (
     <Form>
@@ -69,10 +77,11 @@ export const CardForm = (_props: unknown) => {
           value={currentCardPrompt.imagePrompt}
         />
       </Form.Field>
-      <Button onClick={generateCard}>
-        Generate
-      </Button>
-      <Button type="submit" onClick={submitCard}>
+      <Button onClick={generateCard}>Generate</Button>
+      <Button
+        type="submit"
+        onClick={() => submitCardHandler(currentCardPrompt)}
+      >
         Submit
       </Button>
     </Form>
