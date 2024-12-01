@@ -3,6 +3,12 @@ import { Provider } from "react-redux";
 import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
 import { Menu, MenuItem } from "semantic-ui-react";
 import { LoginLogout } from "./components/login/LoginLogout";
+import {
+  ShopBuyDisplay,
+  ShopCreateDisplay,
+  ShopDisplay,
+  ShopSellDisplay,
+} from "./components/shop";
 import { Display } from "./pages/Display";
 import { FormDisplay } from "./pages/FormDisplay";
 import { Home } from "./pages/Home";
@@ -21,28 +27,48 @@ export const App = (_props: unknown) => {
             active={activeItem === "home"}
             onClick={() => setActiveItem("home")}
           >
-            <NavLink to="/" style={linkStyle}>Home</NavLink>
+            <NavLink to="/" style={linkStyle}>
+              Home
+            </NavLink>
           </Menu.Item>
           <Menu.Item
             name="display"
             active={activeItem === "display"}
             onClick={() => setActiveItem("display")}
           >
-            <NavLink to="/display" style={linkStyle}>Display</NavLink>
+            <NavLink to="/display" style={linkStyle}>
+              Display
+            </NavLink>
           </Menu.Item>
           <Menu.Item
             name="form"
             active={activeItem === "form"}
             onClick={() => setActiveItem("form")}
           >
-            <NavLink to="/form" style={linkStyle}> Form</NavLink>
+            <NavLink to="/form" style={linkStyle}>
+              {" "}
+              Form
+            </NavLink>
           </Menu.Item>
           <Menu.Item
             name="formUser"
             active={activeItem === "formUser"}
             onClick={() => setActiveItem("formUser")}
           >
-            <NavLink to="/form2" style={linkStyle}> Form2</NavLink>
+            <NavLink to="/form2" style={linkStyle}>
+              {" "}
+              Form2
+            </NavLink>
+          </Menu.Item>
+          <Menu.Item
+            name="shop"
+            active={activeItem === "shop"}
+            onClick={() => setActiveItem("shop")}
+          >
+            <NavLink to="/shop" style={linkStyle}>
+              {" "}
+              Shop
+            </NavLink>
           </Menu.Item>
           <MenuItem position="right">
             <LoginLogout />
@@ -52,6 +78,13 @@ export const App = (_props: unknown) => {
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Routes>
+            <Route path="/shop">
+              <Route index element={<ShopDisplay />} />
+              <Route path="create" element={<ShopCreateDisplay />} />
+              <Route path="buy" element={<ShopBuyDisplay />} />
+              <Route path="sell" element={<ShopSellDisplay />} />
+            </Route>
+
             <Route path="/display" element={<Display />} />
             <Route path="/form" element={<FormDisplay />} />
             <Route path="/form2" element={<FormDisplay id={2} />} />
