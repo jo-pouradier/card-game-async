@@ -48,3 +48,8 @@ export default tseslint.config({
   },
 })
 ```
+
+## React Router Type safe
+
+we need to follow the doc: https://reactrouter.com/how-to/route-module-type-safety
+and install `npm i @react-router/dev` but it not yet available for vite 6.
