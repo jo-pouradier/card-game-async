@@ -5,7 +5,7 @@ import { UserForm } from "../components/user/UserForm";
 import IUser from "../types/IUser";
 import { UserDisplayLabelEnums } from "../types/UserDisplayLabelEnums";
 
-export type FormDisplayProps = {
+export interface FormDisplayProps {
   id?: number;
 };
 

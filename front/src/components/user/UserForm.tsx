@@ -16,7 +16,7 @@ import { update_user_action } from "../../slices/userSlice";
 import IUser from "../../types/IUser";
 import AppModal from "../utils/AppModal";
 
-export type UserFormProps = {
+export interface UserFormProps {
   redirect: (user: IUser) => void;
 };
 

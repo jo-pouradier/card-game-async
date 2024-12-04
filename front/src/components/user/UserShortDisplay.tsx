@@ -1,7 +1,7 @@
 import { AccountCircle, AttachMoney } from "@mui/icons-material";
 import { Card, CardContent, CardHeader, Typography } from "@mui/material";
 
-export type UserShortDisplayProps = {
+export interface UserShortDisplayProps {
   surname?: string;
   lastname?: string;
   money?: number;

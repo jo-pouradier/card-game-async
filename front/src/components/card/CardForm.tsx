@@ -6,7 +6,7 @@ export interface ICardForm {
   imagePrompt: string;
 }
 
-export type CardFormProps = {
+export interface CardFormProps {
   submitCardHandler?: (card: ICardForm) => void;
   generateCardHanlder?: (card: ICardForm) => void;
 };

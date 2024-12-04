@@ -1,7 +1,7 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import React, { ReactElement, ReactNode } from "react";
 
-export type ModalProps = {
+export interface ModalProps {
   /** Element to render where the Modal is used */
   triggerElement: ReactElement;
   title: string;

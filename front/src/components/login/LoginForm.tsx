@@ -2,12 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, TextField, Typography } from "@mui/material";
 
-type LoginData = {
+interface LoginData {
   email: string;
   password: string;
 };
 
-export type LoginFormProps = {
+export interface LoginFormProps {
   returnTo?: string;
 };
 

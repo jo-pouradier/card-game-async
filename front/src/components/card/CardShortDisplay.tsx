@@ -1,6 +1,6 @@
 import { Box, Avatar, Typography } from "@mui/material";
 
-export type CardShortDisplayProps = {
+export interface CardShortDisplayProps {
   image: string;
   name: string;
   family: string;

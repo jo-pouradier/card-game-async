@@ -14,7 +14,8 @@ import {
 } from "@mui/material";
 import ICard from "../../types/ICard";
 
-export type CardSimpleDisplayProps = ICard | null;
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface CardSimpleDisplayProps extends Partial<ICard> {};
 
 export const CardSimpleDisplay = (props: CardSimpleDisplayProps) => {
   return (

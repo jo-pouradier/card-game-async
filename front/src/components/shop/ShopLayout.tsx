@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Container, Typography } from "@mui/material";
 
-export type ShopLayoutProps = {
+export interface ShopLayoutProps {
   children: ReactNode;
   title?: string;
 };

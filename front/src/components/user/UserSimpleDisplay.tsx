@@ -9,7 +9,8 @@ import {
 import { AttachMoney } from "@mui/icons-material";
 import IUser from "../../types/IUser";
 
-export type UserSimpleDisplayProps = Omit<IUser, "password" | "repassword">;
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface UserSimpleDisplayProps extends Omit<IUser, "password" | "repassword"> {}
 
 export const UserSimpleDisplay = (props: UserSimpleDisplayProps) => {
   return (
