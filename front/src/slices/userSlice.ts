@@ -32,10 +32,13 @@ export const userSlice: UserSlice = createSlice({
       console.log(action.payload.user);
       state.submitted_user = action.payload.user;
     },
+    delete_user_action: (state: UserSliceState) => {
+      state.user = {id: 0} as IUser;
+    }
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { update_user_action, submit_user_action } = userSlice.actions;
+export const { update_user_action, submit_user_action, delete_user_action } = userSlice.actions;
 export const selectUser = (state: RootState) => state.userReducer.user;
 export default userSlice.reducer;
