@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { App } from "./App.js";
 import { store } from "./store.js";
 
-import "semantic-ui-css/semantic.min.css";
+// import "semantic-ui-css/semantic.min.css";
 
 const root = document.getElementById("root");
 if (root) {

@@ -10,13 +10,7 @@ export const Display = (_props: unknown) => {
   return (
     <Container>
       <User
-        id={current_user.id}
-        surname={current_user.surname}
-        lastname={current_user.lastname}
-        login={current_user.login}
-        pwd={current_user.pwd}
-        money={current_user.money}
-        img={current_user.img}
+        {...current_user}
         display_type={UserDisplayLabelEnums.FULL}
       ></User>
     </Container>

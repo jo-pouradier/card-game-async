@@ -1,9 +1,9 @@
-import { Container } from "semantic-ui-react";
+import { Container, Typography } from "@mui/material";
 
 export const Home = (_props: unknown) => {
   return (
     <Container>
-      <h1>HOME</h1>
+      <Typography variant="h4">HOME</Typography>
     </Container>
   );
 };
