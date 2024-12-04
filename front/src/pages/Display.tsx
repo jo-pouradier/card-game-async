@@ -1,4 +1,4 @@
-import { Container } from "semantic-ui-react";
+import { Container } from "@mui/material";
 import User from "../components/user/User";
 import { useAppSelector } from "../hooks";
 import { selectUser } from "../slices/userSlice";
