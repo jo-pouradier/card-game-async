@@ -8,6 +8,7 @@ import {
   InputAdornment,
   InputLabel,
   TextField,
+  Typography,
 } from "@mui/material";
 import { ChangeEvent, ChangeEventHandler, useRef, useState } from "react";
 import { useAppDispatch } from "../../hooks";
@@ -133,7 +134,7 @@ export const UserForm = (props: UserFormProps) => {
         <AppModal
           triggerElement={<div></div>}
           title="User Registration"
-          content={<div>Form is {modalContent.current}</div>}
+          content={<Typography>Form is {modalContent.current}</Typography>}
           contentProps={{}}
           actions={[
             <Button

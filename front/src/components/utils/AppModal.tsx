@@ -1,10 +1,5 @@
+import { Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import React, { ReactElement, ReactNode } from "react";
-import {
-  Modal,
-  ModalActions,
-  ModalContent,
-  ModalHeader,
-} from "semantic-ui-react";
 
 export type ModalProps = {
   /** Element to render where the Modal is used */
@@ -19,17 +14,17 @@ export type ModalProps = {
 
 export const AppModal = (props: ModalProps) => {
   return (
-    <Modal open={props.open} trigger={props.triggerElement}>
-      <ModalHeader>{props.title}</ModalHeader>
-      <ModalContent>
+    <Dialog open={props.open} onClose={() => {}}>
+      <DialogTitle>{props.title}</DialogTitle>
+      <DialogContent>
         {React.cloneElement(props.content as ReactElement, props.contentProps)}
-      </ModalContent>
-      <ModalActions>
+      </DialogContent>
+      <DialogActions>
         {props.actions.map((action, index) => (
           <React.Fragment key={index}>{action}</React.Fragment>
         ))}
-      </ModalActions>
-    </Modal>
+      </DialogActions>
+    </Dialog>
   );
 };
 
