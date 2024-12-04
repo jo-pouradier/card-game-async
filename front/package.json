@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "preview": "vite preview",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@emotion/react": "^11.13.5",
