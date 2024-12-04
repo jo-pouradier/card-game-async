@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { connectUser, getUserById } from "../../api/user";
-import { update_user_action } from "../../slices/userSlice";
+import { connect_user_action } from "../../slices/userSlice";
 import IUser from "../../types/IUser";
 
 interface LoginData {
@@ -30,7 +30,7 @@ const LoginForm = (props: LoginFormProps) => {
       console.log(id);
       const user: IUser = await getUserById(id);
       console.log(user);
-      dispatch(update_user_action({user: user}));
+      dispatch(connect_user_action({user: user}));
       navigate("/" + (props.returnTo ?? ""));
     } else {
       console.log("no data");

@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
-import { selectUser } from "../../slices/userSlice";
+import { selectModifiedUser, selectUser } from "../../slices/userSlice";
 import IUser from "../../types/IUser";
 import { UserDisplayLabelEnums } from "../../types/UserDisplayLabelEnums";
-import  UserShortDisplay  from "./UserShortDisplay";
-import  UserSimpleDisplay  from "./UserSimpleDisplay";
+import UserShortDisplay from "./UserShortDisplay";
+import UserSimpleDisplay from "./UserSimpleDisplay";
 
 export interface UserProps {
   display_type: UserDisplayLabelEnums;
@@ -11,24 +11,29 @@ export interface UserProps {
 
 const User = (props: UserProps) => {
   const current_user: IUser = useSelector(selectUser);
+  const modified_user = useSelector(selectModifiedUser);
   let display: JSX.Element = <></>;
   switch (props.display_type) {
     case UserDisplayLabelEnums.SHORT:
       display = (
         <UserShortDisplay
-          surname={current_user.surName}
-          lastname={current_user.lastName}
+          surname={
+            current_user.surName === modified_user.surName
+              ? current_user.surName
+              : current_user.surName + "/" + modified_user.surName
+          }
+          lastname={
+            current_user.lastName === modified_user.lastName
+              ? current_user.lastName
+              : current_user.lastName + "/" + modified_user.lastName
+          }
           money={current_user.money}
         ></UserShortDisplay>
       );
 
       break;
     case UserDisplayLabelEnums.FULL:
-      display = (
-        <UserSimpleDisplay
-        {...current_user}
-        ></UserSimpleDisplay>
-      );
+      display = <UserSimpleDisplay {...modified_user}></UserSimpleDisplay>;
       break;
     default:
       display = <h4>No Display Available</h4>;

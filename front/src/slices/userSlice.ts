@@ -9,6 +9,7 @@ import {
 
 const initialState: UserSliceState = {
   user: {id: 0} as IUser,
+  modified_user: {id: 0} as IUser,
   submitted_user: {} as IUser,
 };
 
@@ -23,9 +24,11 @@ export const userSlice: UserSlice = createSlice({
       action: UserSliceActions,
     ) => {
       state.user = action.payload.user;
+      state.modified_user = action.payload.user;
+      state.submitted_user = action.payload.user;
     },
     update_user_action: (state: UserSliceState, action: UserSliceActions) => {
-      state.user = action.payload.user;
+      state.modified_user = action.payload.user;
     },
     submit_user_action: (state: UserSliceState, action: UserSliceActions) => {
       console.log("User to Submit");
@@ -34,11 +37,14 @@ export const userSlice: UserSlice = createSlice({
     },
     delete_user_action: (state: UserSliceState) => {
       state.user = {id: 0} as IUser;
+      state.modified_user = {id: 0} as IUser;
     }
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { update_user_action, submit_user_action, delete_user_action } = userSlice.actions;
+export const {connect_user_action, update_user_action, submit_user_action, delete_user_action } = userSlice.actions;
 export const selectUser = (state: RootState) => state.userReducer.user;
+export const selectModifiedUser = (state: RootState) => state.userReducer.modified_user;
+export const selectSubmittedUser = (state: RootState) => state.userReducer.submitted_user;
 export default userSlice.reducer;

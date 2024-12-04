@@ -16,7 +16,7 @@ const UserSimpleDisplay = (props: UserSimpleDisplayProps) => {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
-        title={`${props.surname} ${props.lastname}`}
+        title={`${props.surName} ${props.lastName}`}
         subheader={`Login: ${props.email}`}
       />
       <CardContent>
