@@ -1,10 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import {
-  Button,
-  Form,
-  Header,
-  InputOnChangeData
-} from "semantic-ui-react";
+import { Box, Button, TextField, Typography } from "@mui/material";
 
 export interface ICardForm {
   descriptionPrompt: string;
@@ -22,21 +17,16 @@ export const CardForm = (props: CardFormProps) => {
     imagePrompt: "",
   });
 
-  function processInput(
-    event: ChangeEvent<HTMLInputElement>,
-    data: InputOnChangeData,
-  ) {
-    const name = event.currentTarget.name;
+  function processInput(event: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
 
     setCurrentCardPrompt((prevCard) => ({
       ...prevCard,
-      [name]: data.value,
+      [name]: value,
     }));
   }
 
-  const submitCardHandler = (
-    currentCardPrompt: ICardForm,
-  ) => {
+  const submitCardHandler = (currentCardPrompt: ICardForm) => {
     console.log(currentCardPrompt);
     if (props.submitCardHandler) {
       props.submitCardHandler(currentCardPrompt);
@@ -51,39 +41,55 @@ export const CardForm = (props: CardFormProps) => {
   };
 
   return (
-    <Form>
-      <Header as="h4" dividing>
+    <Box
+      component="form"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        maxWidth: 400,
+        margin: "0 auto",
+        marginBottom: 2,
+      }}
+    >
+      <Typography variant="h5" gutterBottom>
         Card Registration
-      </Header>
-      <Form.Field>
-        <Form.Input
-          fluid
-          label="Description Prompt"
-          placeholder="Description"
-          name="descriptionPrompt"
-          autoComplete="description"
-          onChange={processInput}
-          value={currentCardPrompt.descriptionPrompt}
-        />
-      </Form.Field>
-      <Form.Field>
-        <Form.Input
-          fluid
-          label="Image Prompt"
-          placeholder="Image"
-          name="imagePrompt"
-          autoComplete="image"
-          onChange={processInput}
-          value={currentCardPrompt.imagePrompt}
-        />
-      </Form.Field>
-      <Button onClick={generateCard}>Generate</Button>
-      <Button
-        type="submit"
-        onClick={() => submitCardHandler(currentCardPrompt)}
-      >
-        Submit
-      </Button>
-    </Form>
+      </Typography>
+      <TextField
+        fullWidth
+        label="Description Prompt"
+        placeholder="Description"
+        name="descriptionPrompt"
+        autoComplete="description"
+        onChange={processInput}
+        value={currentCardPrompt.descriptionPrompt}
+      />
+      <TextField
+        fullWidth
+        label="Image Prompt"
+        placeholder="Image"
+        name="imagePrompt"
+        autoComplete="image"
+        onChange={processInput}
+        value={currentCardPrompt.imagePrompt}
+      />
+      <Box sx={{ display: "flex", justifyContent: "space-between", gap: 2 }}>
+        <Button 
+          variant="outlined" 
+          color="primary" 
+          onClick={generateCard}
+        >
+          Generate
+        </Button>
+        <Button 
+          variant="contained" 
+          color="secondary" 
+          type="submit" 
+          onClick={() => submitCardHandler(currentCardPrompt)}
+        >
+          Submit
+        </Button>
+      </Box>
+    </Box>
   );
 };

@@ -1,46 +1,60 @@
-import { Card, Icon, Image } from "semantic-ui-react";
+// import { Flare } from "@mui/icons-material";
+import AttackIcon from "../../assets/AttackIcon";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import BoltIcon from "@mui/icons-material/Bolt";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ShieldIcon from "@mui/icons-material/Shield";
+import { Box, Card, CardContent, CardMedia, Stack, Typography } from "@mui/material";
 import ICard from "../../types/ICard";
 
 export type CardSimpleDisplayProps = ICard | null;
 
 export const CardSimpleDisplay = (props: CardSimpleDisplayProps) => {
   return (
-    <Card>
-      <Image
-        src={props?.image}
-        wrapped
-        ui={false}
-      />
-      <Card.Content>
-        <Card.Header>
+    <Card
+      sx={{
+        maxWidth: 345,
+        margin: "auto",
+        boxShadow: 3,
+        borderRadius: 2,
+        overflow: "hidden",
+      }}
+    >
+      {props?.image && (
+        <CardMedia
+          component="img"
+          height="200"
+          image={props.image}
+          alt={props.name}
+        />
+      )}
+      <CardContent>
+        <Typography variant="h5" fontWeight="bold" gutterBottom>
           {props?.name} {props?.family}
-        </Card.Header>
-        <Card.Description>{props?.description}</Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        <p>
-          <Icon name="heart" />
-          {props?.hp}
-        </p>
-        <p>
-          <Icon name="bolt" />
-          {props?.energy}
-        </p>
-        <p>
-          <Icon name="shield" />
-          {props?.defense}
-        </p>
-        <p>
-          <Icon name="fire" />
-          {props?.attack}
-        </p>
-      </Card.Content>
-      <Card.Content extra>
-        <a>
-          <Icon name="money bill alternate outline" />
-          {props?.price} $
-        </a>
-      </Card.Content>
+        </Typography>
+        <Typography variant="body2" color="textSecondary">
+          {props?.description}
+        </Typography>
+      </CardContent>
+      <CardContent>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <FavoriteIcon color="error" />
+          <Typography variant="body1">{props?.hp}</Typography>
+          <BoltIcon color="warning" />
+          <Typography variant="body1">{props?.energy}</Typography>
+          <ShieldIcon color="primary" />
+          <Typography variant="body1">{props?.defense}</Typography>
+          {/* <Flare color="warning" /> */}
+          <AttackIcon />
+          <Typography variant="body1">{props?.attack}</Typography>
+        </Stack>
+      </CardContent>
+      <CardContent>
+        <Box display="flex" alignItems="center" gap={1}>
+          <AttachMoneyIcon color="success" />
+          <Typography variant="body1">{props?.price} $</Typography>
+        </Box>
+      </CardContent>
     </Card>
   );
 };
