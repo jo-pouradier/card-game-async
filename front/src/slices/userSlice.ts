@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { connectUser } from "../api/user";
 import { RootState } from "../store";
 import IUser from "../types/IUser";
 import {
+  UserConnectSliceActions,
   UserSlice,
   UserSliceActions,
   UserSliceState,
@@ -18,6 +20,14 @@ export const userSlice: UserSlice = createSlice({
   initialState,
   // Define the reducers
   reducers: {
+    connect_user_action: (
+      state: UserSliceState,
+      action: UserConnectSliceActions,
+    ) => {
+      console.log("User to Register with: " + action.payload.user.username);
+      // post api auth
+      connectUser(action.payload.user, state);
+    },
     update_user_action: (state: UserSliceState, action: UserSliceActions) => {
       state.user = action.payload.user;
     },

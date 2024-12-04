@@ -2,6 +2,7 @@ import { PayloadAction, Slice } from "@reduxjs/toolkit";
 import IUser from "./IUser";
 
 export type UserSliceActions = PayloadAction<{ user: IUser }>;
+export type UserConnectSliceActions = PayloadAction<{ user: {username: string, password: string} }>;
 
 export type UserSliceState = {
   user: IUser;
@@ -11,6 +12,10 @@ export type UserSliceState = {
 export type UserSlice = Slice<
   UserSliceState,
   {
+    connect_user_action: (
+      state: UserSliceState,
+      action: UserConnectSliceActions,
+    ) => void;
     update_user_action: (
       state: UserSliceState,
       action: UserSliceActions,
