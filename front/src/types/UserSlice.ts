@@ -6,6 +6,7 @@ export type UserConnectSliceActions = PayloadAction<{ user: {username: string, p
 
 export type UserSliceState = {
   user: IUser;
+  modified_user: IUser;
   submitted_user: IUser;
 };
 
