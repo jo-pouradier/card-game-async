@@ -32,12 +32,15 @@ const UserForm = (props: UserFormProps) => {
   const [passwordType2, setPasswordType2] = useState(true);
   const [currentUser, setCurrentUser] = useState<IUserForm>({
     id: 0,
-    surname: "",
-    lastname: "",
+    surName: "",
+    lastName: "",
     email: "",
     money: 0,
-    password: "",
+    pwd: "",
     repassword: "",
+    account: 0,
+    login: "",
+    cardList: [],
   });
 
   const processInput: ChangeEventHandler<
@@ -57,7 +60,7 @@ const UserForm = (props: UserFormProps) => {
 
   const submitOrder = (_event: React.MouseEvent<HTMLButtonElement>) => {
     modalContent.current =
-      currentUser.password !== currentUser.repassword
+      currentUser.pwd !== currentUser.repassword
         ? "Password and Re-Password are not the same"
         : "User registered successfully";
     setOpen(true);
@@ -73,7 +76,7 @@ const UserForm = (props: UserFormProps) => {
             placeholder="Surname"
             name="surname"
             onChange={processInput}
-            value={currentUser.surname}
+            value={currentUser.surName}
             margin="normal"
           />
           <TextField
@@ -82,7 +85,7 @@ const UserForm = (props: UserFormProps) => {
             placeholder="Last Name"
             name="lastname"
             onChange={processInput}
-            value={currentUser.lastname}
+            value={currentUser.lastName}
             margin="normal"
           />
           <TextField
@@ -101,7 +104,7 @@ const UserForm = (props: UserFormProps) => {
               type={passwordType1 ? "password" : "text"}
               name="password"
               onChange={processInput}
-              value={currentUser.password}
+              value={currentUser.pwd}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton onClick={() => setPasswordType1(!passwordType1)}>

@@ -14,7 +14,7 @@ export type UserSlice = Slice<
   {
     connect_user_action: (
       state: UserSliceState,
-      action: UserConnectSliceActions,
+      action: UserSliceActions,
     ) => void;
     update_user_action: (
       state: UserSliceState,

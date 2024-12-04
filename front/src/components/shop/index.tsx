@@ -1,8 +1,8 @@
-import { Shop } from "./Shop";
-import { ShopBuy } from "./ShopBuy";
-import { ShopCreate } from "./ShopCreate";
-import { ShopLayout } from "./ShopLayout";
-import { ShopSell } from "./ShopSell";
+import Shop from "./Shop";
+import ShopBuy from "./ShopBuy";
+import ShopCreate from "./ShopCreate";
+import ShopLayout from "./ShopLayout";
+import ShopSell from "./ShopSell";
 
 // create new component by combining the layout and the other components
 export const ShopDisplay = () => {
