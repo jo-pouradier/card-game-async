@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Container, Grid, Paper, Box } from "@mui/material";
+import { Container, Grid2 as Grid, Paper, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { UserForm } from "../components/user/components/UserForm";
-import User from "../components/user/containers/User";
+import { UserForm } from "../components/user/UserForm";
+import User from "../components/user/User";
 import IUser from "../types/IUser";
 import { UserDisplayLabelEnums } from "../types/UserDisplayLabelEnums";
 
@@ -35,42 +35,34 @@ export const FormDisplay = (props: FormDisplayProps) => {
       content = (
         <Container>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={4}>
+            <Grid size={4}>
               <Paper elevation={3}>
                 <Box p={2}>
                   <UserForm redirect={redirectHandler} />
                 </Box>
               </Paper>
             </Grid>
-            <Grid item xs={12} md={4}>
-              <Paper elevation={3}>
-                <Box p={2}>
-                  <User
-                    id={user.id}
-                    surname={user.surname}
-                    lastname={user.lastname}
-                    email={user.email}
-                    password={user.password}
-                    money={user.money}
-                    display_type={UserDisplayLabelEnums.FULL}
-                  />
-                </Box>
-              </Paper>
+            <Grid size={4}>
+              <User
+                id={user.id}
+                surname={user.surname}
+                lastname={user.lastname}
+                email={user.email}
+                password={user.password}
+                money={user.money}
+                display_type={UserDisplayLabelEnums.FULL}
+              />
             </Grid>
-            <Grid item xs={12} md={4}>
-              <Paper elevation={3}>
-                <Box p={2}>
-                  <User
-                    id={user.id}
-                    surname={user.surname}
-                    lastname={user.lastname}
-                    email={user.email}
-                    password={user.password}
-                    money={user.money}
-                    display_type={UserDisplayLabelEnums.SHORT}
-                  />
-                </Box>
-              </Paper>
+            <Grid size={4}>
+              <User
+                id={user.id}
+                surname={user.surname}
+                lastname={user.lastname}
+                email={user.email}
+                password={user.password}
+                money={user.money}
+                display_type={UserDisplayLabelEnums.SHORT}
+              />
             </Grid>
           </Grid>
         </Container>

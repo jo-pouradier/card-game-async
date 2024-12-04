@@ -1,5 +1,5 @@
 import { Container } from "semantic-ui-react";
-import User from "../components/user/containers/User";
+import User from "../components/user/User";
 import { useAppSelector } from "../hooks";
 import { selectUser } from "../slices/userSlice";
 import { UserDisplayLabelEnums } from "../types/UserDisplayLabelEnums";

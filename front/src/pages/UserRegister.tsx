@@ -1,5 +1,5 @@
 import { Container, Paper } from "@mui/material";
-import { UserForm } from "../components/user/components/UserForm";
+import { UserForm } from "../components/user/UserForm";
 import { useNavigate } from "react-router-dom";
 
 export const UserRegister = () => {
