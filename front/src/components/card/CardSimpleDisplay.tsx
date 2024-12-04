@@ -28,11 +28,11 @@ const CardSimpleDisplay = (props: CardSimpleDisplayProps) => {
         overflow: "hidden",
       }}
     >
-      {props?.image && (
+      {props?.imgUrl && (
         <CardMedia
           component="img"
           height="200"
-          image={props.image}
+          image={props.imgUrl}
           alt={props.name}
         />
       )}

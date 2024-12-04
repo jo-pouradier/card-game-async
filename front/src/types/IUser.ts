@@ -1,8 +1,13 @@
+import ICard from "./ICard";
+
 export default interface IUser {
   id: number;
-  surname: string;
-  lastname: string;
+  account: number;
+  login: string;
+  surName: string;
+  lastName: string;
   email: string;
-  password: string;
+  pwd: string;
   money: number;
+  cardList: ICard[];
 }

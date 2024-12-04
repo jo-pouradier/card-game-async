@@ -16,8 +16,8 @@ const User = (props: UserProps) => {
     case UserDisplayLabelEnums.SHORT:
       display = (
         <UserShortDisplay
-          surname={current_user.surname}
-          lastname={current_user.lastname}
+          surname={current_user.surName}
+          lastname={current_user.lastName}
           money={current_user.money}
         ></UserShortDisplay>
       );
@@ -26,11 +26,7 @@ const User = (props: UserProps) => {
     case UserDisplayLabelEnums.FULL:
       display = (
         <UserSimpleDisplay
-          id={current_user.id}
-          surname={current_user.surname}
-          lastname={current_user.lastname}
-          email={current_user.email}
-          money={current_user.money}
+        {...current_user}
         ></UserSimpleDisplay>
       );
       break;

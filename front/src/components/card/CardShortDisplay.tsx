@@ -1,10 +1,8 @@
 import { Box, Avatar, Typography } from "@mui/material";
+import ICard from "../../types/ICard";
 
-export interface CardShortDisplayProps {
-  image: string;
-  name: string;
-  family: string;
-};
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface CardShortDisplayProps extends Omit<ICard, "imgUrl" | "affinity" | "userId"> {};
 
 const CardShortDisplay = (props: CardShortDisplayProps) => {
   return (
@@ -20,7 +18,7 @@ const CardShortDisplay = (props: CardShortDisplayProps) => {
       }}
     >
       <Avatar
-        src={props.image}
+        src={props.smallImgUrl}
         alt={props.name}
         sx={{ width: 56, height: 56 }}
       />
