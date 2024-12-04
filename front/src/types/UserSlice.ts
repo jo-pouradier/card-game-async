@@ -24,5 +24,6 @@ export type UserSlice = Slice<
       state: UserSliceState,
       action: UserSliceActions,
     ) => void;
+    delete_user_action: (state: UserSliceState) => void;
   }
 >;
