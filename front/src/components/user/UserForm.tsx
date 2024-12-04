@@ -55,7 +55,7 @@ export const UserForm = (props: UserFormProps) => {
     dispatch(update_user_action({ user: { ...currentUser, [name]: value } }));
   };
 
-  function submitOrder(_event: React.MouseEvent<HTMLButtonElement>) {
+  const submitOrder = (_event: React.MouseEvent<HTMLButtonElement>) => {
     modalContent.current =
       currentUser.password !== currentUser.repassword
         ? "Password and Re-Password are not the same"

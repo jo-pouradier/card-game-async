@@ -12,7 +12,7 @@ export type FormDisplayProps = {
 export const FormDisplay = (props: FormDisplayProps) => {
   const navigate = useNavigate();
 
-  function redirectHandler(data: IUser) {
+  const redirectHandler = (data: IUser) => {
     console.log("user to submit", data);
     navigate("/display");
   }

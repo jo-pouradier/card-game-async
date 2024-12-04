@@ -17,7 +17,7 @@ export const CardForm = (props: CardFormProps) => {
     imagePrompt: "",
   });
 
-  function processInput(event: ChangeEvent<HTMLInputElement>) {
+  const processInput = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
     setCurrentCardPrompt((prevCard) => ({
