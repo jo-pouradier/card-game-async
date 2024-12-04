@@ -5,7 +5,8 @@ import { NavLink } from "react-router-dom";
 
 export const Login = () => {
   const [queryParams, _setQueryParams] = useSearchParams();
-  const returnTo = queryParams.get("returnTo") ?? "/";
+  console.log("queryParams: ", queryParams);
+  const returnTo = queryParams.get("returnTo") ?? "";
   return (
     <Container>
       <Segment center>
