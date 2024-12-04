@@ -5,7 +5,7 @@ import { UserDisplayLabelEnums } from "../../types/UserDisplayLabelEnums";
 import { UserShortDisplay } from "./UserShortDisplay";
 import { UserSimpleDisplay } from "./UserSimpleDisplay";
 
-export interface UserProps extends IUser {
+export interface UserProps {
   display_type: UserDisplayLabelEnums;
 }
 

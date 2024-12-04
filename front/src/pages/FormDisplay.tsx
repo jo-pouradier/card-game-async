@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { Container, Grid2 as Grid, Paper, Box } from "@mui/material";
+import { Box, Container, Grid2 as Grid, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { UserForm } from "../components/user/UserForm";
 import User from "../components/user/User";
+import { UserForm } from "../components/user/UserForm";
 import IUser from "../types/IUser";
 import { UserDisplayLabelEnums } from "../types/UserDisplayLabelEnums";
 
@@ -11,15 +10,6 @@ export type FormDisplayProps = {
 };
 
 export const FormDisplay = (props: FormDisplayProps) => {
-  const [user, _setCurrentUser] = useState<IUser>({
-    id: 12,
-    surname: "John",
-    lastname: "Doe",
-    email: "jDoe@example.fr",
-    password: "jdoepwd",
-    money: 1000,
-  });
-
   const navigate = useNavigate();
 
   function redirectHandler(data: IUser) {
@@ -44,23 +34,11 @@ export const FormDisplay = (props: FormDisplayProps) => {
             </Grid>
             <Grid size={4}>
               <User
-                id={user.id}
-                surname={user.surname}
-                lastname={user.lastname}
-                email={user.email}
-                password={user.password}
-                money={user.money}
                 display_type={UserDisplayLabelEnums.FULL}
               />
             </Grid>
             <Grid size={4}>
               <User
-                id={user.id}
-                surname={user.surname}
-                lastname={user.lastname}
-                email={user.email}
-                password={user.password}
-                money={user.money}
                 display_type={UserDisplayLabelEnums.SHORT}
               />
             </Grid>
