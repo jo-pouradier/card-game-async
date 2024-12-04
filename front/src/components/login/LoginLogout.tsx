@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "semantic-ui-react";
+// import { Button } from "semantic-ui-react";
+import { Button} from "@mui/material";
+
 
 export const LoginLogout = () => {
     const navigate = useNavigate();

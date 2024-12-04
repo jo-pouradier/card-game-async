@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Form, Header, InputOnChangeData } from "semantic-ui-react";
+import { 
+  Box, 
+  Button, 
+  TextField, 
+  Typography 
+} from "@mui/material";
 
 type LoginData = {
   email: string;
@@ -17,10 +22,11 @@ export const LoginForm = (props: LoginFormProps) => {
     password: "",
   });
   const navigate = useNavigate();
+
   const submitLogin = () => {
     console.log(loginData);
     if (loginData) {
-      localStorage.setItem("lastEmail", loginData.email as string); // save email to storage
+      localStorage.setItem("lastEmail", loginData.email); // save email to storage
       document.cookie = "loggedIn=true;max-age=60*1000"; // set cookie to expire
       navigate("/" + (props.returnTo ?? ""));
     } else {
@@ -28,42 +34,56 @@ export const LoginForm = (props: LoginFormProps) => {
     }
   };
 
-  const setLoginDataField = (
-    _event: React.ChangeEvent<HTMLInputElement>,
-    data: InputOnChangeData,
-  ) => {
+  const setLoginDataField = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
     setLoginData({
       ...loginData,
-      [data.name]: data.value,
+      [name]: value,
     });
   };
 
   return (
-    <Form equal>
-      <Header as="h3" dividing>
+    <Box
+      component="form"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        maxWidth: 400,
+        margin: "0 auto",
+      }}
+    >
+      <Typography variant="h5" component="h3" gutterBottom textAlign="center">
         Login
-      </Header>
-        <Form.Input
-          fluid
-          label="Email"
-          placeholder="Email"
-          name="email"
-          autoComplete="username"
-          onChange={setLoginDataField}
-          value={loginData.email}
-        />
-        <Form.Input
-          type="password"
-          label="Password"
-          placeholder="Password"
-          name="password"
-          autoComplete="current-password"
-          onChange={setLoginDataField}
-          value={loginData.password}
-        />
-      <Button type="submit" onClick={submitLogin}>
+      </Typography>
+      <TextField
+        fullWidth
+        label="Email"
+        placeholder="Email"
+        name="email"
+        autoComplete="username"
+        onChange={setLoginDataField}
+        value={loginData.email}
+      />
+      <TextField
+        fullWidth
+        type="password"
+        label="Password"
+        placeholder="Password"
+        name="password"
+        autoComplete="current-password"
+        onChange={setLoginDataField}
+        value={loginData.password}
+      />
+      <Button 
+        variant="contained" 
+        color="primary" 
+        type="button" 
+        onClick={submitLogin}
+      >
         Submit
       </Button>
-    </Form>
+    </Box>
   );
 };
+
