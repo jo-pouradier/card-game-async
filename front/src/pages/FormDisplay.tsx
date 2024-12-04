@@ -1,7 +1,7 @@
 import { Box, Container, Grid2 as Grid, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import User from "../components/user/User";
-import { UserForm } from "../components/user/UserForm";
+import  UserForm  from "../components/user/UserForm";
 import IUser from "../types/IUser";
 import { UserDisplayLabelEnums } from "../types/UserDisplayLabelEnums";
 
@@ -9,7 +9,7 @@ export interface FormDisplayProps {
   id?: number;
 };
 
-export const FormDisplay = (props: FormDisplayProps) => {
+const FormDisplay = (props: FormDisplayProps) => {
   const navigate = useNavigate();
 
   const redirectHandler = (data: IUser) => {
@@ -65,3 +65,5 @@ export const FormDisplay = (props: FormDisplayProps) => {
 
   return content;
 };
+
+export default FormDisplay;

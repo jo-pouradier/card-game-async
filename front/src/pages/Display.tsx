@@ -2,7 +2,7 @@ import { Container } from "@mui/material";
 import User from "../components/user/User";
 import { UserDisplayLabelEnums } from "../types/UserDisplayLabelEnums";
 
-export const Display = (_props: unknown) => {
+const Display = (_props: unknown) => {
 
   return (
     <Container>
@@ -10,3 +10,5 @@ export const Display = (_props: unknown) => {
     </Container>
   );
 };
+
+export default Display;

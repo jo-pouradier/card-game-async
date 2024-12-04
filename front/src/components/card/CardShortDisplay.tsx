@@ -6,7 +6,7 @@ export interface CardShortDisplayProps {
   family: string;
 };
 
-export const CardShortDisplay = (props: CardShortDisplayProps) => {
+const CardShortDisplay = (props: CardShortDisplayProps) => {
   return (
     <Box
       sx={{
@@ -35,3 +35,5 @@ export const CardShortDisplay = (props: CardShortDisplayProps) => {
     </Box>
   );
 };
+
+export default CardShortDisplay;

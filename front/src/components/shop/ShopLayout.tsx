@@ -6,7 +6,7 @@ export interface ShopLayoutProps {
   title?: string;
 };
 
-export const ShopLayout = (props: ShopLayoutProps) => {
+const ShopLayout = (props: ShopLayoutProps) => {
   console.log("call ShopLayout with children: ", props.children);
   const title = props.title ?? "Shop";
 
@@ -19,3 +19,5 @@ export const ShopLayout = (props: ShopLayoutProps) => {
     </Container>
   );
 };
+
+export default ShopLayout;

@@ -1,14 +1,14 @@
 import { Route, Routes } from "react-router-dom";
-import { ShopPage } from "../pages/ShopPage";
-import { Display } from "../pages/Display";
-import { FormDisplay } from "../pages/FormDisplay";
-import { Login } from "../pages/Login";
-import { UserRegister } from "../pages/UserRegister";
-import { Home } from "../pages/Home";
-import { LoginProtectedRoutes } from "./LoginProtectedRoutes";
+import  ShopPage  from "../pages/ShopPage";
+import  Display  from "../pages/Display";
+import  FormDisplay  from "../pages/FormDisplay";
+import  Login  from "../pages/Login";
+import  UserRegister  from "../pages/UserRegister";
+import  Home  from "../pages/Home";
+import  LoginProtectedRoutes  from "./LoginProtectedRoutes";
 import { ShopDisplay } from "../components/shop";
 
-export const AppRouter = (_props: unknown) => {
+const AppRouter = (_props: unknown) => {
   return (
     <Routes>
       <Route path="/shop" element={<LoginProtectedRoutes />}>
@@ -24,3 +24,5 @@ export const AppRouter = (_props: unknown) => {
     </Routes>
   );
 };
+
+export default AppRouter;

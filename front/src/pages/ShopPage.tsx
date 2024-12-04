@@ -6,7 +6,7 @@ import {
   ShopSellDisplay,
 } from "../components/shop";
 
-export const ShopPage = (_props: unknown) => {
+const ShopPage = (_props: unknown) => {
   // get query param id
   const { id } = useParams();
   console.info("ShopPage id: ", id);
@@ -28,3 +28,5 @@ export const ShopPage = (_props: unknown) => {
   }
   return content;
 };
+
+export default ShopPage;

@@ -11,7 +11,7 @@ export interface LoginFormProps {
   returnTo?: string;
 };
 
-export const LoginForm = (props: LoginFormProps) => {
+const LoginForm = (props: LoginFormProps) => {
   const [loginData, setLoginData] = useState<LoginData>({
     email: localStorage.getItem("lastEmail") ?? "",
     password: "",
@@ -81,3 +81,5 @@ export const LoginForm = (props: LoginFormProps) => {
     </Box>
   );
 };
+
+export default LoginForm;

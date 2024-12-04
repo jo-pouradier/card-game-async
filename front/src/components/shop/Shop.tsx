@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 // import { Button, Container } from "semantic-ui-react";
 import { Button, Container, Grid2 as Grid } from "@mui/material";
 
-export const Shop = () => {
+const Shop = () => {
   const navigate = useNavigate();
 
   return (
@@ -34,3 +34,5 @@ export const Shop = () => {
     </Container>
   );
 };
+
+export default Shop;

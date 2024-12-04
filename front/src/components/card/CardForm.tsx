@@ -11,7 +11,7 @@ export interface CardFormProps {
   generateCardHanlder?: (card: ICardForm) => void;
 };
 
-export const CardForm = (props: CardFormProps) => {
+const CardForm = (props: CardFormProps) => {
   const [currentCardPrompt, setCurrentCardPrompt] = useState<ICardForm>({
     descriptionPrompt: "",
     imagePrompt: "",
@@ -89,3 +89,5 @@ export const CardForm = (props: CardFormProps) => {
     </Box>
   );
 };
+
+export default CardForm;

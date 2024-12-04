@@ -1,10 +1,10 @@
 import { Container } from "@mui/material";
-import { CardForm, ICardForm } from "../card/CardForm";
-import { CardSimpleDisplay } from "../card/CardSimpleDisplay";
+import  CardForm, {ICardForm}  from "../card/CardForm";
+import  CardSimpleDisplay  from "../card/CardSimpleDisplay";
 import ICard from "../../types/ICard";
 import { useState } from "react";
 
-export const ShopCreate = () => {
+const ShopCreate = () => {
   const [generatedCard, setGeneratedCard] = useState<ICard>({
     id: 0,
     name: "",
@@ -59,3 +59,5 @@ export const ShopCreate = () => {
     </Container>
   );
 };
+
+export default ShopCreate;

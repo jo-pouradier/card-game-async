@@ -7,7 +7,7 @@ export interface UserShortDisplayProps {
   money?: number;
 };
 
-export const UserShortDisplay = (props: UserShortDisplayProps) => {
+const UserShortDisplay = (props: UserShortDisplayProps) => {
   return (
     <Card sx={{ maxWidth: 345, marginBottom: 2 }}>
       <CardHeader
@@ -27,3 +27,5 @@ export const UserShortDisplay = (props: UserShortDisplayProps) => {
     </Card>
   );
 };
+
+export default UserShortDisplay;

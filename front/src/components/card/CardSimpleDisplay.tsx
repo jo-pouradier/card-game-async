@@ -17,7 +17,7 @@ import ICard from "../../types/ICard";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface CardSimpleDisplayProps extends Partial<ICard> {};
 
-export const CardSimpleDisplay = (props: CardSimpleDisplayProps) => {
+const CardSimpleDisplay = (props: CardSimpleDisplayProps) => {
   return (
     <Card
       sx={{
@@ -66,3 +66,5 @@ export const CardSimpleDisplay = (props: CardSimpleDisplayProps) => {
     </Card>
   );
 };
+
+export default CardSimpleDisplay;

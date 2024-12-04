@@ -1,8 +1,8 @@
 import { Container, Paper } from "@mui/material";
-import { UserForm } from "../components/user/UserForm";
+import  UserForm  from "../components/user/UserForm";
 import { useNavigate } from "react-router-dom";
 
-export const UserRegister = () => {
+const UserRegister = () => {
   const navigate = useNavigate();
   return (
     <Container>
@@ -12,3 +12,5 @@ export const UserRegister = () => {
     </Container>
   );
 };
+
+export default UserRegister;

@@ -12,7 +12,7 @@ import IUser from "../../types/IUser";
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface UserSimpleDisplayProps extends Omit<IUser, "password" | "repassword"> {}
 
-export const UserSimpleDisplay = (props: UserSimpleDisplayProps) => {
+const UserSimpleDisplay = (props: UserSimpleDisplayProps) => {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
@@ -33,3 +33,5 @@ export const UserSimpleDisplay = (props: UserSimpleDisplayProps) => {
     </Card>
   );
 };
+
+export default UserSimpleDisplay;

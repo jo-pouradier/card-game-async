@@ -1,9 +1,9 @@
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoginLogout } from "../login/LoginLogout";
+import  LoginLogout  from "../login/LoginLogout";
 
-export const Navbar = (_props: unknown) => {
+const Navbar = (_props: unknown) => {
   const navigate = useNavigate();
   const [activeItem, setActiveItem] = useState("home");
 
@@ -50,3 +50,5 @@ export const Navbar = (_props: unknown) => {
     </AppBar>
   );
 };
+
+export default Navbar;

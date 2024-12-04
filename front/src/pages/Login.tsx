@@ -1,8 +1,8 @@
 import { NavLink, useSearchParams } from "react-router-dom";
 import { Box, Container, Typography, Link } from "@mui/material";
-import { LoginForm } from "../components/login/LoginForm";
+import  LoginForm  from "../components/login/LoginForm";
 
-export const Login = () => {
+const Login = () => {
   const [queryParams] = useSearchParams();
   console.log("queryParams: ", queryParams);
   const returnTo = queryParams.get("returnTo") ?? "";
@@ -37,3 +37,5 @@ export const Login = () => {
     </Container>
   );
 };
+
+export default Login;

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 // import { Button } from "semantic-ui-react";
 import { Button } from "@mui/material";
 
-export const LoginLogout = () => {
+const LoginLogout = () => {
   const navigate = useNavigate();
   const isLogged = document.cookie.includes("loggedIn=true");
 
@@ -15,5 +15,7 @@ export const LoginLogout = () => {
     }
   };
 
-  return <Button onClick={handleClick}>{isLogged ? "Logout" : "Login"}</Button>;
+  return <Button onClick={handleClick}>{isLogged ? "Logout": "Login"}</Button>;
 };
+
+export default LoginLogout;

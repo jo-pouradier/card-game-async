@@ -12,7 +12,7 @@ export interface ModalProps {
   open: boolean;
 };
 
-export const AppModal = (props: ModalProps) => {
+const AppModal = (props: ModalProps) => {
   return (
     <Dialog open={props.open} onClose={() => {}}>
       <DialogTitle>{props.title}</DialogTitle>

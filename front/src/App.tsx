@@ -1,10 +1,10 @@
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { Navbar } from "./components/utils/Navbar";
-import { AppRouter } from "./router/AppRouter";
+import  Navbar  from "./components/utils/Navbar";
+import  AppRouter  from "./router/AppRouter";
 import { store } from "./store";
 
-export const App = (_props: unknown) => {
+const App = (_props: unknown) => {
   return (
     <Provider store={store}>
       <BrowserRouter>
@@ -14,3 +14,5 @@ export const App = (_props: unknown) => {
     </Provider>
   );
 };
+
+export default App;

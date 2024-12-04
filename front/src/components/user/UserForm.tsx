@@ -24,7 +24,7 @@ interface IUserForm extends IUser {
   repassword: string;
 }
 
-export const UserForm = (props: UserFormProps) => {
+const UserForm = (props: UserFormProps) => {
   const dispatch = useAppDispatch();
   const modalContent = useRef<string>("");
   const [open, setOpen] = useState(false);
@@ -156,3 +156,5 @@ export const UserForm = (props: UserFormProps) => {
     </>
   );
 };
+
+export default UserForm;
