@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Container, Header } from "semantic-ui-react";
+import { Container, Typography } from "@mui/material";
 
 export type ShopLayoutProps = {
   children: ReactNode;
@@ -12,9 +12,9 @@ export const ShopLayout = (props: ShopLayoutProps) => {
 
   return (
     <Container>
-      <Header as="h1" textAlign="center">
+      <Typography variant="h2" align="center" >
         {title}
-      </Header>
+      </Typography>
       {props.children}
     </Container>
   );
