@@ -1,5 +1,4 @@
 export enum UserDisplayLabelEnums {
-  FULL = 'FULL',
-  SHORT = 'SHORT',
+  FULL = "FULL",
+  SHORT = "SHORT",
 }
-

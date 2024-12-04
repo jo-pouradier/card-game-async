@@ -74,17 +74,13 @@ export const CardForm = (props: CardFormProps) => {
         value={currentCardPrompt.imagePrompt}
       />
       <Box sx={{ display: "flex", justifyContent: "space-between", gap: 2 }}>
-        <Button 
-          variant="outlined" 
-          color="primary" 
-          onClick={generateCard}
-        >
+        <Button variant="outlined" color="primary" onClick={generateCard}>
           Generate
         </Button>
-        <Button 
-          variant="contained" 
-          color="secondary" 
-          type="submit" 
+        <Button
+          variant="contained"
+          color="secondary"
+          type="submit"
           onClick={() => submitCardHandler(currentCardPrompt)}
         >
           Submit

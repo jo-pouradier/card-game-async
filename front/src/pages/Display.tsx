@@ -9,10 +9,7 @@ export const Display = (_props: unknown) => {
 
   return (
     <Container>
-      <User
-        {...current_user}
-        display_type={UserDisplayLabelEnums.FULL}
-      ></User>
+      <User {...current_user} display_type={UserDisplayLabelEnums.FULL}></User>
     </Container>
   );
 };

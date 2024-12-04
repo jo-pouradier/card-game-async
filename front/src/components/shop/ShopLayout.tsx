@@ -12,7 +12,7 @@ export const ShopLayout = (props: ShopLayoutProps) => {
 
   return (
     <Container>
-      <Typography variant="h2" align="center" >
+      <Typography variant="h2" align="center">
         {title}
       </Typography>
       {props.children}

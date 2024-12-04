@@ -4,7 +4,14 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import BoltIcon from "@mui/icons-material/Bolt";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShieldIcon from "@mui/icons-material/Shield";
-import { Box, Card, CardContent, CardMedia, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Stack,
+  Typography,
+} from "@mui/material";
 import ICard from "../../types/ICard";
 
 export type CardSimpleDisplayProps = ICard | null;

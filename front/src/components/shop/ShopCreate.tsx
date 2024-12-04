@@ -20,7 +20,7 @@ export const ShopCreate = () => {
 
   const submitCardHandler = (card: ICardForm) => {
     console.log("submit card: ", card);
-  }
+  };
   const generateCardHanlder = (card: ICardForm) => {
     console.log("generate card: ", card);
     // fetch to created card from api
@@ -40,7 +40,10 @@ export const ShopCreate = () => {
 
   return (
     <Container>
-      <CardForm submitCardHandler={submitCardHandler} generateCardHanlder={generateCardHanlder}/>
+      <CardForm
+        submitCardHandler={submitCardHandler}
+        generateCardHanlder={generateCardHanlder}
+      />
       <CardSimpleDisplay
         id={generatedCard.id}
         name={generatedCard.name}

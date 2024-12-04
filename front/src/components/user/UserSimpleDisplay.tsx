@@ -1,4 +1,11 @@
-import { Card, CardContent, CardHeader, CardActions, Typography, IconButton } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardActions,
+  Typography,
+  IconButton,
+} from "@mui/material";
 import { AttachMoney } from "@mui/icons-material";
 import IUser from "../../types/IUser";
 

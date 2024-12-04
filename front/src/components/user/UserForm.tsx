@@ -1,5 +1,14 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Button, Container, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField } from "@mui/material";
+import {
+  Button,
+  Container,
+  FormControl,
+  IconButton,
+  Input,
+  InputAdornment,
+  InputLabel,
+  TextField,
+} from "@mui/material";
 import { ChangeEvent, ChangeEventHandler, useRef, useState } from "react";
 import { useAppDispatch } from "../../hooks";
 import { update_user_action } from "../../slices/userSlice";
@@ -30,9 +39,9 @@ export const UserForm = (props: UserFormProps) => {
     repassword: "",
   });
 
-  const processInput: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
+  const processInput: ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.currentTarget.name;
     const data = event.currentTarget.value;
     const value = name === "money" ? parseFloat(data) : data;
@@ -43,11 +52,9 @@ export const UserForm = (props: UserFormProps) => {
     }));
 
     dispatch(update_user_action({ user: { ...currentUser, [name]: value } }));
-  }
+  };
 
-  function submitOrder(
-    _event: React.MouseEvent<HTMLButtonElement>
-  ) {
+  function submitOrder(_event: React.MouseEvent<HTMLButtonElement>) {
     modalContent.current =
       currentUser.password !== currentUser.repassword
         ? "Password and Re-Password are not the same"

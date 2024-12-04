@@ -18,7 +18,7 @@ export const userSlice: UserSlice = createSlice({
   initialState,
   // Define the reducers
   reducers: {
-    update_user_action: (state:UserSliceState, action: UserSliceActions) => {
+    update_user_action: (state: UserSliceState, action: UserSliceActions) => {
       state.user = action.payload.user;
     },
     submit_user_action: (state: UserSliceState, action: UserSliceActions) => {

@@ -1,24 +1,19 @@
 import { useNavigate } from "react-router-dom";
 // import { Button } from "semantic-ui-react";
-import { Button} from "@mui/material";
-
+import { Button } from "@mui/material";
 
 export const LoginLogout = () => {
-    const navigate = useNavigate();
-    const isLogged = document.cookie.includes("loggedIn=true");
-    
-    const handleClick = () => {
-        if (isLogged) {
-            document.cookie = "loggedIn=false;max-age=0";
-            navigate("/");
-        } else {
-            navigate("/login");
-        }
-    }
+  const navigate = useNavigate();
+  const isLogged = document.cookie.includes("loggedIn=true");
 
-    return (
-        <Button onClick={handleClick}>
-            {isLogged ? "Logout" : "Login"}
-        </Button>
-    );
-}
+  const handleClick = () => {
+    if (isLogged) {
+      document.cookie = "loggedIn=false;max-age=0";
+      navigate("/");
+    } else {
+      navigate("/login");
+    }
+  };
+
+  return <Button onClick={handleClick}>{isLogged ? "Logout" : "Login"}</Button>;
+};

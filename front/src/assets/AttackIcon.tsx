@@ -1,5 +1,5 @@
 import { createSvgIcon } from "@mui/material";
-const  AttackIcon =  createSvgIcon(
+const AttackIcon = createSvgIcon(
   <svg
     width="800px"
     height="800px"

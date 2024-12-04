@@ -6,12 +6,14 @@ export const Shop = () => {
   const navigate = useNavigate();
 
   return (
-    <Container sx={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-    }} >
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <Grid container gap={12}>
         <Grid size="grow">
           <Button variant="contained" onClick={() => navigate("create")}>

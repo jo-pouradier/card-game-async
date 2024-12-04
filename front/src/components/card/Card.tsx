@@ -24,7 +24,7 @@ const User = (props: CardProps) => {
 
       break;
     case CardDisplayLabelEnums.FULL:
-      display = ( 
+      display = (
         <CardSimpleDisplay
           id={0}
           name={current_card.name}

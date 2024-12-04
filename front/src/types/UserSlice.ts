@@ -13,11 +13,11 @@ export type UserSlice = Slice<
   {
     update_user_action: (
       state: UserSliceState,
-      action: UserSliceActions
+      action: UserSliceActions,
     ) => void;
     submit_user_action: (
       state: UserSliceState,
-      action: UserSliceActions
+      action: UserSliceActions,
     ) => void;
   }
 >;

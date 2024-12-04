@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { 
-  Box, 
-  Button, 
-  TextField, 
-  Typography 
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 
 type LoginData = {
   email: string;
@@ -75,10 +70,10 @@ export const LoginForm = (props: LoginFormProps) => {
         onChange={setLoginDataField}
         value={loginData.password}
       />
-      <Button 
-        variant="contained" 
-        color="primary" 
-        type="button" 
+      <Button
+        variant="contained"
+        color="primary"
+        type="button"
         onClick={submitLogin}
       >
         Submit
@@ -86,4 +81,3 @@ export const LoginForm = (props: LoginFormProps) => {
     </Box>
   );
 };
-
