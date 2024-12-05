@@ -16,13 +16,19 @@ const LoginLogout = () => {
     if (isLogged) {
       dispatch(delete_user_action());
       navigate("/");
-      dispatch(addNotification({ id: Math.random()*100, message: "Logged out", severity: "info" }));
+      dispatch(
+        addNotification({
+          id: Math.random() * 100,
+          message: "Logged out",
+          severity: "info",
+        }),
+      );
     } else {
       navigate("/login");
     }
   };
 
-  return <Button onClick={handleClick}>{isLogged ? "Logout": "Login"}</Button>;
+  return <Button onClick={handleClick}>{isLogged ? "Logout" : "Login"}</Button>;
 };
 
 export default LoginLogout;

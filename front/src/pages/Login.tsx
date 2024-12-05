@@ -1,6 +1,6 @@
 import { NavLink, useSearchParams } from "react-router-dom";
 import { Box, Container, Typography, Link } from "@mui/material";
-import  LoginForm  from "../components/login/LoginForm";
+import LoginForm from "../components/login/LoginForm";
 
 const Login = () => {
   const [queryParams] = useSearchParams();

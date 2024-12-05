@@ -4,7 +4,7 @@ import { Container, Typography } from "@mui/material";
 export interface ShopLayoutProps {
   children: ReactNode;
   title?: string;
-};
+}
 
 const ShopLayout = (props: ShopLayoutProps) => {
   console.log("call ShopLayout with children: ", props.children);

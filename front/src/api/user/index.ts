@@ -5,9 +5,7 @@ export interface UserConnectionData {
   password: string;
 }
 
-export const connectUser = async (
-  userData: UserConnectionData,
-) => {
+export const connectUser = async (userData: UserConnectionData) => {
   try {
     const response = await fetch("/api/auth", {
       body: JSON.stringify(userData),
@@ -30,7 +28,7 @@ export const getUserById = async (id: number) => {
     const response = await fetch(`/api/user/${id}`);
     const data = await response.json();
     console.log(data);
-    return data
+    return data;
   } catch (error) {
     console.log(error);
   }
@@ -51,4 +49,4 @@ export const postNewUser = async (user: IUser): Promise<IUser> => {
     console.log(error);
     throw error;
   }
-}
+};

@@ -2,7 +2,9 @@ import { PayloadAction, Slice } from "@reduxjs/toolkit";
 import IUser from "./IUser";
 
 export type UserSliceActions = PayloadAction<{ user: IUser }>;
-export type UserConnectSliceActions = PayloadAction<{ user: {username: string, password: string} }>;
+export type UserConnectSliceActions = PayloadAction<{
+  user: { username: string; password: string };
+}>;
 
 export type UserSliceState = {
   user: IUser;

@@ -9,7 +9,7 @@ export interface ICardForm {
 export interface CardFormProps {
   submitCardHandler?: (card: ICardForm) => void;
   generateCardHanlder?: (card: ICardForm) => void;
-};
+}
 
 const CardForm = (props: CardFormProps) => {
   const [currentCardPrompt, setCurrentCardPrompt] = useState<ICardForm>({
@@ -24,7 +24,7 @@ const CardForm = (props: CardFormProps) => {
       ...prevCard,
       [name]: value,
     }));
-  }
+  };
 
   const submitCardHandler = (currentCardPrompt: ICardForm) => {
     console.log(currentCardPrompt);
