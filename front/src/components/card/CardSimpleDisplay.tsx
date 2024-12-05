@@ -15,7 +15,7 @@ import {
 import ICard from "../../types/ICard";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface CardSimpleDisplayProps extends Partial<ICard> {};
+export interface CardSimpleDisplayProps extends Partial<ICard> {}
 
 const CardSimpleDisplay = (props: CardSimpleDisplayProps) => {
   return (

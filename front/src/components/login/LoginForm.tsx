@@ -9,11 +9,11 @@ import IUser from "../../types/IUser";
 interface LoginData {
   email: string;
   password: string;
-};
+}
 
 export interface LoginFormProps {
   returnTo?: string;
-};
+}
 
 const LoginForm = (props: LoginFormProps) => {
   const [loginData, setLoginData] = useState<LoginData>({
@@ -26,11 +26,14 @@ const LoginForm = (props: LoginFormProps) => {
   const submitLogin = async () => {
     console.log(loginData);
     if (loginData) {
-      const id: number = await connectUser({username: loginData.email, password: loginData.password});
+      const id: number = await connectUser({
+        username: loginData.email,
+        password: loginData.password,
+      });
       console.log(id);
       const user: IUser = await getUserById(id);
       console.log(user);
-      dispatch(connect_user_action({user: user}));
+      dispatch(connect_user_action({ user: user }));
       navigate("/" + (props.returnTo ?? ""));
     } else {
       console.log("no data");

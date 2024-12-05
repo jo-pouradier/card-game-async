@@ -2,7 +2,8 @@ import { Box, Avatar, Typography } from "@mui/material";
 import ICard from "../../types/ICard";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface CardShortDisplayProps extends Omit<ICard, "imgUrl" | "affinity" | "userId"> {};
+export interface CardShortDisplayProps
+  extends Omit<ICard, "imgUrl" | "affinity" | "userId"> {}
 
 const CardShortDisplay = (props: CardShortDisplayProps) => {
   return (

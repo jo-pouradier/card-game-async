@@ -1,4 +1,9 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 import React, { ReactElement, ReactNode } from "react";
 
 export interface ModalProps {
@@ -10,7 +15,7 @@ export interface ModalProps {
   /** List of buttons or element to render as modal actions */
   actions: ReactNode[];
   open: boolean;
-};
+}
 
 const AppModal = (props: ModalProps) => {
   return (

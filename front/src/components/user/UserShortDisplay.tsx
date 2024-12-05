@@ -5,7 +5,7 @@ export interface UserShortDisplayProps {
   surname?: string;
   lastname?: string;
   money?: number;
-};
+}
 
 const UserShortDisplay = (props: UserShortDisplayProps) => {
   return (

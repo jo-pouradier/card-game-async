@@ -1,7 +1,7 @@
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import  LoginLogout  from "../login/LoginLogout";
+import LoginLogout from "../login/LoginLogout";
 
 const Navbar = (_props: unknown) => {
   const navigate = useNavigate();

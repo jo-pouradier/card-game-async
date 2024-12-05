@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 
-import  App  from "./App.js";
+import App from "./App.js";
 import { store } from "./store.js";
 
 // import "semantic-ui-css/semantic.min.css";

@@ -1,7 +1,9 @@
 import { Alert, Snackbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { selectNotifications } from "../../slices/notificationSlice";
-import { removeNotification } from "../../slices/notificationSlice"; // Adjust the path to your slice file
+import {
+  removeNotification,
+  selectNotifications,
+} from "../../slices/notificationSlice";
 
 const NotificationsSnackbars = () => {
   const notifications = useSelector(selectNotifications);
