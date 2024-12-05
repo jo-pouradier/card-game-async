@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../hooks";
+import { addNotification } from "../../slices/notificationSlice";
 import { delete_user_action, selectUser } from "../../slices/userSlice";
 
 const LoginLogout = () => {
@@ -15,6 +16,7 @@ const LoginLogout = () => {
     if (isLogged) {
       dispatch(delete_user_action());
       navigate("/");
+      dispatch(addNotification({ id: Math.random()*100, message: "Logged out", severity: "info" }));
     } else {
       navigate("/login");
     }
