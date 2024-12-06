@@ -1,7 +1,14 @@
 package com.cpe.springboot.asyncProcess;
 
+
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
+import org.springframework.stereotype.Service;
+
+import com.cpe.springboot.services.TextGeneration;
+
+@Service
 public class BrokerReceiver {
 
     private BrokerSender sender;
@@ -11,8 +18,11 @@ public class BrokerReceiver {
         this.sender = sender;
     }
 
-    @JmsListener(destination = "${spring-messaging.queue.name}")
-    public void receiveMessage() {
-        sender.sendMessage();
+    @JmsListener(destination = "${card-generator.queue.name}")
+    @Async
+    public void receiveMessage(String imgUrl) {
+        imgUrl = imgUrl.replaceAll("^\"|\"$", "");
+        System.out.println("Received <" + imgUrl + ">");
+        sender.sendMessage(TextGeneration.getProperties(imgUrl).toString());
     }
 }
