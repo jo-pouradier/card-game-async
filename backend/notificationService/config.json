@@ -1,0 +1,12 @@
+{
+  "port": 8080,
+  "www": "./www",
+  "connectOptions" : {
+    "host": "localhost",
+    "port": "61613",
+    "connectHeaders": {
+      "login": "myuserweb",
+      "passcode": "mypwd"
+    }
+  }
+}
