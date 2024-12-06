@@ -6,17 +6,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.5</version>
+		<version>3.3.6</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.cpe.springboot</groupId>
-	<artifactId>asi2-backendmarket-monolithic-student</artifactId>
+	<artifactId>backendmarket-monolithic</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<modules>
-		<module>generation</module>
-	</modules>
-	<name>asi2-backendmarket-monolithic-student</name>
+	<name>backendmarket-monolithic</name>
 	<description>Archi monolithic Card Market</description>
 
 	<properties>
