@@ -1,4 +1,4 @@
-package com.cpe.springboot.utils;
+package com.cpe.springboot.spring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.jms.JMSException;
