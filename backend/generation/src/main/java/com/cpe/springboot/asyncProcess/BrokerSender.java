@@ -11,7 +11,7 @@ public class BrokerSender {
 
     private JmsTemplate jmsTemplate;
 
-    private static final String QUEUE_KEY = "nodejs-messaging.queue.name";
+    private static final String QUEUE_KEY = "text-generation.queue.name";
 
     private String queue;
 
@@ -32,9 +32,9 @@ public class BrokerSender {
         this.queue = queue;
     }
 
-    public void sendMessage() {
+    public void sendMessage(String msg) {
         // Send a message with a POJO - the template reuse the message converter
-        System.out.println("Sending an personne message.");
-        jmsTemplate.convertAndSend(queue, "test");
+        System.out.println("Sending msg to queue: " + msg);
+        jmsTemplate.convertAndSend(queue, msg);
     }
 }
