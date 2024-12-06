@@ -1,13 +1,13 @@
 import { PayloadAction, Slice } from "@reduxjs/toolkit";
-import {Socket} from "socket.io";
+import {type Socket} from "socket.io";
 
 export interface SocketSliceState {
-    socket: Socket | null;
+    socket: typeof Socket | null;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SocketSliceAction
-    extends PayloadAction<Socket> {}
+    extends PayloadAction<{socket: typeof Socket}> {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SocketSlice
