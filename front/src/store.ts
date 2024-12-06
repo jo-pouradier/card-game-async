@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice";
 import cardReducer from "./slices/cardSlice";
+import socketReducer from "./slices/socketSlice";
 import notificationReducer from "./slices/notificationSlice";
 
 export const store = configureStore({
@@ -8,6 +9,7 @@ export const store = configureStore({
     userReducer: userReducer,
     cardReducer: cardReducer,
     notificationReducer: notificationReducer,
+    socketReducer: socketReducer,
   },
 });
 

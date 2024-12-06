@@ -4,6 +4,7 @@ import {
     SocketSliceAction,
     SocketSliceState,
 } from "../types/SocketSlice";
+import { RootState } from "../store";
 
 const initialState: SocketSliceState = {
     socket: null,
@@ -24,6 +25,6 @@ export const socketSlice: SocketSlice = createSlice({
 
 export const { setSocket} =
     socketSlice.actions;
-export const selectSocket = (state: SocketSliceState) =>
-    state.socketReducer.notifications;
+export const selectSocket = (state: RootState) =>
+    state.socketReducer.socket;
 export default socketSlice.reducer;
