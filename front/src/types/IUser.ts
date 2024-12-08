@@ -1,5 +1,3 @@
-import ICard from "./ICard";
-
 export default interface IUser {
   id: number;
   account: number;
@@ -9,5 +7,5 @@ export default interface IUser {
   email: string;
   pwd: string;
   money: number;
-  cardList: ICard[];
+  cardList: number[];
 }
