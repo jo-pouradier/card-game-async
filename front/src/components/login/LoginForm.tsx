@@ -36,7 +36,8 @@ const LoginForm = (props: LoginFormProps) => {
       console.log(user);
       socket.emit("user", user);
       dispatch(connect_user_action({ user: user }));
-      navigate("/" + (props.returnTo ?? ""));
+      console.debug("navigate to:" + props.returnTo)
+      navigate("/" + props.returnTo);
     } else {
       console.log("no data");
     }
