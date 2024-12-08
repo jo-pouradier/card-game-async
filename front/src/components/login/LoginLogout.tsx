@@ -8,8 +8,9 @@ import { delete_user_action, selectUser } from "../../slices/userSlice";
 
 const LoginLogout = () => {
   const navigate = useNavigate();
-  const current_user = useSelector(selectUser);
   const dispatch = useAppDispatch();
+
+  const current_user = useSelector(selectUser);
   const isLogged = current_user.id !== 0;
 
   const handleClick = () => {
