@@ -50,3 +50,49 @@ export const postNewUser = async (user: IUser): Promise<IUser> => {
     throw error;
   }
 };
+
+export const buyCard = async (userId: number, cardId: number) => {
+  try {
+    const response = await fetch(`/api/store/buy/btob`, {
+      body: JSON.stringify({ user_id: userId, card_id: cardId, store_id: 0 }),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      return false
+    }
+    if (response.status !== 200) {
+      return false;
+    }
+    const data: boolean = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const sellCard = async (userId: number, cardId: number) => {
+  try {
+    const response = await fetch(`/api/store/sell`, {
+      body: JSON.stringify({ user_id: userId, card_id: cardId, store_id: 0 }),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      return false;
+    }
+    if (response.status !== 200) {
+      return false;
+    }
+    const data: boolean = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
