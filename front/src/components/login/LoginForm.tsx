@@ -34,7 +34,8 @@ const LoginForm = (props: LoginFormProps) => {
       const user: IUser = await getUserById(id);
       console.log(user);
       dispatch(connect_user_action({ user: user }));
-      navigate("/" + (props.returnTo ?? ""));
+      console.debug("navigate to:" + props.returnTo)
+      navigate("/" + props.returnTo);
     } else {
       console.log("no data");
     }
