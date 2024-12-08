@@ -1,10 +1,20 @@
-import { Typography } from "@mui/material";
+import { Button, Container, Grid2, Typography } from "@mui/material";
 import CardList from "../card/CardGrid";
 import ICard from "../../types/ICard";
+import { useEffect, useState } from "react";
+import CardSimpleDisplay from "../card/CardSimpleDisplay";
+import { buyCard } from "../../api/user";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { selectUser } from "../../slices/userSlice";
+import { addNotification } from "../../slices/notificationSlice";
 
 const ShopBuy = () => {
+  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+  const [currentCard, setCurrentCard] = useState<ICard | null>(null);
+  const [size, setSize] = useState(12);
   const fetchRows = async () => {
-    const response: Response = await fetch("/api/cards");
+    const response: Response = await fetch("/api/store/cards_to_sell");
     const data: ICard[] = await response.json();
     return data;
   };
@@ -19,13 +29,95 @@ const ShopBuy = () => {
     { field: "defense", headerName: "Defense", width: 150 },
     { field: "energy", headerName: "Energy", width: 150 },
   ];
-  
+
+  // listend escape to set currentCard to null
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setCurrentCard(null);
+        setSize(12);
+      }
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [setCurrentCard]);
+
+  const onRowClickHandler = (card: ICard | null) => {
+    setCurrentCard(card);
+    setSize(8);
+  };
+
+  const buyCardHandler = async () => {
+    console.log(`Buying card: ${currentCard?.name}`);
+    if (!user || !currentCard) {
+      return;
+    }
+    const result = await buyCard(user.id, currentCard.id);
+    if (!result) {
+      console.log("Failed to buy card");
+      dispatch(
+        addNotification({
+          id: 3,
+          message: "Failed to buy card",
+          severity: "error",
+        }),
+      );
+      return;
+    }
+    setCurrentCard(null);
+    setSize(12);
+    console.info("Card bought successfully");
+    dispatch(
+      addNotification({
+        id: 3,
+        message: "Card bought successfully",
+        severity: "success",
+      }),
+    );
+  };
+
   return (
     <>
-      <Typography variant="h3" align="center">
-        shop buy
-      </Typography>
-      <CardList rows={fetchRows} columns={cols} />
+      <Container>
+        <Typography variant="h3" align="center">
+          shop buy
+        </Typography>
+        <Typography variant="h6" align="center">
+          Click on a card to see more details, press escape to close the card
+        </Typography>
+        <Grid2 container spacing={2}>
+          <Grid2 size={size}>
+            <CardList
+              rows={fetchRows}
+              columns={cols}
+              onRowClickHandler={onRowClickHandler}
+            />
+          </Grid2>
+          {currentCard && (
+            <Grid2 size={12 - size}>
+              <Grid2 size={12}>
+                <CardSimpleDisplay {...currentCard} />
+              </Grid2>
+              <Grid2
+                display="flex"
+                size="grow"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Button
+                  variant="outlined"
+                  onClick={() => buyCardHandler()}
+                  style={{ marginTop: "1rem" }}
+                >
+                  Buy
+                </Button>
+              </Grid2>
+            </Grid2>
+          )}
+        </Grid2>
+      </Container>
     </>
   );
 };
