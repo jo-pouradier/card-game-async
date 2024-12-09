@@ -6,8 +6,7 @@ public class NotificationDTO {
     String severity;
     String sender;
 
-    public NotificationDTO() {
-    }
+    public NotificationDTO() {}
 
     public NotificationDTO(int id, String message, String severity, String sender) {
         this.id = id;
