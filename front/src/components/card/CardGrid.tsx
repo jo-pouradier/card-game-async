@@ -15,7 +15,7 @@ export interface CardListProps {
 
 const CardList = (props: CardListProps) => {
   const [initialRows, setInitialRows] = useState<GridRowsProp<ICard>>([]);
-  const setCurrentCard = props.onRowClickHandler ?? (() => {});
+  const setCurrentCard = props.onRowClickHandler ?? ((_card: ICard | null) => { });
   // load data based on type of rows
   useEffect(() => {
     if (typeof props.rows === "function") {

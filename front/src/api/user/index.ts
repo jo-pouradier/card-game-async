@@ -53,7 +53,7 @@ export const postNewUser = async (user: IUser): Promise<IUser> => {
 
 export const buyCard = async (userId: number, cardId: number) => {
   try {
-    const response = await fetch(`/api/store/buy/btob`, {
+    const response = await fetch(`/api/store/buy`, {
       body: JSON.stringify({ user_id: userId, card_id: cardId, store_id: 0 }),
       method: "POST",
       headers: {
