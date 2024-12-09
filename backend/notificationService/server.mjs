@@ -16,14 +16,10 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
     console.log('Un client est connecté');
 
-    socket.on('connected', (message) => {
-        socket.emit('notification', message)
+    // User connection
+    socket.on('user', (message) => {
+        socket.emit('notification', message);
     })
-
-
-
-    // Envoyer une notification
-    socket.emit('notification', 'Bienvenue sur les notifications Socket.IO');
 
 
     // Déconnexion
@@ -31,6 +27,8 @@ io.on('connection', (socket) => {
         console.log('Un client est déconnecté');
     });
 });
+
+
 
 server.listen(CONFIG.port, () => {
     console.log(`Serveur Socket.IO lancé sur le port ${CONFIG.port}`);
@@ -62,24 +60,9 @@ stompit.connect(CONFIG.connectOptions, (error, client) => {
             }
             console.log('Received message: ' + body);
             let data = JSON.parse(body);
-            io.emit('queueReturn', data);
+            io.emit('notification', data);
             client.ack(message);
         });
     });
 });
 
-function postInQueue(data) {
-    stompit.connect(CONFIG.connectOptions, (error, client) => {
-        if (error) {
-            console.error('Connection error: ' + error.message);
-            return;
-        }
-
-        const frame = client.send({
-            'destination': 'fr.cpe.nodejs-app.in',
-        });
-        frame.write(JSON.stringify(data));
-        frame.end();
-        client.disconnect();
-    });
-}
