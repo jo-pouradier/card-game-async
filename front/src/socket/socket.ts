@@ -1,22 +1,20 @@
-import {io} from "socket.io-client";
-import {addNotification} from "../slices/notificationSlice.ts";
+import { io } from "socket.io-client";
+import { addNotification } from "../slices/notificationSlice.ts";
 
-
-export const socket = io('http://localhost:8080')
+export const socket = io("http://localhost:8080");
 
 export const initSocket = () => {
-    function onNotification(data) {
-        addNotification({
-            id: Math.random() * 100,
-            message: data.toString(),
-            severity: "info",
-        })
-    }
+  function onNotification(data: object) {
+    addNotification({
+      id: Math.random() * 100,
+      message: data.toString(),
+      severity: "info",
+    });
+  }
 
-    socket.on('notification', onNotification);
+  socket.on("notification", onNotification);
 
-
-    return () => {
-        socket.off('notification', onNotification);
-    }
-}
+  return () => {
+    socket.off("notification", onNotification);
+  };
+};
