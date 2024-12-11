@@ -10,7 +10,7 @@ import { useAppDispatch } from "./hooks.ts";
 
 const App = (_props: unknown) => {
   const dispatch = useAppDispatch();
-  useEffect(() => initSocket(dispatch), []);
+  useEffect(() => initSocket(dispatch), [dispatch]);
   return (
     <Provider store={store}>
       <BrowserRouter>
