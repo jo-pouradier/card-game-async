@@ -48,6 +48,12 @@ const Navbar = (_props: unknown) => {
           >
             Chat
           </Button>
+          <Button
+            variant={activeItem === "game" ? "outlined" : "text"}
+            onClick={createOnClickHandler("/game/selection", "game")}
+          > 
+            Game
+          </Button>
         </Box>
         <Box>
           <LoginLogout />

@@ -47,14 +47,14 @@ const CardSimpleDisplay = (props: CardSimpleDisplayProps) => {
       <CardContent>
         <Stack direction="row" spacing={2} alignItems="center">
           <FavoriteIcon color="error" />
-          <Typography variant="body1">{props?.hp}</Typography>
+          <Typography variant="body1">{props?.hp?.toPrecision(3)}</Typography>
           <BoltIcon color="warning" />
-          <Typography variant="body1">{props?.energy}</Typography>
+          <Typography variant="body1">{props?.energy?.toFixed(3)}</Typography>
           <ShieldIcon color="primary" />
-          <Typography variant="body1">{props?.defense}</Typography>
+          <Typography variant="body1">{props?.defense?.toFixed(3)}</Typography>
           {/* <Flare color="warning" /> */}
           <AttackIcon />
-          <Typography variant="body1">{props?.attack}</Typography>
+          <Typography variant="body1">{props?.attack?.toFixed(3)}</Typography>
         </Stack>
       </CardContent>
       <CardContent>

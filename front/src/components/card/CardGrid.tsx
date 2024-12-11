@@ -34,6 +34,7 @@ const CardList = (props: CardListProps) => {
       rows={initialRows}
       columns={props.columns}
       onCellClick={onCellClickHandler}
+      sx={{ height: 650, width: "100%" }}
     />
   );
 };
