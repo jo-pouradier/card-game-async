@@ -42,6 +42,12 @@ const Navbar = (_props: unknown) => {
           >
             Shop
           </Button>
+          <Button
+            variant={activeItem === "chat" ? "outlined" : "text"}
+            onClick={createOnClickHandler("/chat", "chat")}
+          >
+            Chat
+          </Button>
         </Box>
         <Box>
           <LoginLogout />
