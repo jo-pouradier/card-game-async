@@ -4,7 +4,7 @@ import { useAppSelector } from "../../hooks";
 import { selectUser } from "../../slices/userSlice";
 import { socket } from "../../socket/socket";
 
-interface Message {
+export interface Message {
   user: string;
   message: string;
 }
