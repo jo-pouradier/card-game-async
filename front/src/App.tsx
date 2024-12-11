@@ -6,9 +6,11 @@ import Notification from "./components/utils/Notification";
 import AppRouter from "./router/AppRouter";
 import { initSocket } from "./socket/socket.ts";
 import { store } from "./store";
+import { useAppDispatch } from "./hooks.ts";
 
 const App = (_props: unknown) => {
-  useEffect(initSocket, []);
+  const dispatch = useAppDispatch();
+  useEffect(() => initSocket(dispatch), []);
   return (
     <Provider store={store}>
       <BrowserRouter>
