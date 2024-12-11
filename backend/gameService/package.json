@@ -1,16 +1,27 @@
 {
   "name": "gameservice",
   "version": "1.0.0",
-  "main": "server.mjs",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "build": "tsc"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "@types/stompit": "^0.26.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
   "dependencies": {
     "express": "^4.21.2",
-    "node.js": "^0.0.1-security",
+    "gameservice": "file:",
     "socket.io": "^4.8.1",
     "stompit": "^1.0.0"
   }
