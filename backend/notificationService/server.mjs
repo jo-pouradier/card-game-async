@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:5173', // Adresse de votre app React
+        origin: '*', // On autorise tout le monde à se connecter
         methods: ['GET', 'POST'],
     },
 });
