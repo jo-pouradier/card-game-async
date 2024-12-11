@@ -2,13 +2,9 @@ package com.cpe.springboot.store.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.cpe.springboot.card.model.CardDTO;
+import org.springframework.web.bind.annotation.*;
+
 import com.cpe.springboot.store.model.StoreOrder;
 import com.cpe.springboot.store.model.StoreTransaction;
 
@@ -37,6 +33,11 @@ public class StoreRestController {
 	@RequestMapping(method = RequestMethod.POST, value = "/sell")
 	private boolean sellCard(@RequestBody StoreOrder order) {
 		return storeService.sellCardInternal(order.getUser_id(), order.getCard_id());
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/generate")
+	private StoreTransaction generateCard(@RequestParam String descriptionPrompt, @RequestParam String imagePrompt, @RequestParam String userId) {
+		return storeService.generateCard(descriptionPrompt, imagePrompt, userId);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/transaction")

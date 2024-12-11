@@ -1,87 +1,126 @@
 package com.cpe.springboot.card.model;
 
-public class CardDTO extends CardBasics {
-	private Integer id;
-	private float energy;
-	private float hp;
-	private float defence;
-	private float attack;
-	private float price;
-	private Integer userId;
+import java.io.Serializable;
 
-	public CardDTO() {
+public class CardDTO implements Serializable {
+    private String name;
+    private String description;
+    private String family;
+    private String affinity;
+    private String imgUrl;
+    private String smallImgUrl;
+    private Integer id;
+    private float energy;
+    private float hp;
+    private float defence;
+    private float attack;
+    private float price;
+    private Integer userId;
 
-	}
+    public CardDTO() {
+    }
 
-	public CardDTO(CardModel cModel) {
-		super(cModel);
-		this.id = cModel.getId();
-		this.energy = cModel.getEnergy();
-		this.hp = cModel.getHp();
-		this.defence = cModel.getDefence();
-		this.attack = cModel.getAttack();
-		this.price = cModel.getPrice();
-		if (cModel.getUser() != null) {
-			this.userId = cModel.getUser().getId();
-		} else {
-			this.userId = null;
-		}
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public float getEnergy() {
-		return energy;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setEnergy(float energy) {
-		this.energy = energy;
-	}
+    public String getFamily() {
+        return family;
+    }
 
-	public float getHp() {
-		return hp;
-	}
+    public void setFamily(String family) {
+        this.family = family;
+    }
 
-	public void setHp(float hp) {
-		this.hp = hp;
-	}
+    public String getAffinity() {
+        return affinity;
+    }
 
-	public float getDefence() {
-		return defence;
-	}
+    public void setAffinity(String affinity) {
+        this.affinity = affinity;
+    }
 
-	public void setDefence(float defence) {
-		this.defence = defence;
-	}
+    public String getImgUrl() {
+        return imgUrl;
+    }
 
-	public float getAttack() {
-		return attack;
-	}
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
-	public void setAttack(float attack) {
-		this.attack = attack;
-	}
+    public String getSmallImgUrl() {
+        return smallImgUrl;
+    }
 
-	public float getPrice() {
-		return price;
-	}
+    public void setSmallImgUrl(String smallImgUrl) {
+        this.smallImgUrl = smallImgUrl;
+    }
 
-	public void setPrice(float price) {
-		this.price = price;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Integer getUserId() {
-		return userId;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    public float getEnergy() {
+        return energy;
+    }
 
+    public void setEnergy(float energy) {
+        this.energy = energy;
+    }
+
+    public float getHp() {
+        return hp;
+    }
+
+    public void setHp(float hp) {
+        this.hp = hp;
+    }
+
+    public float getDefence() {
+        return defence;
+    }
+
+    public void setDefence(float defence) {
+        this.defence = defence;
+    }
+
+    public float getAttack() {
+        return attack;
+    }
+
+    public void setAttack(float attack) {
+        this.attack = attack;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 }

@@ -1,18 +1,16 @@
 package com.cpe.springboot.spring;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.Session;
+import jakarta.jms.TextMessage;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import jakarta.jms.JMSException;
-import jakarta.jms.Message;
-import jakarta.jms.Session;
-import jakarta.jms.TextMessage;
 
 /**
  * Used to convert JMS messages from/to JSON. Registered in Spring-JMS
@@ -35,7 +33,6 @@ public class JsonMessageConverter implements MessageConverter {
      */
     @Override
     public Message toMessage(Object object, Session session) throws JMSException, MessageConversionException {
-        log.debug("starting to convert message: " + object);
         String json;
 
         try {
@@ -43,10 +40,10 @@ public class JsonMessageConverter implements MessageConverter {
         } catch (JsonProcessingException e) {
             throw new MessageConversionException("Message cannot be parsed. ", e);
         }
+        log.info("SENDING MESSAGE: " + json);
 
         TextMessage message = session.createTextMessage();
         message.setText(json);
-        log.debug("finished converting message: " + message);
         return message;
     }
 
@@ -54,13 +51,13 @@ public class JsonMessageConverter implements MessageConverter {
      * Extracts JSON payload for further processing by JacksonMapper.
      */
     @Override
-    public Object fromMessage( Message message)
+    public Object fromMessage(Message message)
             throws JMSException, MessageConversionException {
-        System.out.printf("Received message: {}", ((TextMessage) message).getText());
+        log.info("Received message: " + message);
         try {
             return ((TextMessage) message).getText();
         } catch (org.springframework.messaging.converter.MessageConversionException e) {
-            log.debug(message);
+            log.info(message);
         }
         return "Error";
     }

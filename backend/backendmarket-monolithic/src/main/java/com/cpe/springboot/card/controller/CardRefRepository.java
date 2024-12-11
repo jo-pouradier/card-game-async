@@ -1,4 +1,4 @@
-package com.cpe.springboot.card.Controller;
+package com.cpe.springboot.card.controller;
 
 import org.springframework.data.repository.CrudRepository;
 
