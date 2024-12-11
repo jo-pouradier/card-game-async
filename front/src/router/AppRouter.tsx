@@ -7,13 +7,15 @@ import UserRegister from "../pages/UserRegister";
 import Home from "../pages/Home";
 import LoginProtectedRoutes from "./LoginProtectedRoutes";
 import { ShopDisplay } from "../components/shop";
+import ChatPage from "../pages/ChatPage";
 
 const AppRouter = (_props: unknown) => {
   return (
     <Routes>
-      <Route path="/shop" element={<LoginProtectedRoutes />}>
-        <Route index element={<ShopDisplay />} />
-        <Route path=":id?" element={<ShopPage />} />
+      <Route element={<LoginProtectedRoutes />}>
+        <Route path="/shop" element={<ShopDisplay />} />
+        <Route path="/shop/:id?" element={<ShopPage />} />
+        <Route path="/chat" element={<ChatPage />} />
       </Route>
       <Route path="/display" element={<Display />} />
       <Route path="/form" element={<FormDisplay />} />

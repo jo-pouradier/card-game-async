@@ -7,7 +7,9 @@ const LoginProtectedRoutes = () => {
   const isAuth = useAppSelector(selectUser) ?? { id: 0 };
   console.debug("isAuth: " + isAuth.id)
   if (isAuth.id === 0) {
-    return <Navigate to="/login?returnTo=shop" />;
+    // get path
+    const path = "/login?returnTo=" + window.location.pathname.slice(1);
+    return <Navigate to={path} />;
   }
   return <Outlet />;
 };
