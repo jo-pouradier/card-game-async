@@ -26,6 +26,12 @@ export const connectUser = async (userData: UserConnectionData) => {
 export const getUserById = async (id: number) => {
   try {
     const response = await fetch(`/api/user/${id}`);
+    if (!response.ok) {
+      return { id: 0 } as IUser;
+    }
+    if (response.status !== 200) {
+      return { id: 0 } as IUser;
+    }
     const data = await response.json();
     console.log(data);
     return data;
