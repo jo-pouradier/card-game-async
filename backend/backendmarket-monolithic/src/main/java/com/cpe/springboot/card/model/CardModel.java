@@ -4,114 +4,146 @@ import com.cpe.springboot.store.model.StoreTransaction;
 import com.cpe.springboot.user.model.UserModel;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import jakarta.persistence.*;
 
 @Entity
-@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
-public class CardModel extends CardBasics{
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
-	private float energy;
-	private float hp;
-	private float defence;
-	private float attack;
-	private float price;
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class CardModel extends CardBasics {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    private float energy;
+    private float hp;
+    private float defence;
+    private float attack;
+    private float price;
 
-	@ManyToOne
-	@JoinColumn
-	private UserModel user;
+    @ManyToOne
+    @JoinColumn
+    private UserModel user;
 
-	@ManyToOne
-	@JoinColumn
-	private StoreTransaction store;
+    @ManyToOne
+    @JoinColumn
+    private StoreTransaction store;
 
-	public CardModel() {
-		super();
-	}
-	
-	public CardModel( CardModel cModel) {
-		super(cModel);
-		this.energy=cModel.getEnergy();
-		this.hp=cModel.getHp();
-		this.defence=cModel.getDefence();
-		this.attack=cModel.getAttack();
-		this.price=cModel.getPrice();
-	}
+    public CardModel() {
+        super();
+    }
 
-	public CardModel( CardBasics cardBasic) {
-		super(cardBasic);
-	}
+    public CardModel(CardModel cModel) {
+        super(cModel);
+        this.energy = cModel.getEnergy();
+        this.hp = cModel.getHp();
+        this.defence = cModel.getDefence();
+        this.attack = cModel.getAttack();
+        this.price = cModel.getPrice();
+    }
 
-	public CardModel(String name, String description, String family, String affinity, float energy, float hp,
-					 float defence, float attack,String imgUrl,String smallImg,float price) {
-		super(name, description, family, affinity,imgUrl,smallImg);
-		this.energy = energy;
-		this.hp = hp;
-		this.defence = defence;
-		this.attack = attack;
-		//this.price=price;
-		this.price=this.computePrice();
-	}
-	public float getEnergy() {
-		return energy;
-	}
-	public void setEnergy(float energy) {
-		this.energy = energy;
-	}
-	public float getHp() {
-		return hp;
-	}
-	public void setHp(float hp) {
-		this.hp = hp;
-	}
-	public float getDefence() {
-		return defence;
-	}
-	public void setDefence(float defence) {
-		this.defence = defence;
-	}
-	public float getAttack() {
-		return attack;
-	}
-	public void setAttack(float attack) {
-		this.attack = attack;
-	}
+    public CardModel(CardBasics cardBasic) {
+        super(cardBasic);
+    }
 
-	public float getPrice() {
-		return price;
-	}
-	public void setPrice(float price) {
-		this.price = price;
-	}
+    public CardModel(CardDTO cardDTO) {
+        super(new CardBasics(cardDTO.getName(), cardDTO.getDescription(), cardDTO.getFamily(), cardDTO.getAffinity(), cardDTO.getImgUrl(), cardDTO.getSmallImgUrl()));
+        this.energy = cardDTO.getEnergy();
+        this.hp = cardDTO.getHp();
+        this.defence = cardDTO.getDefence();
+        this.attack = cardDTO.getAttack();
+        this.price = cardDTO.getPrice();
+    }
 
-	public UserModel getUser() {
-		return user;
-	}
+    public CardModel(String name, String description, String family, String affinity, float energy, float hp,
+                     float defence, float attack, String imgUrl, String smallImg, float price) {
+        super(name, description, family, affinity, imgUrl, smallImg);
+        this.energy = energy;
+        this.hp = hp;
+        this.defence = defence;
+        this.attack = attack;
+        //this.price=price;
+        this.price = this.computePrice();
+    }
 
-	public void setUser(UserModel user) {
-		this.user = user;
-	}
+    public float getEnergy() {
+        return energy;
+    }
 
-	public void setStore(StoreTransaction storeModel) {
-		this.store=storeModel;
-	}
+    public void setEnergy(float energy) {
+        this.energy = energy;
+    }
 
-	public StoreTransaction getStore() {
-		return store;
-	}
+    public float getHp() {
+        return hp;
+    }
 
-	public float computePrice() {
-		return this.hp * 20 + this.defence*20 + this.energy*20 + this.attack*20;
-	}
+    public void setHp(float hp) {
+        this.hp = hp;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public float getDefence() {
+        return defence;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setDefence(float defence) {
+        this.defence = defence;
+    }
 
+    public float getAttack() {
+        return attack;
+    }
+
+    public void setAttack(float attack) {
+        this.attack = attack;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
+
+    public void setStore(StoreTransaction storeModel) {
+        this.store = storeModel;
+    }
+
+    public StoreTransaction getStore() {
+        return store;
+    }
+
+    public float computePrice() {
+        return this.hp * 20 + this.defence * 20 + this.energy * 20 + this.attack * 20;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public CardDTO toDTO() {
+        CardDTO cDTO = new CardDTO();
+        cDTO.setId(this.id);
+        cDTO.setName(this.getName());
+        cDTO.setDescription(this.getDescription());
+        cDTO.setFamily(this.getFamily());
+        cDTO.setAffinity(this.getAffinity());
+        cDTO.setEnergy(this.energy);
+        cDTO.setHp(this.hp);
+        cDTO.setDefence(this.defence);
+        cDTO.setAttack(this.attack);
+        cDTO.setImgUrl(this.getImgUrl());
+        cDTO.setPrice(this.price);
+        return cDTO;
+    }
 }

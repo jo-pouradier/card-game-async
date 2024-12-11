@@ -2,11 +2,15 @@ package com.cpe.springboot.spring;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.jms.ConnectionFactory;
+import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.annotation.JmsListenerConfigurer;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerEndpointRegistrar;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.converter.MessageConverter;
@@ -14,8 +18,8 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 
 @EnableJms
 @Configuration
-public class JmsListenerConfig implements JmsListenerConfigurer{
-     @Bean
+public class JmsListenerConfig implements JmsListenerConfigurer {
+    @Bean
     public DefaultMessageHandlerMethodFactory handlerMethodFactory() {
         DefaultMessageHandlerMethodFactory factory = new DefaultMessageHandlerMethodFactory();
         factory.setMessageConverter(messageConverter());
@@ -41,5 +45,17 @@ public class JmsListenerConfig implements JmsListenerConfigurer{
     public void configureJmsListeners(JmsListenerEndpointRegistrar registrar) {
         registrar.setMessageHandlerMethodFactory(handlerMethodFactory());
     }
-    
+
+    @Bean
+    public JmsListenerContainerFactory<?> queueConnectionFactory(ConnectionFactory connectionFactory,
+                                                                 DefaultJmsListenerContainerFactoryConfigurer configurer) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        // This provides all boot's default to this factory, including the message converter
+        configurer.configure(factory, connectionFactory);
+        // You could still override some of Boot's default if necessary.
+
+        // Queue mode
+        factory.setPubSubDomain(false);
+        return factory;
+    }
 }

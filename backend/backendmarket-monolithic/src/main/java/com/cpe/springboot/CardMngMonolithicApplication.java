@@ -18,13 +18,15 @@ import io.swagger.v3.oas.annotations.info.Info;
 public class CardMngMonolithicApplication {
 
 	public static void main(String[] args) {
-		 ConfigurableApplicationContext context = SpringApplication.run(CardMngMonolithicApplication.class, args);
+//		 ConfigurableApplicationContext context = SpringApplication.run(CardMngMonolithicApplication.class, args);
+//
+//		System.out.println("Sending a notification message.");
+//		BrokerSender sender = context.getBean(BrokerSender.class);
+//		sender.sendNotification(new NotificationDTO(1, "Hello", "INFO", "java monolithic"));
+//
+//		// SpringApplication.run(CardMngMonolithicApplication.class, args);
 
-		System.out.println("Sending a notification message.");
-		BrokerSender sender = context.getBean(BrokerSender.class);
-		sender.sendNotification(new NotificationDTO(1, "Hello", "INFO", "java monolithic"));
-
-		// SpringApplication.run(CardMngMonolithicApplication.class, args);
+		SpringApplication.run(CardMngMonolithicApplication.class, args);
 	}
 
 

@@ -1,40 +1,50 @@
 package com.cpe.springboot.asyncProcess;
 
-import jakarta.annotation.PostConstruct;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.logging.Logger;
+
 @Service
 public class BrokerSender {
 
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(BrokerSender.class);
     private JmsTemplate jmsTemplate;
 
-    private static final String QUEUE_KEY = "text-generation.queue.name";
+    @Value("${generation-output.queue.name}")
+    private String queueName;
 
-    private String queue;
+    private Environment environment;
 
-    private  Environment environment;
+    private ObjectMapper objectMapper;
+
+    private final Logger logger = Logger.getLogger(BrokerSender.class.getName());
 
     @Autowired
     public void Sender(JmsTemplate jmsTemplate, Environment environment) {
         this.jmsTemplate = jmsTemplate;
         this.environment = environment;
+        this.objectMapper = generateObjectMapper();
     }
 
-    @PostConstruct
-    public void init() {
-        queue = environment.getProperty(QUEUE_KEY);
+    private ObjectMapper generateObjectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return objectMapper;
     }
 
-    public void setQueue(String queue) {
-        this.queue = queue;
-    }
-
-    public void sendMessage(String msg) {
-        // Send a message with a POJO - the template reuse the message converter
-        System.out.println("Sending msg to queue: " + msg);
-        jmsTemplate.convertAndSend(queue, msg);
+    public void sendMessage(Object msg) {
+        jmsTemplate.convertAndSend(queueName, msg,
+                message -> {
+                    message.setStringProperty("ObjectType", msg.getClass().getCanonicalName());
+                    return message;
+                });
     }
 }
