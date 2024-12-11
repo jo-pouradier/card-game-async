@@ -2,7 +2,7 @@ import { Server, Socket } from "socket.io";
 import stompit from "stompit";
 import { ConnectOptions } from "stompit/lib/connect";
 
-export const initNotificatin = (io: Server, connectOptions: ConnectOptions) => {
+export const initNotification = (io: Server, connectOptions: ConnectOptions) => {
 stompit.connect(connectOptions, (error, client) => {
     if (error) {
         console.error('Connection error: ' + error.message);

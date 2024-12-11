@@ -1,7 +1,7 @@
 import { Server } from "socket.io";
-import { server } from "./app";
+import { server } from "../app";
 
-const io = new Server(server, {
+export const io = new Server(server, {
     cors: {
         origin: '*', // On autorise tout le monde à se connecter
         methods: ['GET', 'POST'],
