@@ -1,12 +1,12 @@
 import { Button, Container, Grid2, Typography } from "@mui/material";
-import CardList from "../card/CardGrid";
-import ICard from "../../types/ICard";
 import { useEffect, useState } from "react";
-import CardSimpleDisplay from "../card/CardSimpleDisplay";
 import { buyCard } from "../../api/user";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { selectUser } from "../../slices/userSlice";
 import { addNotification } from "../../slices/notificationSlice";
+import { selectUser } from "../../slices/userSlice";
+import ICard from "../../types/ICard";
+import CardList from "../card/CardGrid";
+import CardSimpleDisplay from "../card/CardSimpleDisplay";
 
 const ShopBuy = () => {
   const user = useAppSelector(selectUser);

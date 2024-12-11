@@ -1,3 +1,4 @@
+import ICard from "../../types/ICard";
 import IUser from "../../types/IUser";
 
 export interface UserConnectionData {
@@ -56,6 +57,23 @@ export const postNewUser = async (user: IUser): Promise<IUser> => {
     throw error;
   }
 };
+
+export const getCards = async () => {
+  try {
+    const response = await fetch("/api/cards");
+    if (!response.ok) {
+      return [];
+    }
+    if (response.status !== 200) {
+      return [];
+    }
+    const data: ICard[] = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
 
 export const buyCard = async (userId: number, cardId: number) => {
   try {

@@ -8,6 +8,7 @@ import Home from "../pages/Home";
 import LoginProtectedRoutes from "./LoginProtectedRoutes";
 import { ShopDisplay } from "../components/shop";
 import ChatPage from "../pages/ChatPage";
+import Game from "../pages/Game";
 
 const AppRouter = (_props: unknown) => {
   return (
@@ -16,6 +17,11 @@ const AppRouter = (_props: unknown) => {
         <Route path="/shop" element={<ShopDisplay />} />
         <Route path="/shop/:id?" element={<ShopPage />} />
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/game" element={<Game />} >
+          <Route path="selection" element={<Game />} />
+          <Route path="playing" element={<Game />} />
+          <Route path="gameOver" element={<Game />} />
+        </Route>
       </Route>
       <Route path="/display" element={<Display />} />
       <Route path="/form" element={<FormDisplay />} />
