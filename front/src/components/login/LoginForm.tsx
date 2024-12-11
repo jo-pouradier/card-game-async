@@ -36,7 +36,7 @@ const LoginForm = (props: LoginFormProps) => {
       const user: IUser = await getUserById(id);
       console.log(user);
       try{
-        socket.emit("user", user);
+        socket.emit("login", user);
       } catch (error) {
         console.log(error);
         dispatch(addNotification({ id: 0, message: "Error connecting to socket", severity: "error" }));
