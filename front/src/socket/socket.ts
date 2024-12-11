@@ -28,11 +28,15 @@ export const initChat = (setMessages: Dispatch<SetStateAction<Message[]>>) => {
   function onMessage(msg: Message) {
     setMessages(previous => [...previous, msg])
   }
-
   socket.on("message", onMessage);
 
   return () => {
     socket.off("message", onMessage);
   };
 };
+
+
+
+
+
 

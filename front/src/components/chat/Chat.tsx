@@ -1,4 +1,4 @@
-import { Box, Container, Grid2 as Grid, Paper, TextField, Typography } from "@mui/material";
+import {Box, Button, Container, Grid2 as Grid, Paper, TextField, Typography} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../hooks";
 import { selectUser } from "../../slices/userSlice";
@@ -35,7 +35,13 @@ const Chat = () => {
     }
   };
 
-return (
+  const findBattle = () => {
+    console.info("Finding battle...");
+    socket.emit("findMatch");
+  };
+
+  // @ts-ignore
+  return (
     <Container maxWidth="sm" sx={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between" }}>
       {/* Chat messages */}
       <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2 }}>
@@ -76,6 +82,9 @@ return (
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         />
+        <Button variant="contained" onClick={findBattle}>
+          Find Battle
+        </Button>
       </Box>
     </Container>
   );

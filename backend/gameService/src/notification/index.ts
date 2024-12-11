@@ -1,4 +1,4 @@
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
 import stompit from "stompit";
 import { ConnectOptions } from "stompit/lib/connect";
 

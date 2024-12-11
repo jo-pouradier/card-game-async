@@ -1,8 +1,9 @@
 import { server } from "./app";
 import { io } from "./socket";
 import { initNotification } from "./notification";
-
-initNotification(io, CONFIG.stompitOptions);
+// @ts-ignore
+import CONFIG from "../config.json"
+initNotification(io, CONFIG.connectOptions);
 
 //in last
 server.listen(CONFIG.port, () => {
