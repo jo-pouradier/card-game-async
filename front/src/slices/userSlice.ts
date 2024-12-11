@@ -10,7 +10,7 @@ import {
 const initialState: UserSliceState = {
   user: { id: 0 } as IUser,
   modified_user: { id: 0 } as IUser,
-  submitted_user: {} as IUser,
+  submitted_user: {id: 0} as IUser,
 };
 
 export const userSlice: UserSlice = createSlice({
