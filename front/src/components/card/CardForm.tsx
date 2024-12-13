@@ -7,7 +7,6 @@ export interface ICardForm {
 }
 
 export interface CardFormProps {
-  submitCardHandler?: (card: ICardForm) => void;
   generateCardHanlder?: (card: ICardForm) => void;
 }
 
@@ -26,14 +25,7 @@ const CardForm = (props: CardFormProps) => {
     }));
   };
 
-  const submitCardHandler = (currentCardPrompt: ICardForm) => {
-    console.log(currentCardPrompt);
-    if (props.submitCardHandler) {
-      props.submitCardHandler(currentCardPrompt);
-    }
-  };
-
-  const generateCard = () => {
+  const generateCardHandler = () => {
     console.log("generate card");
     if (props.generateCardHanlder) {
       props.generateCardHanlder(currentCardPrompt);
@@ -74,16 +66,8 @@ const CardForm = (props: CardFormProps) => {
         value={currentCardPrompt.imagePrompt}
       />
       <Box sx={{ display: "flex", justifyContent: "space-between", gap: 2 }}>
-        <Button variant="outlined" color="primary" onClick={generateCard}>
+        <Button variant="outlined" color="primary" onClick={generateCardHandler}>
           Generate
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          type="submit"
-          onClick={() => submitCardHandler(currentCardPrompt)}
-        >
-          Submit
         </Button>
       </Box>
     </Box>

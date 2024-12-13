@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.logging.Logger;
 
+// TODO use strategy pattern to avoid switch case
 @Component
 public class CardGeneratorBrokerReceiver {
     private final Logger logger = Logger.getLogger(CardGeneratorBrokerReceiver.class.getName());

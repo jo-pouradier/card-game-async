@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="GenerationApplication TEXT" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <envs>
+      <env name="GENERATION_TYPE" value="TEXT" />
+    </envs>
+    <module name="generation" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.cpe.springboot.GenerationApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
