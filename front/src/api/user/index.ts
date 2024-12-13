@@ -73,7 +73,25 @@ export const getCards = async () => {
     console.log(error);
     throw error;
   }
-}
+};
+
+export const getCardById = async (id: number) => {
+  try {
+    const response = await fetch(`/api/card/${id}`);
+    console.log(response);
+    if (!response.ok) {
+      return { id: 0 } as ICard;
+    }
+    if (response.status !== 200) {
+      return { id: 0 } as ICard;
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 
 export const buyCard = async (userId: number, cardId: number) => {
   try {
@@ -85,7 +103,7 @@ export const buyCard = async (userId: number, cardId: number) => {
       },
     });
     if (!response.ok) {
-      return false
+      return false;
     }
     if (response.status !== 200) {
       return false;
