@@ -3,6 +3,10 @@ package com.cpe.springboot.common.tools;
 import com.cpe.springboot.card.model.CardDTO;
 import com.cpe.springboot.card.model.CardModel;
 import com.cpe.springboot.card_generator.controller.CardGeneratorModel;
+import com.cpe.springboot.chat.model.ChatMessage;
+import com.cpe.springboot.chat.model.ChatMessageDTO;
+import com.cpe.springboot.chat.model.Room;
+import com.cpe.springboot.chat.model.RoomDTO;
 import com.cpe.springboot.user.controller.UserRepository;
 import com.cpe.springboot.user.model.UserDTO;
 import com.cpe.springboot.user.model.UserModel;
@@ -75,4 +79,23 @@ public class DTOMapper {
         return uDto;
     }
 
+    public ChatMessageDTO fromChatMessageToChatMessageDTO(ChatMessage cM) {
+        ChatMessageDTO cDTO = new ChatMessageDTO();
+        cDTO.setId(cM.getId());
+        cDTO.setContent(cM.getContent());
+        cDTO.setTimestamp(cM.getTimestamp());
+        cDTO.setUserId(cM.getUser().getId());
+        cDTO.setRoomId(cM.getRoom().getId());
+        return cDTO;
+    }
+
+    public RoomDTO fromRoomToRoomDTO(Room room) {
+        RoomDTO rDTO = new RoomDTO();
+        rDTO.setId(room.getId());
+        rDTO.setName(room.getName());
+        rDTO.setGlobal(room.isGlobal());
+        rDTO.setUsers(room.getUsers().stream().map(this::fromUserModelToUserDTO).toList());
+        rDTO.setMessages(room.getMessages().stream().map(this::fromChatMessageToChatMessageDTO).toList());
+        return rDTO;
+    }
 }
