@@ -24,16 +24,18 @@ import com.cpe.springboot.user.model.UserModel;
 public class UserRestController {
 
 	private final UserService userService;
+    private final DTOMapper dtoMapper;
 	
-	public UserRestController(UserService userService) {
+	public UserRestController(UserService userService, DTOMapper dtoMapper) {
 		this.userService=userService;
-	}
+        this.dtoMapper = dtoMapper;
+    }
 	
 	@RequestMapping(method=RequestMethod.GET,value="/users")
 	private List<UserDTO> getAllUsers() {
 		List<UserDTO> uDTOList=new ArrayList<UserDTO>();
 		for(UserModel uM: userService.getAllUsers()){
-			uDTOList.add(DTOMapper.fromUserModelToUserDTO(uM));
+			uDTOList.add(dtoMapper.fromUserModelToUserDTO(uM));
 		}
 		return uDTOList;
 
@@ -44,7 +46,7 @@ public class UserRestController {
 		Optional<UserModel> ruser;
 		ruser= userService.getUser(id);
 		if(ruser.isPresent()) {
-			return DTOMapper.fromUserModelToUserDTO(ruser.get());
+			return dtoMapper.fromUserModelToUserDTO(ruser.get());
 		}
 		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User id:"+id+", not found",null);
 

@@ -20,10 +20,10 @@ public class CardModelService {
     private final CardModelRepository cardRepository;
     private final CardReferenceService cardRefService;
     private Random rand;
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final DTOMapper dtoMapper;
 
-    public CardModelService(CardModelRepository cardRepository, CardReferenceService cardRefService) {
+    public CardModelService(CardModelRepository cardRepository, CardReferenceService cardRefService, DTOMapper dtoMapper) {
+        this.dtoMapper = dtoMapper;
         this.rand = new Random();
         // Dependencies injection by constructor
         this.cardRepository = cardRepository;
@@ -38,7 +38,7 @@ public class CardModelService {
 
     public CardDTO addCard(CardModel cardModel) {
         CardModel cDb = cardRepository.save(cardModel);
-        return DTOMapper.fromCardModelToCardDTO(cDb);
+        return dtoMapper.fromCardModelToCardDTO(cDb);
     }
 
     public void updateCardRef(CardModel cardModel) {
@@ -48,7 +48,7 @@ public class CardModelService {
 
     public CardDTO updateCard(CardModel cardModel) {
         CardModel cDb = cardRepository.save(cardModel);
-        return DTOMapper.fromCardModelToCardDTO(cDb);
+        return dtoMapper.fromCardModelToCardDTO(cDb);
     }
 
     public Optional<CardModel> getCard(Integer id) {

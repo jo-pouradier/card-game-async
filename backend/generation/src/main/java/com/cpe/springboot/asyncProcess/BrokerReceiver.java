@@ -28,7 +28,7 @@ public class BrokerReceiver {
     @Value("${generation-input.queue.name}")
     private String queueName;
     ObjectMapper objectMapper;
-
+    private int fakeDelay = 1000;
     @Autowired
     public void Receiver(BrokerSender sender, ObjectMapper objectMapper) {
         this.sender = sender;
@@ -60,7 +60,7 @@ public class BrokerReceiver {
         System.out.println("[" + queueName + "] RECEIVED ImageGenerationDTO=[" + message + "]");
         message.setImgUrl("https://media.istockphoto.com/id/1440592316/vector/king-of-diamonds-playing-card-classic-design.jpg?s=612x612&w=0&k=20&c=oDqEFXm84DSEYkL4BhgxdY5yfLw51o4zkL52YovqZrY=");
         try {
-            Thread.sleep(5000);
+            Thread.sleep(fakeDelay);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -71,7 +71,7 @@ public class BrokerReceiver {
         System.out.println("[" + queueName + "] RECEIVED TextGenerationDTO=[" + message + "]");
         message.setText("This is a super description");
         try {
-            Thread.sleep(5000);
+            Thread.sleep(fakeDelay);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

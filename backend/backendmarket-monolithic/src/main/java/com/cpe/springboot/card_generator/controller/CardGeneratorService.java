@@ -2,11 +2,16 @@ package com.cpe.springboot.card_generator.controller;
 
 import com.cpe.springboot.card.controller.CardModelService;
 import com.cpe.springboot.card.controller.CardReferenceService;
+import com.cpe.springboot.card.model.CardDTO;
 import com.cpe.springboot.card.model.CardReference;
 import com.cpe.springboot.card_generator.acync_process.CardGeneratorBrokerSender;
 import com.cpe.springboot.generation.ImageGenerationDTO;
 import com.cpe.springboot.generation.PropertiesGenerationDTO;
 import com.cpe.springboot.generation.TextGenerationDTO;
+import com.cpe.springboot.notification.NotificationSeverity;
+import com.cpe.springboot.notification.NotificationService;
+import com.cpe.springboot.notification.model.CardGenerationNotificationMessage;
+import com.cpe.springboot.notification.model.NotificationDTO;
 import com.cpe.springboot.user.model.UserModel;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +24,14 @@ public class CardGeneratorService {
     private final CardReferenceService cardReferenceService;
     private final CardGeneratorRepository cardGeneratorRepository;
     private final CardGeneratorBrokerSender cardGeneratorBrokerSender;
+    private final NotificationService notificationService;
 
-    public CardGeneratorService(CardModelService cardModelService, CardReferenceService cardReferenceService, CardGeneratorRepository cardGeneratorRepository, CardGeneratorBrokerSender cardGeneratorBrokerSender) {
+    public CardGeneratorService(CardModelService cardModelService, CardReferenceService cardReferenceService, CardGeneratorRepository cardGeneratorRepository, CardGeneratorBrokerSender cardGeneratorBrokerSender, NotificationService notificationService) {
         this.cardModelService = cardModelService;
         this.cardReferenceService = cardReferenceService;
         this.cardGeneratorRepository = cardGeneratorRepository;
         this.cardGeneratorBrokerSender = cardGeneratorBrokerSender;
+        this.notificationService = notificationService;
     }
 
     private CardGeneratorModel saveCardGenerator(CardGeneratorModel cardGenerator) {
@@ -99,7 +106,10 @@ public class CardGeneratorService {
         cardGenerator.setAttack(propertiesGenerationDTO.getAttack());
         cardGenerator.setDefence(propertiesGenerationDTO.getDefense());
         deleteCardGenerator(cardGenerator);
-        cardModelService.addCard(cardGenerator.toCardModel());
+        CardDTO card = cardModelService.addCard(cardGenerator.toCardModel());
+        NotificationDTO<CardGenerationNotificationMessage> notificationDTO
+                = new NotificationDTO<>(card.getUserId(), new CardGenerationNotificationMessage(card.getId()), NotificationSeverity.INFO, "card-generator");
+        notificationService.sendNotification(notificationDTO);
     }
 
 }

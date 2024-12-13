@@ -43,7 +43,7 @@ stompit.connect(CONFIG.connectOptions, (error, client) => {
     }
 
     const subscribeHeaders = {
-        'destination': 'fr.cpe.nodejs-app.in',
+        'destination': 'notification-queue',
         'ack': "client-individual",
     };
 
