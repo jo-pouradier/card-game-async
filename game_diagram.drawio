@@ -1,35 +1,35 @@
 <mxfile host="65bd71144e">
     <diagram id="grlL0IaOPrZkWWLPt15i" name="Page-1">
-        <mxGraphModel dx="1281" dy="446" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1485" dy="316" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="2" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+                <mxCell id="2" value="" style="endArrow=none;html=1;" parent="1" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="320" y="720" as="sourcePoint"/>
+                        <mxPoint x="320" y="800" as="sourcePoint"/>
                         <mxPoint x="320" y="200" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="3" value="Node.js&lt;br&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;backend&lt;/font&gt;" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+                <mxCell id="3" value="Node.js&lt;br&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;backend&lt;/font&gt;" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" parent="1" vertex="1">
                     <mxGeometry x="260" y="140" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="5" value="Joueur1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="5" value="Joueur1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="90" y="220" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="6" value="SetCards(5 cards)" style="endArrow=classic;html=1;fontSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="5">
+                <mxCell id="6" value="SetCards(5 cards)" style="endArrow=classic;html=1;fontSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="5" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="280" y="340" as="sourcePoint"/>
                         <mxPoint x="320" y="235" as="targetPoint"/>
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="8" value="En attente d'un autre joueur" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="8" value="En attente d'un autre joueur" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="320" y="220" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="9" value="Joueur2" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="9" value="Joueur2" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="90" y="250" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="10" value="SetCards(5 cards)" style="endArrow=classic;html=1;fontSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="9">
+                <mxCell id="10" value="SetCards(5 cards)" style="endArrow=classic;html=1;fontSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="9" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="280" y="370" as="sourcePoint"/>
                         <mxPoint x="320" y="265" as="targetPoint"/>
@@ -38,10 +38,10 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="11" value="Si un autre joueur attend, match" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="11" value="Si un autre joueur attend, match" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="320" y="250" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="12" value="OtherPlayerData(5 cards, userId, playerStart)" style="endArrow=classic;html=1;fontSize=8;entryX=1.054;entryY=0.647;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="15">
+                <mxCell id="12" value="OtherPlayerData(5 cards, userId, playerStart)" style="endArrow=classic;html=1;fontSize=8;entryX=1.054;entryY=0.647;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="15" edge="1">
                     <mxGeometry x="-0.002" width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="320" y="320" as="sourcePoint"/>
                         <mxPoint x="150" y="320" as="targetPoint"/>
@@ -51,7 +51,7 @@
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="13" value="OtherPlayerData(5 cards, userId, playerStart)" style="endArrow=classic;html=1;fontSize=8;entryX=1.001;entryY=0.359;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="16">
+                <mxCell id="13" value="OtherPlayerData(5 cards, userId, playerStart)" style="endArrow=classic;html=1;fontSize=8;entryX=1.001;entryY=0.359;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="16" edge="1">
                     <mxGeometry x="0.0071" y="-6" width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="320" y="320" as="sourcePoint"/>
                         <mxPoint x="150" y="360" as="targetPoint"/>
@@ -61,113 +61,113 @@
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="14" value="Socket: notifie les deux joueurs" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="14" value="Socket: notifie les deux joueurs" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="320" y="310" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="15" value="Joueur1&lt;br&gt;redirigé sur le BoardGame" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="15" value="Joueur1&lt;br&gt;redirigé sur le BoardGame" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="60" y="300" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="16" value="Joueur2&lt;br&gt;redirigé sur le BoardGame" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="16" value="Joueur2&lt;br&gt;redirigé sur le BoardGame" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="60" y="350" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="19" value="OtherPlayerData" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="19" value="OtherPlayerData" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="-170" y="300" width="140" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="20" value="cards: number[]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontSize=8;" vertex="1" parent="19">
+                <mxCell id="20" value="cards: number[]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontSize=8;" parent="19" vertex="1">
                     <mxGeometry y="30" width="140" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="21" value="userId: number" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontSize=8;" vertex="1" parent="19">
+                <mxCell id="21" value="userId: number" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontSize=8;" parent="19" vertex="1">
                     <mxGeometry y="50" width="140" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="22" value="playerStart: boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontSize=8;" vertex="1" parent="19">
+                <mxCell id="22" value="playerStart: boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontSize=8;" parent="19" vertex="1">
                     <mxGeometry y="70" width="140" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="23" value="" style="endArrow=classic;html=1;fontSize=8;" edge="1" parent="1">
+                <mxCell id="23" value="" style="endArrow=classic;html=1;fontSize=8;" parent="1" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="120" y="440" as="sourcePoint"/>
                         <mxPoint x="320" y="440" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="25" value="emit('selectCard', {cardId, ownerId})" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" vertex="1" connectable="0" parent="23">
+                <mxCell id="25" value="emit('selectCard', {cardId, ownerId})" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" parent="23" vertex="1" connectable="0">
                     <mxGeometry x="-0.5559" relative="1" as="geometry">
                         <mxPoint x="26" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="24" value="Joueur1 selectionne (click)&lt;br&gt;les cartes pour attaquer" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="24" value="Joueur1 selectionne (click)&lt;br&gt;les cartes pour attaquer" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="5" y="425" width="120" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="26" value="socket: emit aux deux joueurs pour &lt;br&gt;confirmer la selection de cartes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="26" value="socket: emit aux deux joueurs pour &lt;br&gt;confirmer la selection de cartes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="320" y="425" width="150" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="27" value="" style="endArrow=classic;html=1;fontSize=8;" edge="1" parent="1">
+                <mxCell id="27" value="" style="endArrow=classic;html=1;fontSize=8;" parent="1" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="320" y="480" as="sourcePoint"/>
                         <mxPoint x="120" y="480" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="29" value="Text" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" vertex="1" connectable="0" parent="27">
+                <mxCell id="29" value="Text" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" parent="27" vertex="1" connectable="0">
                     <mxGeometry x="0.4441" y="1" relative="1" as="geometry">
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="28" value="Les clients sont notifiés et bouge la carte&lt;br&gt;&amp;nbsp;en fonction du ownerId" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="28" value="Les clients sont notifiés et bouge la carte&lt;br&gt;&amp;nbsp;en fonction du ownerId" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="-50" y="465" width="170" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="30" value="emi('cardSelected',&amp;nbsp; {cardId, ownerId})" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="30" value="emi('cardSelected',&amp;nbsp; {cardId, ownerId})" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="325" y="470" width="160" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="31" value="" style="endArrow=classic;html=1;fontSize=8;" edge="1" parent="1">
+                <mxCell id="31" value="" style="endArrow=classic;html=1;fontSize=8;" parent="1" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="120" y="560.0000000000001" as="sourcePoint"/>
                         <mxPoint x="320" y="560.0000000000001" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="32" value="emit('attack', {card1id, card2id})" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" vertex="1" connectable="0" parent="31">
+                <mxCell id="32" value="emit('attack', {card1id, card2id})" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" parent="31" vertex="1" connectable="0">
                     <mxGeometry x="-0.5559" relative="1" as="geometry">
                         <mxPoint x="26" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="33" value="Joueur1 attaque" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="33" value="Joueur1 attaque" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="25" y="550" width="80" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="34" value="Card1 attack Card2&lt;br&gt;Verifie que c'est bien le joueur qui joue qui fait l'action&lt;br&gt;&amp;nbsp;et qu'il a suffisament de points d'action&lt;br&gt;Sinon notifie d'une erreur" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="34" value="Card1 attack Card2&lt;br&gt;Verifie que c'est bien le joueur qui joue qui fait l'action&lt;br&gt;&amp;nbsp;et qu'il a suffisament de points d'action&lt;br&gt;Sinon notifie d'une erreur" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="320" y="535" width="210" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="35" value="" style="endArrow=classic;html=1;fontSize=8;" edge="1" parent="1">
+                <mxCell id="35" value="" style="endArrow=classic;html=1;fontSize=8;" parent="1" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="320" y="600" as="sourcePoint"/>
                         <mxPoint x="120" y="600" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="36" value="emit('attack',&amp;nbsp;{card1id, card2id}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" vertex="1" connectable="0" parent="35">
+                <mxCell id="36" value="emit('attack',&amp;nbsp;{card1id, card2id}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" parent="35" vertex="1" connectable="0">
                     <mxGeometry x="0.3066" y="1" relative="1" as="geometry">
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="37" value="Client calcule les degats &lt;br&gt;sur les cartes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" vertex="1" parent="1">
-                    <mxGeometry x="5" y="585" width="110" height="30" as="geometry"/>
+                <mxCell id="37" value="Client calcule les degats &lt;br&gt;sur les cartes&lt;br&gt;Et si le joueur a gagné&lt;br&gt;(l'un des deux n'a plus de cartes)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="-10" y="575" width="140" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="38" value="Si Joueur1 a plus de point d'action&lt;br&gt;changement de joueur" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="38" value="Si Joueur1 a plus de point d'action&lt;br&gt;changement de joueur" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="320" y="640" width="150" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="39" value="" style="endArrow=classic;html=1;fontSize=8;" edge="1" parent="1">
+                <mxCell id="39" value="" style="endArrow=classic;html=1;fontSize=8;" parent="1" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="320" y="660" as="sourcePoint"/>
                         <mxPoint x="120" y="660" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="41" value="emit('playerStart', userId)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" vertex="1" connectable="0" parent="39">
+                <mxCell id="41" value="emit('playerStart', userId)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=8;" parent="39" vertex="1" connectable="0">
                     <mxGeometry x="0.1817" relative="1" as="geometry">
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="40" value="Joueur1/Joueur2" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="40" value="Joueur1/Joueur2" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="35" y="650" width="80" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="43" value="peut etre un autre nom d'event ?" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" vertex="1" parent="1">
+                <mxCell id="43" value="peut etre un autre nom d'event ?" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=8;" parent="1" vertex="1">
                     <mxGeometry x="140" y="670" width="140" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="45" value="" style="endArrow=classic;html=1;fontSize=8;" edge="1" parent="1">
+                <mxCell id="45" value="" style="endArrow=classic;html=1;fontSize=8;" parent="1" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint y="660" as="sourcePoint"/>
                         <mxPoint y="440" as="targetPoint"/>

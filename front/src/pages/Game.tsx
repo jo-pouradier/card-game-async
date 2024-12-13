@@ -1,3 +1,4 @@
+import BoardGame from "../components/game/BoardGame";
 import CardSelection from "../components/game/CardSelection";
 import WaitingPage from "./WaitingPage.tsx";
 import {useEffect, useState} from "react";
@@ -16,7 +17,7 @@ const Game = () => {
     case "selection":
       return <CardSelection />;
     case "playing":
-      return content;
+      return <BoardGame opponentId={0} opponentCards={[1,2,3,4,5]}/>;
     case "gameOver":
       return content;
     default:
