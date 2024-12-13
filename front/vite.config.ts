@@ -7,7 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://tp.cpe.fr:8083/",
+        // target: "http://tp.cpe.fr:8083/",
+        target: "http://localhost:8083/",
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ""),

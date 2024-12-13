@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Generation servers" type="CompoundRunConfigurationType">
+    <toRun name="GenerationApplication IMAGE" type="SpringBootApplicationConfigurationType" />
+    <toRun name="GenerationApplication PROPERTY" type="SpringBootApplicationConfigurationType" />
+    <toRun name="GenerationApplication TEXT" type="SpringBootApplicationConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>

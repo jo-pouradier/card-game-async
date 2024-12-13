@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+// TODO use strategy pattern to avoid switch case
 @Service
 public class BrokerReceiver {
 

@@ -3,8 +3,11 @@ package com.cpe.springboot.common.tools;
 import com.cpe.springboot.card.model.CardDTO;
 import com.cpe.springboot.card.model.CardModel;
 import com.cpe.springboot.card_generator.controller.CardGeneratorModel;
+import com.cpe.springboot.user.controller.UserService;
 import com.cpe.springboot.user.model.UserDTO;
 import com.cpe.springboot.user.model.UserModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 public class DTOMapper {
 
@@ -21,6 +24,7 @@ public class DTOMapper {
         cDTO.setAttack(cM.getAttack());
         cDTO.setImgUrl(cM.getImgUrl());
         cDTO.setPrice(cM.getPrice());
+        cDTO.setUserId(cM.getUser().getId());
         return cDTO;
     }
 
@@ -37,6 +41,7 @@ public class DTOMapper {
         cDTO.setAttack(cM.getAttack());
         cDTO.setImgUrl(cM.getImgUrl());
         cDTO.setPrice(cM.getPrice());
+        cDTO.setUserId(cM.getUser().getId());
         return cDTO;
     }
 
@@ -48,6 +53,7 @@ public class DTOMapper {
         cm.setAttack(cD.getAttack());
         cm.setPrice(cD.getPrice());
         cm.setId(cD.getId());
+        // TODO change the mapper as a service to get full context
         return cm;
     }
 
