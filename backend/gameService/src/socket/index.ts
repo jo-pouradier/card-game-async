@@ -8,7 +8,9 @@ export const io = new Server(server, {
     },
 });
 
-let waitingPlayer: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> | null= null;
+let waitingPlayer: Socket<DefaultEventsMap, DefaultEventsMap> | null= null;
+let rooms: Set<{players:[Socket<DefaultEventsMap, DefaultEventsMap>]}> = new Set();
+let deckWaiting: Set<number> = new Set();
 
 io.on('connection', (socket) => {
 
@@ -42,8 +44,9 @@ io.on('connection', (socket) => {
 
 
     // Recherche de combat
-    socket.on('findMatch', () => {
-        if (waitingPlayer) {
+    socket.on("findMatch", (deck: Set<number>) => {
+        // @ts-ignore
+        if (waitingPlayer && waitingPlayer !== socket && !(socket in rooms)) {
             // Trouver un adversaire
             const roomName = `match_${waitingPlayer.id}_${socket.id}`;
             console.log(`Création de la room ${roomName}`);
@@ -60,6 +63,7 @@ io.on('connection', (socket) => {
         } else {
             // Pas d'adversaire, attendre
             waitingPlayer = socket;
+            deckWaiting = deck;
             socket.emit('waitingForMatch');
             console.log(`Joueur en attente : ${socket.id}`);
         }
@@ -81,6 +85,10 @@ io.on('connection', (socket) => {
         console.log('Un utilisateur s\'est déconnecté :', socket.id);
     });
 });
+
+io.on("findMatch", (id: number) => {
+    console.log(`cherche un adversaire`+id);
+})
 
 
 

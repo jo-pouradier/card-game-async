@@ -4,7 +4,7 @@ import { AppDispatch } from "../store.ts";
 import {Dispatch, SetStateAction} from "react";
 import {Message} from "../components/chat/Chat.tsx";
 
-export const socket = io("http://localhost:8080");
+export const socket = io("http://localhost:3000");
 
 export const initSocket = (dispatch: AppDispatch) => {
   function onNotification(data: object) {
