@@ -2,9 +2,6 @@ package com.cpe.springboot.card_generator.acync_process;
 
 import com.cpe.springboot.card_generator.controller.CardGeneratorModel;
 import com.cpe.springboot.generation.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
@@ -16,16 +13,14 @@ public class CardGeneratorBrokerSender {
 
     private final Logger logger = Logger.getLogger(CardGeneratorBrokerSender.class.getName());
 
-    @Autowired
-    JmsTemplate jmsTemplate;
+    private final JmsTemplate jmsTemplate;
 
     @Value("${generation-input.queue.name}")
     private String queueName;
 
-    private ObjectMapper objectMapper;
 
-    public CardGeneratorBrokerSender() {
-        this.objectMapper = new ObjectMapper();
+    public CardGeneratorBrokerSender(JmsTemplate jmsTemplate) {
+        this.jmsTemplate = jmsTemplate;
     }
 
     public void sendGenerationDTO(GenerationDTOAbstact generationDTO, GenerationType generationType) {

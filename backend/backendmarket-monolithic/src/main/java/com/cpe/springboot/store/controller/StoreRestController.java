@@ -3,6 +3,7 @@ package com.cpe.springboot.store.controller;
 import java.util.List;
 
 import com.cpe.springboot.card.model.CardDTO;
+import com.cpe.springboot.store.model.CardGeneratorDTO;
 import org.springframework.web.bind.annotation.*;
 
 import com.cpe.springboot.store.model.StoreOrder;
@@ -35,9 +36,9 @@ public class StoreRestController {
 		return storeService.sellCardInternal(order.getUser_id(), order.getCard_id());
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/generate")
-	private StoreTransaction generateCard(@RequestParam String descriptionPrompt, @RequestParam String imagePrompt, @RequestParam String userId) {
-		return storeService.generateCard(descriptionPrompt, imagePrompt, userId);
+	@RequestMapping(method = RequestMethod.POST, value = "/generate")
+	private StoreTransaction generateCard(@RequestBody CardGeneratorDTO cardGeneratorDTO) {
+		return storeService.generateCard(cardGeneratorDTO);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/transaction")

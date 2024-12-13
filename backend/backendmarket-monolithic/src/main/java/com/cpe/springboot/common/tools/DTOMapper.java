@@ -3,15 +3,22 @@ package com.cpe.springboot.common.tools;
 import com.cpe.springboot.card.model.CardDTO;
 import com.cpe.springboot.card.model.CardModel;
 import com.cpe.springboot.card_generator.controller.CardGeneratorModel;
-import com.cpe.springboot.user.controller.UserService;
+import com.cpe.springboot.user.controller.UserRepository;
 import com.cpe.springboot.user.model.UserDTO;
 import com.cpe.springboot.user.model.UserModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+@Service
 public class DTOMapper {
+    private final UserRepository userRepository;
 
-    public static CardDTO fromCardModelToCardDTO(CardModel cM) {
+    public DTOMapper(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public CardDTO fromCardModelToCardDTO(CardModel cM) {
         CardDTO cDTO = new CardDTO();
         cDTO.setId(cM.getId());
         cDTO.setName(cM.getName());
@@ -28,7 +35,7 @@ public class DTOMapper {
         return cDTO;
     }
 
-    public static CardDTO fromCardGeneratorModelToCardDTO(CardGeneratorModel cM) {
+    public CardDTO fromCardGeneratorModelToCardDTO(CardGeneratorModel cM) {
         CardDTO cDTO = new CardDTO();
         cDTO.setId(cM.getId());
         cDTO.setName(cM.getName());
@@ -45,7 +52,7 @@ public class DTOMapper {
         return cDTO;
     }
 
-    public static CardModel fromCardDtoToCardModel(CardDTO cD) {
+    public CardModel fromCardDtoToCardModel(CardDTO cD) {
         CardModel cm = new CardModel(cD);
         cm.setEnergy(cD.getEnergy());
         cm.setHp(cD.getHp());
@@ -53,12 +60,17 @@ public class DTOMapper {
         cm.setAttack(cD.getAttack());
         cm.setPrice(cD.getPrice());
         cm.setId(cD.getId());
-        // TODO change the mapper as a service to get full context
+        Optional<UserModel> user = userRepository.findById(Integer.valueOf(cD.getUserId()));
+        if (user.isPresent()) {
+            cm.setUser(user.get());
+        } else {
+            throw new IllegalArgumentException("User " + cD.getUserId() + " not found");
+        }
         return cm;
     }
 
 
-    public static UserDTO fromUserModelToUserDTO(UserModel uM) {
+    public UserDTO fromUserModelToUserDTO(UserModel uM) {
         UserDTO uDto = new UserDTO(uM);
         return uDto;
     }

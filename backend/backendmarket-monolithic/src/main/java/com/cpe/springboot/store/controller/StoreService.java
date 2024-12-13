@@ -1,11 +1,12 @@
 package com.cpe.springboot.store.controller;
 
-import com.cpe.springboot.card.model.CardDTO;
 import com.cpe.springboot.card.controller.CardModelService;
+import com.cpe.springboot.card.model.CardDTO;
 import com.cpe.springboot.card.model.CardModel;
 import com.cpe.springboot.card_generator.controller.CardGeneratorModel;
 import com.cpe.springboot.card_generator.controller.CardGeneratorService;
 import com.cpe.springboot.common.tools.DTOMapper;
+import com.cpe.springboot.store.model.CardGeneratorDTO;
 import com.cpe.springboot.store.model.StoreAction;
 import com.cpe.springboot.store.model.StoreTransaction;
 import com.cpe.springboot.user.controller.UserService;
@@ -25,14 +26,16 @@ public class StoreService {
     private final CardModelService cardService;
     private final UserService userService;
     private final StoreRepository storeRepository;
+    private final DTOMapper dtoMapper;
 
     public final static Integer CURRENT_STORE_ID = -1;
 
-    public StoreService(CardGeneratorService cardGeneratorService, CardModelService cardService, UserService userService, StoreRepository storeRepository) {
+    public StoreService(CardGeneratorService cardGeneratorService, CardModelService cardService, UserService userService, StoreRepository storeRepository, DTOMapper dtoMapper) {
         this.cardGeneratorService = cardGeneratorService;
         this.cardService = cardService;
         this.userService = userService;
         this.storeRepository = storeRepository;
+        this.dtoMapper = dtoMapper;
     }
 
     public boolean buyCardInternal(Integer user_id, Integer card_id) {
@@ -92,7 +95,7 @@ public class StoreService {
     public List<CardDTO> listCardToSell() {
         List<CardDTO> list = new ArrayList<>();
         for (CardModel c : cardService.getAllCardToSell()) {
-            CardDTO cLight = DTOMapper.fromCardModelToCardDTO(c);
+            CardDTO cLight = dtoMapper.fromCardModelToCardDTO(c);
             list.add(cLight);
         }
         return list;
@@ -120,14 +123,16 @@ public class StoreService {
 
     private static final int GENERATE_PRICE = 10;
 
-    public StoreTransaction generateCard(String descriptionPrompt, String imagePrompt, String userId) {
+    public StoreTransaction generateCard(CardGeneratorDTO cardGeneratorDTO) {
         // Check if user has enough money to generate a card before generating it
-        UserModel user = userService.getUser(userId).orElse(null);
+        UserModel user = userService.getUser(cardGeneratorDTO.getUserId()).orElse(null);
         if (user == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         if (user.getAccount() < GENERATE_PRICE)
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not enough money to generate a card");
-        CardGeneratorModel cG = cardGeneratorService.generateCard(descriptionPrompt, imagePrompt, user);
+        CardGeneratorModel cG = cardGeneratorService.generateCard(cardGeneratorDTO.getDescriptionPrompt(), cardGeneratorDTO.getImagePrompt(), user);
+        user.setAccount(user.getAccount() - GENERATE_PRICE);
+        userService.updateUser(user);
         StoreTransaction sT = new StoreTransaction(user.getId(), cG.getId(), CURRENT_STORE_ID, GENERATE_PRICE, StoreAction.GENERATE);
         return storeRepository.save(sT);
     }

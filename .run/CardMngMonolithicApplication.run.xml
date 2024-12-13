@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="CardMngMonolithicApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <module name="backendmarket-monolithic" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.cpe.springboot.CardMngMonolithicApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

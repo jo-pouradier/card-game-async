@@ -7,7 +7,6 @@ import {useAppSelector} from "../../hooks.ts";
 import {selectUser} from "../../slices/userSlice.ts";
 
 const ShopCreate = () => {
-        const user = useAppSelector(selectUser);
         const [generatedCard, setGeneratedCard] = useState<ICard>({
             id: 0,
             name: "",
@@ -21,7 +20,7 @@ const ShopCreate = () => {
             imgUrl: "",
             affinity: "",
             smallImgUrl: "",
-            userId: user.id,
+            userId: 0,
         });
 
         const generateCardHanlder = (card: ICardForm) => {

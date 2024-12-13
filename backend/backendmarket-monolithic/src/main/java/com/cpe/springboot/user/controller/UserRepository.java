@@ -10,4 +10,6 @@ public interface UserRepository extends CrudRepository<UserModel, Integer> {
 	
 	List<UserModel> findByLoginAndPwd(String login,String pwd);
 
+	UserModel findByEmail(String email);
+
 }
