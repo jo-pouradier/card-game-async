@@ -1,7 +1,8 @@
 type UserSocket = {
-    userId: string;
+    userId: number;
     socketId: string;
     userName: string;
+    deck: Set<number>| null;
 };
 
 class UserSocketRepository {
@@ -11,11 +12,19 @@ class UserSocketRepository {
         this.users = new Set();
     }
 
-    addUser(userId: string, socketId: string) {
-        this.users.add({ userId, socketId, userName: "" });
+
+    addUser(userId: number, socketId: string) {
+        this.users.add({ userId, socketId, userName: "", deck: null });
     }
 
-    setUserName(userId: string, userName: string) {
+
+    deleteUser(socketId: string) {
+        // @ts-ignore
+        this.users.delete(Array.from(this.users).find((user) => user.socketId === socketId));
+    }
+
+
+    setUserName(userId: number, userName: string) {
         this.users.forEach((user) => {
             if (user.userId === userId) {
                 user.userName = userName;
@@ -23,55 +32,42 @@ class UserSocketRepository {
         });
     }
 
+
     getAllUsers() {
         return Array.from(this.users);
     }
 
-    getSocketId(userId: string) {
+
+    getSocketId(userId: number) {
         return Array.from(this.users).find((user) => user.userId === userId)?.socketId;
     }
+
+    setSocketId(userId: number, socketId: string) {
+        this.users.forEach((user) => {
+            if (user.userId === userId) {
+                user.socketId = socketId;
+            }
+        });
+    }
+
 
     getUserId(socketId: string) {
         return Array.from(this.users).find((user) => user.socketId === socketId)?.userId;
     }
+
+
+    setDeck(userId: number, deck: Set<number>) {
+        this.users.forEach((user) => {
+            if (user.userId === userId && user.deck === null && deck.size === 5) {
+                user.deck = deck;
+            }
+        });
+
+    }
+
+    getDeck(userId: number) {
+        return Array.from(this.users).find((user) => user.userId === userId)?.deck;
+    }
 }
-
-type Room = {
-    roomId: string;
-    players: [string, string];
-}
-
-
-class RoomRepository {
-    private rooms: Set<Room>;
-
-    constructor() {
-        this.rooms = new Set();
-    }
-
-    addRoom(roomId: string, players: [string, string]) {
-        this.rooms.add({ roomId, players });
-    }
-
-    getRoom(roomId: string) {
-        return Array.from(this.rooms).find((room) => room.roomId === roomId);
-    }
-
-    getRoomByPlayer(userId: string) {
-        return Array.from(this.rooms).find((room) => room.players.includes(userId));
-    }
-
-    removeRoom(roomId: string) {
-        this.rooms.delete(this.getRoom(roomId));}
-}
-
-
-
-
-
-
-
-
-
 
 export default UserSocketRepository;
