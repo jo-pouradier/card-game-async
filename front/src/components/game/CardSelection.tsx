@@ -7,6 +7,8 @@ import { selectUser } from "../../slices/userSlice";
 import ICard from "../../types/ICard";
 import CardSelect from "../card/CardSelectPlay";
 import CardShortDisplay from "../card/CardShortDisplay";
+import {socket} from "../../socket/socket.ts";
+import {useNavigate} from "react-router-dom";
 
 export interface CardSelection extends ICard {
   isSelected: boolean;
@@ -17,6 +19,8 @@ const CardSelection = () => {
   const [cards, setCards] = useState<ICard[]>([]);
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     let active = true;
@@ -44,8 +48,10 @@ const CardSelection = () => {
   const searchGame = () => {
     console.log('Search Game');
     dispatch(addNotification({id: 0, message: 'Searching for game', severity: 'info'}));
-    // TODO: Implement search game
+    socket.emit('findMatch', selectedCard, user);
+    navigate('/game/waiting');
   }
+
 
   return (
     <>
