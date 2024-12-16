@@ -1,5 +1,8 @@
 import { DefaultEventsMap, Server, Socket} from "socket.io";
 import {server} from "../app";
+// @ts-ignore
+import {IUser} from "../models/User";
+import userRepository from "./userRepository";
 
 export const io = new Server(server, {
     cors: {
@@ -8,9 +11,8 @@ export const io = new Server(server, {
     },
 });
 
-let waitingPlayer: Socket<DefaultEventsMap, DefaultEventsMap> | null= null;
-let rooms: Set<{players:[Socket<DefaultEventsMap, DefaultEventsMap>]}> = new Set();
-let deckWaiting: Set<number> = new Set();
+const userRepo = new userRepository();
+let waitingPlayer: IUser | null = null;
 
 io.on('connection', (socket) => {
 
@@ -18,56 +20,32 @@ io.on('connection', (socket) => {
         io.emit('message', msg);
     })
 
-    socket.on('login', user => {
-        io.emit('notification', user);
+    socket.on('login', (user: IUser) => {
+        userRepo.addUser(user.id, socket.id);
+        userRepo.setUserName(user.id, user.surName);
     })
 
-
-    // Rejoindre une room
-    socket.on('joinRoom', (roomName) => {
-        socket.join(roomName);
-        console.log(`${socket.id} a rejoint la room ${roomName}`);
-
-        // Notifier les autres dans la room
-        socket.to(roomName).emit('message', `${socket.id} a rejoint la room`);
-    });
-
-
-    // Quitter une room
-    socket.on('leaveRoom', (roomName) => {
-        socket.leave(roomName);
-        console.log(`${socket.id} a quitté la room ${roomName}`);
-
-        // Notifier les autres dans la room
-        socket.to(roomName).emit('message', `${socket.id} a quitté la room`);
+    socket.on('getPlayers', () => {
+        io.emit('players', userRepo.getAllUsers());
     });
 
 
     // Recherche de combat
-    socket.on("findMatch", (deck: Set<number>) => {
+    socket.on("findMatch", (deck: Set<number>, user:IUser) => {
         // @ts-ignore
-        if (waitingPlayer && waitingPlayer !== socket && !(socket in rooms)) {
-            // Trouver un adversaire
-            const roomName = `match_${waitingPlayer.id}_${socket.id}`;
-            console.log(`Création de la room ${roomName}`);
-
-            // Ajouter les deux joueurs dans la room
-            waitingPlayer.join(roomName);
-            socket.join(roomName);
-
-            // Notifier les joueurs
-            io.to(roomName).emit('matchFound', { roomName, players: [waitingPlayer.id, socket.id] });
-
-            // Réinitialiser l'attente
+        if (waitingPlayer) {
+            // @ts-ignore
+            const player1 = waitingPlayer;
+            // @ts-ignore
+            const player2 = user;
             waitingPlayer = null;
+            console.log(`Match trouvé entre ${player1.surName} et ${player2.surName}`);
+            io.emit('matchFound', player1, player2);
         } else {
-            // Pas d'adversaire, attendre
-            waitingPlayer = socket;
-            deckWaiting = deck;
-            socket.emit('waitingForMatch');
-            console.log(`Joueur en attente : ${socket.id}`);
-        }
-    });
+            waitingPlayer = user;
+            console.log(`${user.surName} est en attente d'un adversaire`);
+
+    }});
 
     // Quitter la recherche de combat
     socket.on('cancelMatchmaking', () => {
@@ -83,6 +61,13 @@ io.on('connection', (socket) => {
     // Déconnexion
     socket.on('disconnect', () => {
         console.log('Un utilisateur s\'est déconnecté :', socket.id);
+        if (mapUser.has(socket)) {
+            const user = users.values().next().value;
+            io.emit('notification', user.surName + ' s\'est déconnecté');
+            mapUser.delete(socket);
+            mapSocket.delete(user.id);
+            users.delete(user);
+        }
     });
 });
 

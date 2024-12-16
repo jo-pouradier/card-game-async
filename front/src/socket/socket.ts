@@ -11,7 +11,7 @@ export const initSocket = (dispatch: AppDispatch) => {
     console.info("Notification received:", data);
     dispatch(addNotification({
       id: Math.random() * 100,
-      message: "Logged in",
+      message: data.toString(),
       severity: "info",
     }));
   }
