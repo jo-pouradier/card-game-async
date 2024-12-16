@@ -3,6 +3,7 @@ import {server} from "../app";
 // @ts-ignore
 import {IUser} from "../models/User";
 import userRepository from "./userRepository";
+import roomRepository from "./roomRepository";
 
 export const io = new Server(server, {
     cors: {
@@ -12,7 +13,7 @@ export const io = new Server(server, {
 });
 
 const userRepo = new userRepository();
-let waitingPlayer: IUser | null = null;
+const rooms = new roomRepository();
 
 io.on('connection', (socket) => {
 
@@ -31,49 +32,52 @@ io.on('connection', (socket) => {
 
 
     // Recherche de combat
-    socket.on("findMatch", (deck: Set<number>, user:IUser) => {
-        // @ts-ignore
-        if (waitingPlayer) {
-            // @ts-ignore
-            const player1 = waitingPlayer;
-            // @ts-ignore
-            const player2 = user;
-            waitingPlayer = null;
-            console.log(`Match trouvé entre ${player1.surName} et ${player2.surName}`);
-            io.emit('matchFound', player1, player2);
-        } else {
-            waitingPlayer = user;
-            console.log(`${user.surName} est en attente d'un adversaire`);
-
-    }});
+    socket.on("findMatch", (deck: Set<number>, userID: number) => {
+        userRepo.setDeck(userID, deck);
+        if (rooms.getRoomByPlayer(userID) === undefined) {
+            if (rooms.isEmpty(0)) {
+                rooms.addPlayer(0, userID);
+            } else {
+                const roomId = rooms.createRoom();
+                rooms.addPlayer(roomId, userID);
+                // @ts-ignore
+                const player = rooms.getRoom(0).players[0];
+                if (typeof player === "number") {
+                    rooms.addPlayer(roomId, player);
+                    rooms.removePlayer(player);
+                }
+            }
+        }
+    });
 
     // Quitter la recherche de combat
-    socket.on('cancelMatchmaking', () => {
-        if (waitingPlayer === socket) {
-            waitingPlayer = null;
-            console.log(`${socket.id} a quitté la file d'attente`);
+    socket.on('cancelMatchmaking', (userID: number) => {
+        if (rooms.getRoomByPlayer(userID)?.id === 0) {
+            rooms.removePlayer(userID);
         }
     });
 
 
+    socket.on('joinRoom', (roomId: string) => {
+        socket.join(roomId);
+        console.log(`${socket.id} a rejoint la room ${roomId}`);
+    });
 
 
-    // Déconnexion
+    socket.on('leaveRoom', (roomId: string) => {
+        socket.leave(roomId);
+        console.log(`${socket.id} a quitté la room ${roomId}`);
+    });
+
+
     socket.on('disconnect', () => {
         console.log('Un utilisateur s\'est déconnecté :', socket.id);
-        if (mapUser.has(socket)) {
-            const user = users.values().next().value;
-            io.emit('notification', user.surName + ' s\'est déconnecté');
-            mapUser.delete(socket);
-            mapSocket.delete(user.id);
-            users.delete(user);
-        }
+        userRepo.deleteUser(socket.id);
     });
+
+
+    socket.on('error', (err) => {
+        console.error('Erreur détectée :', err);
+    });
+
 });
-
-io.on("findMatch", (id: number) => {
-    console.log(`cherche un adversaire`+id);
-})
-
-
-
