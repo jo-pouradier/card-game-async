@@ -37,6 +37,15 @@ class UserSocketRepository {
         return Array.from(this.users);
     }
 
+    getUser(userId: number) {
+        return Array.from(this.users).find((user) => user.userId === userId);
+    }
+
+
+    getUserName(userId: number) {
+        return Array.from(this.users).find((user) => user.userId === userId)?.userName;
+    }
+
 
     getSocketId(userId: number) {
         return Array.from(this.users).find((user) => user.userId === userId)?.socketId;
@@ -71,3 +80,4 @@ class UserSocketRepository {
 }
 
 export default UserSocketRepository;
+export type { UserSocket };

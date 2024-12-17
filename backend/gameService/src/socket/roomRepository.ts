@@ -2,22 +2,23 @@
 type Room = {
     id: number;
     players: [number|null, number|null];
+    date : Date | null;
 }
 
 
 class RoomRepository {
     private rooms: Set<Room>;
-    private idRoom: number = 0;
+    private idRoom: number;
     private waitingRoom: Room;
     
     constructor() {
         this.rooms = new Set();
-        this.idRoom = 1;
-        this.waitingRoom = {id: 0, players: [null, null]};
+        this.idRoom = 0;
+        this.waitingRoom = {id: 0, players: [null, null], date: null};
     }
 
     createRoom() {
-        this.rooms.add({id: this.idRoom, players: [null, null] });
+        this.rooms.add({id: this.idRoom, players: [null, null], date: new Date()});
         this.idRoom++;
         return this.idRoom - 1;
     }
