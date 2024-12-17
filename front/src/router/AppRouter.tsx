@@ -8,7 +8,9 @@ import Home from "../pages/Home";
 import LoginProtectedRoutes from "./LoginProtectedRoutes";
 import {ShopDisplay} from "../components/shop";
 import ChatPage from "../pages/ChatPage";
-import Game from "../pages/Game";
+import WaitingPage from "../pages/WaitingPage";
+import CardSelection from "../components/game/CardSelection";
+import BoardGame from "../components/game/BoardGame";
 
 const AppRouter = (_props: unknown) => {
     return (
@@ -17,11 +19,11 @@ const AppRouter = (_props: unknown) => {
                 <Route path="/shop" element={<ShopDisplay/>}/>
                 <Route path="/shop/:id?" element={<ShopPage/>}/>
                 <Route path="/chat" element={<ChatPage/>}/>
-                <Route path="/game" element={<Game/>}>
-                    <Route path="waiting" element={<Game/>}/>
-                    <Route path="selection" element={<Game/>}/>
-                    <Route path="playing" element={<Game/>}/>
-                    <Route path="gameOver" element={<Game/>}/>
+                <Route path="/game">
+                    <Route path="waiting" element={<WaitingPage/>}/>
+                    <Route path="selection" element={<CardSelection/>}/>
+                    <Route path="playing" element={<BoardGame opponentId={0} opponentCards={[1,2,3,4,5]}/>}/>
+                    <Route path="gameOver" element={<div>Game Over</div>}/>
                 </Route>
             </Route>
             <Route path="/display" element={<Display/>}/>
