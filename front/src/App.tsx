@@ -4,13 +4,14 @@ import { BrowserRouter } from "react-router-dom";
 import Navbar from "./components/utils/Navbar";
 import Notification from "./components/utils/Notification";
 import AppRouter from "./router/AppRouter";
-import { initSocket } from "./socket/socket.ts";
+import {initChat, initSocket} from "./socket/socket.ts";
 import { store } from "./store";
 import { useAppDispatch } from "./hooks.ts";
 
 const App = (_props: unknown) => {
   const dispatch = useAppDispatch();
   useEffect(() => initSocket(dispatch), [dispatch]);
+  useEffect(() => {initChat(dispatch);}, [dispatch]);
   return (
     <Provider store={store}>
       <BrowserRouter>
