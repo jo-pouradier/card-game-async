@@ -1,5 +1,6 @@
-type chat = {
-    userId: number;
+export type chat = {
+    from: number;
+    to: number;
     message: string;
     date: Date;
 }
@@ -21,10 +22,10 @@ class ChatRepository {
         this.chatRooms.add({userIds:[userId1, userId2], chats: []});
     }
 
-    addMessage(userId1: number, userId2:number, message: string) {
+    addMessage(userId1: number, userId2:number, message: chat) {
         const room = this.getRoomByPlayerIds(userId1, userId2);
         if (room !== undefined) {
-            room.chats.push({userId: userId1, message, date: new Date()});
+            room.chats.push(message);
         }
     }
 

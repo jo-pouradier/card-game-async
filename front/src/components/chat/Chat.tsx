@@ -1,39 +1,34 @@
-import {Box, Container, Grid2 as Grid, Paper, TextField, Typography} from "@mui/material";
-import { useEffect, useState } from "react";
-import { useAppSelector } from "../../hooks";
+import { Box, Container, Grid2 as Grid, Paper, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { addNotification } from "../../slices/notificationSlice";
 import { selectUser } from "../../slices/userSlice";
-import { socket } from "../../socket/socket";
 
 export interface Message {
-  user: string;
+  from: number;
+  to: number;
   message: string;
+  date: Date;
 }
 
+export interface ChatProps {
+  messages: Message[];
+  sendMessage: (message: string) => boolean;
+}
 
-const Chat = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    { user: "me", message: "Hello" },
-    { user: "you", message: "Hi" },
-    { user: "test", message: "How are you?" },
-  ]);
+const Chat = (props: ChatProps) => {
+  const dispatch = useAppDispatch();
   const [input, setInput] = useState("");
   const user = useAppSelector(selectUser);
 
-  useEffect(() => {
-    socket.on("message", (message: Message) => {
-      setMessages([...messages, message]);
-    });
-    return () => {
-      socket.off("message");
-    };
-  }, [messages]);
-
   const sendMessage = () => {
-    if (input) {
+    const ok = props.sendMessage(input);
+    if (ok) {
       setInput("");
-      console.info("Sending message:", input);
-      socket.emit("message", { user: user.login, message: input });
+    } else {
+      dispatch(addNotification({ id: Math.round(Math.random() * 100000), message: "Message cannot be empty", severity: "error" }));
     }
+
   };
 
 
@@ -43,25 +38,29 @@ const Chat = () => {
         {/* Chat messages */}
         <Box sx={{flexGrow: 1, overflowY: "auto", p: 2}}>
           <Grid container spacing={2} direction="column">
-            {messages.map((message, index) => (
+            {props.messages.map((message, index) => (
                 <Grid
                     key={index}
                     container
-                    justifyContent={user.login === message.user ? "flex-end" : "flex-start"}
+                    justifyContent={user.id === message.from ? "flex-end" : "flex-start"}
                 >
                   <Grid size={8}>
                     <Paper
                         elevation={3}
                         sx={{
                           p: 1.5,
-                          backgroundColor: user.login === message.user ? "#e3f2fd" : "#f1f1f1",
+                          backgroundColor: user.id === message.from ? "#e3f2fd" : "#f1f1f1",
                           borderRadius: 2,
                         }}
                     >
                       <Typography variant="body2" color="textSecondary">
-                        {message.user}
+                        {message.from}
                       </Typography>
                       <Typography variant="body1">{message.message}</Typography>
+{/* add message.date at the bottom */}
+                      <Typography variant="caption" color="textSecondary">
+                        {message.date.toLocaleString().split('.')[0].replace('T', ' ')}
+                      </Typography>
                     </Paper>
                   </Grid>
                 </Grid>
