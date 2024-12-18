@@ -4,6 +4,17 @@ type UserSocket = {
     userName: string;
     deck: Set<number>| null;
 };
+export interface IUser {
+  id: number | null;
+  account: number | null;
+  login: string | null;
+  surName: string | null;
+  lastName: string | null;
+  email: string | null;
+  pwd: string | null;
+  money: number | null;
+  cardList: number[] | null;
+}
 
 class UserSocketRepository {
     private users: Set<UserSocket>; // Map de userId -> socketId

@@ -7,13 +7,14 @@ import ICard from "../../types/ICard";
 import CardSimpleDisplay from "../card/CardSimpleDisplay";
 import CardShortDisplay from "../card/CardShortDisplay";
 import { addNotification } from "../../slices/notificationSlice";
+import { socket } from "../../socket/socket";
 
 export interface BoardGameProps {
   opponentId: number;
   opponentCards: number[];
 }
 
-const BoardGame = (props: BoardGameProps) => {
+const BoardGame = (_props: BoardGameProps) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +26,21 @@ const BoardGame = (props: BoardGameProps) => {
   const [currentPlayerCard, setCurrentPlayerCard] = useState<ICard | null>(
     null,
   );
+
+  useEffect(() => {
+    socket.on("decks", (decks: { deck1: number[]; deck2: number[] }) => {
+      fetchMultipleCards(decks.deck1).then((data) => {
+        console.log("Fetched cards for current player", data);
+        setUserCards((previous: ICard[]) => [...previous, ...data]);
+      }); // Fetch user cards
+      fetchMultipleCards(decks.deck2).then((data) => {
+        console.log("Fetched cards for opponent", data);
+        setOpponentCards((previous: ICard[]) => [...previous, ...data]);
+      });
+    });
+
+    socket.emit("readyToPlay", user.id);
+  }, [user.id]);
 
   const handleCardClick = (card: ICard) => {
     console.log("Card clicked", card);
@@ -47,24 +63,37 @@ const BoardGame = (props: BoardGameProps) => {
     // TODO: implement socket communication
     setTimeout(() => {
       setIsLoading(() => false);
-      dispatch(addNotification({ id: Math.round(Math.random() *10000), message: "Attack successful" }));
+      dispatch(
+        addNotification({
+          id: Math.round(Math.random() * 10000),
+          message: "Attack successful",
+        }),
+      );
     }, 2000);
-  }
+  };
 
-  useEffect(() => {
-    fetchMultipleCards(user.cardList).then((data) => {
-      console.log("Fetched cards", data);
-      setUserCards((previous: ICard[]) => [...previous, ...data]);
-    }); // Fetch user cards
-    fetchMultipleCards(user.cardList).then((data) =>
-      setOpponentCards((previous: ICard[]) => [...previous, ...data]),
-    ); // TODO: Fetch opponent cards from props
-  }, [user]);
+  // useEffect(() => {
+  //   fetchMultipleCards(user.cardList).then((data) => {
+  //     console.log("Fetched cards", data);
+  //     setUserCards((previous: ICard[]) => [...previous, ...data]);
+  //   }); // Fetch user cards
+  //   fetchMultipleCards(user.cardList).then((data) =>
+  //     setOpponentCards((previous: ICard[]) => [...previous, ...data]),
+  //   ); // TODO: Fetch opponent cards from props
+  // }, [user]);
 
   return (
     <Container>
       {createCardList(userCards, currentPlayerCard, handleCardClick)}
-      <Divider textAlign="center"> <Button variant={isLoading ? "outlined" : "contained"} onClick={() => attack()}>{isLoading ? "Loading" : "Attack"}</Button> </Divider>
+      <Divider textAlign="center">
+        {" "}
+        <Button
+          variant={isLoading ? "outlined" : "contained"}
+          onClick={() => attack()}
+        >
+          {isLoading ? "Loading" : "Attack"}
+        </Button>{" "}
+      </Divider>
       {createCardList(opponentCards, currentOpponentCard, handleCardClick)}
     </Container>
   );
@@ -75,7 +104,6 @@ export default BoardGame;
 const fetchMultipleCards = async (ids: number[]): Promise<ICard[]> => {
   const promises = ids.map((id) => getCardById(id));
   const cards = await Promise.all(promises);
-  console.log("Fetched cards", cards);
   return cards;
 };
 
@@ -86,31 +114,29 @@ const createCardList = (
 ): JSX.Element => {
   return (
     <Grid2 container spacing={0.3} direction={"row"} justifyContent={"center"}>
-      {cards.map(
-        (card, index) => {
-            if (card !== null) {
-                return ((
-                    <Grid2 size={1.7} key={index}>
-                    <div
-                        style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        cursor: "pointer",
-                        }}
-                        onClick={() => handleCardClick(card)}
-                    >
-                        <CardShortDisplay {...card} />
-                    </div>
-                    </Grid2>
-                ))
-            }
-        })}
+      {cards.map((card, index) => {
+        if (card !== null) {
+          return (
+            <Grid2 size={1.7} key={index}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleCardClick(card)}
+              >
+                <CardShortDisplay {...card} />
+              </div>
+            </Grid2>
+          );
+        }
+      })}
       {currentCard !== null && (
         <Grid2 size={3}>
           <CardSimpleDisplay {...currentCard} />
         </Grid2>
       )}
     </Grid2>
-        
   );
 };
