@@ -20,10 +20,17 @@ const chatRepo = new chatRepository();
 io.on('connection', (socket) => {
 
     socket.on('message', (msg, toWhom) => {
-        // @ts-ignore
-        const sender:number  = userRepo.getUserId(socket.id);
-        // @ts-ignore
-        const receiver:number = userRepo.getUserId(toWhom);
+        const sender:number|undefined  = userRepo.getUserId(socket.id);
+        if (sender === undefined) {
+            return;
+        }
+
+        const receiver: number | undefined = userRepo.getUserId(toWhom);
+        if (receiver === undefined) {
+            console.log(`Utilisateur ${toWhom} inconnu`);
+            socket.emit('notification', 'Utilisateur inconnu');
+            return;
+        }
         if (toWhom === 'all') {
             socket.broadcast.emit('message', {msg, sender});
             return;

@@ -9,7 +9,7 @@ type Room = {
 class RoomRepository {
     private rooms: Set<Room>;
     private idRoom: number;
-    waitingRoom: Room;
+    private waitingRoom: Room;
     
     constructor() {
         this.rooms = new Set();
@@ -24,8 +24,12 @@ class RoomRepository {
     }
 
     deleteRoom(id: number) {
-        // @ts-ignore
-        this.rooms.delete(this.getRoom(id));
+        const room = this.getRoom(id);
+        if (room) {
+            this.rooms.delete(room);
+            return true;
+        }
+        return false;
     }
 
     getRoom(id: number) {
@@ -44,13 +48,15 @@ class RoomRepository {
 
     addPlayer(roomId: number, userId: number) {
         const room = this.getRoom(roomId);
-        if (room !== undefined) {
-            if (room.players[0] === null) {
-                room.players[0] = userId;
-            } else if (room.players[1] === null) {
-                room.players[1] = userId;
-            }
+        if (!room) {
+            return false;
         }
+        const playerIndex = room.players.indexOf(null);
+        if (playerIndex !== -1) {
+            room.players[playerIndex] = userId;
+            return true;
+        }
+        return false;
     }
 
     removePlayer(userId: number | undefined) {
