@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { addNotification } from "../../slices/notificationSlice";
 import { delete_user_action, selectUser } from "../../slices/userSlice";
+import {socket} from "../../socket/socket.ts";
 
 const LoginLogout = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const LoginLogout = () => {
           message: "Logged out",
           severity: "info",
         }),
+          socket.emit('disconnect'),
       );
     } else {
       navigate("/login");

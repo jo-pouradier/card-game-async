@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
                 chatRepo.addMessage(sender, receiver, msg);
             }
         }
-        socket.to(toWhom).emit('message', {msg, sender});
+        io.to(toWhom).emit('message', {msg, sender});
         console.log(`Message envoyé à ${userRepo.getUserName(receiver)} depuis ${userRepo.getUserName(sender)} : ${msg.message}`);
 
     })
@@ -52,25 +52,29 @@ io.on('connection', (socket) => {
 
 
     // Recherche de combat
-    socket.on("findMatch", (deck: Set<number>, userID: number) => {
-        if (rooms.getRoomByPlayer(userID) === undefined) {
-            userRepo.setDeck(userID, deck);
-            if (rooms.getRoomByPlayer(userID) === undefined) {
-                if (rooms.isEmpty(0)) {
-                    rooms.addPlayer(0, userID);
-                    io.emit('notification', `Un joueur a rejoint la file d'attente`);
-                } else {
-                    const roomId = rooms.createRoom();
-                    rooms.addPlayer(roomId, userID);
-                    // @ts-ignore
-                    const player = rooms.waitingRoom.players[0];
-                    if (typeof player === "number") {
-                        rooms.removePlayer(player);
-                        rooms.addPlayer(roomId, player);
-                        io.emit('notification', `Un combat a été trouvé entre ${userRepo.getUserName(userID)} et ${userRepo.getUserName(player)}`);
-                    }
+    socket.on("findMatch", (deck: number[], user: IUser) => {
+        if (rooms.getRoomByPlayer(user.id) === undefined) {
+            userRepo.setDeck(user.id, deck);
+            console.log(user.id)
+            console.log('Recherche de combat pour :', userRepo.getUserName(user.id));
+            console.log(rooms.waitingRoom.players);
+            if (rooms.waitingRoom.players[0] === null) {
+                rooms.waitingRoom.players[0] = user.id;
+                io.emit('notification', `Un joueur a rejoint la file d'attente`);
+                console.log('Un joueur a rejoint la file d\'attente:', rooms.waitingRoom.players);
+            } else {
+                const roomId = rooms.createRoom();
+                rooms.addPlayer(roomId, user.id);
+                // @ts-ignore
+                const player = rooms.waitingRoom.players[0];
+                if (typeof player === "number") {
+                    rooms.removePlayer(player);
+                    rooms.addPlayer(roomId, player);
+                    io.emit('notification', `Un combat a été trouvé entre ${userRepo.getUserName(user.id)} et ${userRepo.getUserName(player)}`);
+                    io.emit('gameFound', roomId);
                 }
-            }}
+            }
+        }
     });
 
     // Quitter la recherche de combat
@@ -92,10 +96,17 @@ io.on('connection', (socket) => {
         console.log(`${socket.id} a quitté la room ${roomId}`);
     });
 
+    socket.on('getDecks', (userId: number, socketId:number) => {
+        console.log('GetDecks', userId, socketId);
+        console.log('soso',socket.id)
+        io.emit('decks', userRepo.getDeck(userId), userRepo.getDeck(rooms.getRoomByPlayer(userId)?.players[0] || 0));
+    });
+
 
     socket.on('disconnect', () => {
         console.log('Un utilisateur s\'est déconnecté :', socket.id);
         userRepo.deleteUser(socket.id);
+        rooms.removePlayer(userRepo.getUserId(socket.id));
     });
 
 
