@@ -19,8 +19,10 @@ class UserSocketRepository {
 
 
     deleteUser(socketId: string) {
-        // @ts-ignore
-        this.users.delete(Array.from(this.users).find((user) => user.socketId === socketId));
+        const user = Array.from(this.users).find((user) => user.socketId === socketId);
+        if (user) {
+            this.users.delete(user);
+        }
     }
 
 
