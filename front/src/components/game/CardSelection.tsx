@@ -48,7 +48,7 @@ const CardSelection = () => {
   const searchGame = () => {
     console.log('Search Game');
     dispatch(addNotification({id: 0, message: 'Searching for game', severity: 'info'}));
-    socket.emit('findMatch', selectedCard, user.id);
+    socket.emit('findMatch', selectedCard, user);
     navigate('/game/waiting');
   }
 
