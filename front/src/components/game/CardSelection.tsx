@@ -53,6 +53,11 @@ const CardSelection = () => {
   }
 
 
+  socket.on('gameFound', (card1:number, card2:number, card3:number, card4:number, card5:number, card6:number, card7:number, card8:number, card9:number, card10:number) => {
+    navigate(`/game/playing?card1=${card1}&card2=${card2}&card3=${card3}&card4=${card4}&card5=${card5}&card6=${card6}&card7=${card7}&card8=${card8}&card9=${card9}&card10=${card10}`);
+  });
+
+
   return (
     <>
       <Container style={{ height: "50vh", overflowY: "scroll" }}>

@@ -65,18 +65,18 @@ class UserSocketRepository {
     }
 
 
-    setDeck(userId: number, deck: Set<number>) {
+    setDeck(userId: number, deck: number[]) {
         this.users.forEach((user) => {
-            if (user.userId === userId && user.deck === null && deck.size === 5) {
-                user.deck = deck;
+            if (user.userId === userId) {
+                user.deck = new Set(deck);
             }
         });
-
     }
 
     getDeck(userId: number) {
         return Array.from(this.users).find((user) => user.userId === userId)?.deck;
     }
+
 }
 
 export default UserSocketRepository;

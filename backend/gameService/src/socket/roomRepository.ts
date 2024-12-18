@@ -9,11 +9,11 @@ type Room = {
 class RoomRepository {
     private rooms: Set<Room>;
     private idRoom: number;
-    private waitingRoom: Room;
+    waitingRoom: Room;
     
     constructor() {
         this.rooms = new Set();
-        this.idRoom = 0;
+        this.idRoom = 1;
         this.waitingRoom = {id: 0, players: [null, null], date: null};
     }
 
@@ -38,16 +38,25 @@ class RoomRepository {
 
 
     isEmpty(roomId: number) {
-        return this.getRoom(roomId)?.players.every((player) => player === null);
+        return this.getRoom(roomId)?.players[0] === null && this.getRoom(roomId)?.players[1] === null;
     }
 
 
     addPlayer(roomId: number, userId: number) {
-        // @ts-ignore
-        this.getRoom(roomId)?.players[this.getRoom(roomId)?.players.indexOf(null)] = userId;
+        const room = this.getRoom(roomId);
+        if (room !== undefined) {
+            if (room.players[0] === null) {
+                room.players[0] = userId;
+            } else if (room.players[1] === null) {
+                room.players[1] = userId;
+            }
+        }
     }
 
-    removePlayer(userId: number) {
+    removePlayer(userId: number | undefined) {
+        if (userId === undefined) {
+            return;
+        }
         this.rooms.forEach((room) => {
             if (room.players.includes(userId)) {
                 room.players[room.players.indexOf(userId)] = null;
