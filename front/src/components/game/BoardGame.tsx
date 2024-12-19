@@ -29,6 +29,8 @@ const BoardGame = (_props: BoardGameProps) => {
     null,
   );
 
+
+
   useEffect(() => {
     socket.on("decks", (decks: { deck1: number[]; deck2: number[] }) => {
       console.log("Decks received", decks);
@@ -47,6 +49,29 @@ const BoardGame = (_props: BoardGameProps) => {
         })
         .finally(() => setIsOpponentCardLoading(() => false));
     });
+
+    socket.on("attack", (data: {card1: {id:number, userId:number }, card2: {id:number, userId:number}}) => {
+        console.log("attack received", data);
+        const {card1, card2} = data;
+
+        if (card2.id && card2.userId && card1.id) {
+            if (card2.userId === user.id) {
+                for (let i = 0; i < userCards.length; i++) {
+                    if (userCards[i].id === card2.id && opponentCards.find(c => c.id === card1.id) !== undefined) {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-expect-error
+                        if (userCards[i].hp > opponentCards.find(c => c.id === card1.id)?.attack) {
+                            userCards[i].hp -= opponentCards.find(c => c.id === card1.id)?.attack ?? 0;
+                            setUserCards([...userCards]);
+                        } else {
+                            setUserCards(userCards.filter(c => c.id !== card2.id));
+                        }
+                    }
+                }
+            }
+        }
+    });
+
 
     socket.emit("readyToPlay", user.id);
   }, [user.id]);
@@ -68,18 +93,35 @@ const BoardGame = (_props: BoardGameProps) => {
 
   const attack = () => {
     setIsAttackLoading(() => true);
-    console.log("Attack", currentPlayerCard, currentOpponentCard);
-    // TODO: implement socket communication
-    setTimeout(() => {
-      setIsAttackLoading(() => false);
-      dispatch(
-        addNotification({
-          id: Math.round(Math.random() * 10000),
-          message: "Attack successful",
-        }),
-      );
-    }, 2000);
-  };
+
+    if (currentPlayerCard !== null && currentOpponentCard !== null) {
+      console.log("Attack", currentPlayerCard, currentOpponentCard);
+      socket.emit("attack", {
+        card1: {id:currentPlayerCard.id, userId: currentPlayerCard.userId},
+        card2: {id:currentOpponentCard.id, userId: currentOpponentCard.userId},
+      });
+      setTimeout(() => {
+        setIsAttackLoading(() => false);
+        dispatch(
+            addNotification({
+              id: Math.round(Math.random() * 10000),
+              message: "Attack successful",
+            }),
+        );
+      }, 2000);
+
+      if(currentOpponentCard.hp <= currentPlayerCard.attack) {
+        setOpponentCards(opponentCards.filter(c => c.id !== currentOpponentCard.id));
+    } else {
+        setOpponentCards(opponentCards.map(c => {
+            if(c.id === currentOpponentCard.id) {
+                c.hp -= currentPlayerCard.attack;
+            }
+            return c;
+        }));
+    }
+  }
+}
 
   return (
     <Container>
@@ -104,8 +146,7 @@ export default BoardGame;
 
 const fetchMultipleCards = async (ids: number[]): Promise<ICard[]> => {
   const promises = ids.map((id) => getCardById(id));
-  const cards = await Promise.all(promises);
-  return cards;
+  return await Promise.all(promises);
 };
 
 const createCardList = (
@@ -141,3 +182,4 @@ const createCardList = (
     </Grid2>
   );
 };
+
