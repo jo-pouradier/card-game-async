@@ -26,10 +26,9 @@ public class BrokerReceiver implements MessageListener {
 
     @Override
     public void onMessage(Message message) {
-        System.out.println("Received message: " + message);
         LoggerModel log = null;
         try {
-            log = new LoggerModel(message.getJMSTimestamp(), message.getJMSDestination().toString(), message.toString());
+            log = new LoggerModel(message.getJMSTimestamp(), message.getBody(String.class), message.getJMSDestination().toString(), message.getJMSType());
         } catch (JMSException e) {
             throw new RuntimeException(e);
         }

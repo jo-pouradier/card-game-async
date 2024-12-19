@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.jms.ConnectionFactory;
 import jakarta.jms.MessageListener;
 import jakarta.jms.TextMessage;
+import jakarta.persistence.GenerationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
@@ -54,34 +55,47 @@ public class JmsListenerConfig implements JmsListenerConfigurer {
     @Value("${queue.pattern}")
     private String queuePattern;
 
+    @Value("${generation-input.queue.name}")
+    private String generationQueueName;
+
+    @Value("${generation-output.queue.name}")
+    private String generationOutputQueueName;
+
+    @Value("${nodejs-messaging.queue.name}")
+    private String nodejsMessagingQueueName;
 
     @Autowired
     private BrokerReceiver messageListener;
+
     @Override
     public void configureJmsListeners(JmsListenerEndpointRegistrar registrar) {
-        List<String> queueNames = new ArrayList<>(){{
-            add("GENERATION-PROPERTY-INPUT.qmirror");
-        }};
+
+        List<String> queueNames = new ArrayList<>();
+        for (GenerationType type : GenerationType.values()) {
+            queueNames.add(generationQueueName.replace("{GENERATION_TYPE}", type.name()) + queuePattern);
+        }
+        queueNames.add(generationOutputQueueName + queuePattern);
+        queueNames.add(nodejsMessagingQueueName + queuePattern);
+
+        int counter = 1;
+
         for (String queueName : queueNames) {
+            System.out.println("Registering endpoint for queue: " + queueName);
             SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
+            endpoint.setId("endpoint-" + counter);
             endpoint.setDestination(queueName);
             endpoint.setMessageListener(messageListener);
-            registrar.registerEndpoint(endpoint);
+            registrar.registerEndpoint(endpoint,
+                    jmsTopicListenerContainerFactory(null));
             registrar.setMessageHandlerMethodFactory(handlerMethodFactory());
-
+            counter++;
         }
     }
-
     @Bean
-    public JmsListenerContainerFactory<?> queueConnectionFactory(ConnectionFactory connectionFactory,
-                                                                 DefaultJmsListenerContainerFactoryConfigurer configurer) {
+    public DefaultJmsListenerContainerFactory jmsTopicListenerContainerFactory(ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        // This provides all boot's default to this factory, including the message converter
-        configurer.configure(factory, connectionFactory);
-        // You could still override some of Boot's default if necessary.
-
-        // Queue mode
-        factory.setPubSubDomain(false);
+        factory.setConnectionFactory(connectionFactory);
+        factory.setPubSubDomain(true); // Enable topic-mode for Pub/Sub
         return factory;
     }
 }
