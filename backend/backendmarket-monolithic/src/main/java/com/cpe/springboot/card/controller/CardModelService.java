@@ -1,11 +1,9 @@
 package com.cpe.springboot.card.controller;
 
 import com.cpe.springboot.card.model.CardDTO;
+import com.cpe.springboot.card.model.CardMapper;
 import com.cpe.springboot.card.model.CardModel;
 import com.cpe.springboot.card.model.CardReference;
-import com.cpe.springboot.common.tools.DTOMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,10 +18,10 @@ public class CardModelService {
     private final CardModelRepository cardRepository;
     private final CardReferenceService cardRefService;
     private Random rand;
-    private final DTOMapper dtoMapper;
+    private CardMapper cardMapper;
 
-    public CardModelService(CardModelRepository cardRepository, CardReferenceService cardRefService, DTOMapper dtoMapper) {
-        this.dtoMapper = dtoMapper;
+    public CardModelService(CardModelRepository cardRepository, CardReferenceService cardRefService, CardMapper cardMapper) {
+        this.cardMapper = cardMapper;
         this.rand = new Random();
         // Dependencies injection by constructor
         this.cardRepository = cardRepository;
@@ -38,7 +36,7 @@ public class CardModelService {
 
     public CardDTO addCard(CardModel cardModel) {
         CardModel cDb = cardRepository.save(cardModel);
-        return dtoMapper.fromCardModelToCardDTO(cDb);
+        return cardMapper.toDto(cDb);
     }
 
     public void updateCardRef(CardModel cardModel) {
@@ -48,7 +46,7 @@ public class CardModelService {
 
     public CardDTO updateCard(CardModel cardModel) {
         CardModel cDb = cardRepository.save(cardModel);
-        return dtoMapper.fromCardModelToCardDTO(cDb);
+        return cardMapper.toDto(cDb);
     }
 
     public Optional<CardModel> getCard(Integer id) {
