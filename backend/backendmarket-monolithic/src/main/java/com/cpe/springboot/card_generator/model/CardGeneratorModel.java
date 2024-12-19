@@ -1,7 +1,8 @@
-package com.cpe.springboot.card_generator.controller;
+package com.cpe.springboot.card_generator.model;
 
 
 import com.cpe.springboot.card.model.CardBasics;
+import com.cpe.springboot.card.model.CardDTO;
 import com.cpe.springboot.card.model.CardModel;
 import com.cpe.springboot.store.model.StoreTransaction;
 import com.cpe.springboot.user.model.UserModel;
@@ -27,7 +28,7 @@ public class CardGeneratorModel extends CardBasics {
     @JoinColumn
     private UserModel user;
     @ManyToOne
-    @JoinColumn(name = "store_id")
+    @JoinColumn
     private StoreTransaction store;
 
     private boolean imageGenerated = false;
@@ -49,6 +50,15 @@ public class CardGeneratorModel extends CardBasics {
 
     public CardGeneratorModel(CardBasics cardBasic) {
         super(cardBasic);
+    }
+
+    public CardGeneratorModel(CardDTO cardDTO) {
+        super(new CardBasics(cardDTO.getName(), cardDTO.getDescription(), cardDTO.getFamily(), cardDTO.getAffinity(), cardDTO.getImgUrl(), cardDTO.getSmallImgUrl()));
+        this.energy = cardDTO.getEnergy();
+        this.hp = cardDTO.getHp();
+        this.defence = cardDTO.getDefence();
+        this.attack = cardDTO.getAttack();
+        this.price = cardDTO.getPrice();
     }
 
     public CardGeneratorModel(String descriptionPrompt, String imagePrompt) {
@@ -179,10 +189,10 @@ public class CardGeneratorModel extends CardBasics {
         cardModel.setHp(this.hp);
         cardModel.setImgUrl(super.getImgUrl());
         cardModel.setSmallImgUrl(super.getSmallImgUrl());
-        cardModel.setPrice(this.price);
         cardModel.setDescription(super.getDescription());
         cardModel.setUser(this.user);
         cardModel.setStore(this.store);
+        cardModel.setPrice(cardModel.computePrice());
         return cardModel;
     }
 }

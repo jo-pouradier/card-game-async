@@ -1,6 +1,6 @@
 package com.cpe.springboot.card_generator.acync_process;
 
-import com.cpe.springboot.card_generator.controller.CardGeneratorModel;
+import com.cpe.springboot.card_generator.model.CardGeneratorModel;
 import com.cpe.springboot.generation.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
@@ -25,9 +25,10 @@ public class CardGeneratorBrokerSender {
 
     public void sendGenerationDTO(GenerationDTOAbstact generationDTO, GenerationType generationType) {
         logger.info(queueName.replace("{GENERATION_TYPE}", generationType.name()));
+        System.out.println("type: " + generationDTO.getClass().getName());
         jmsTemplate.convertAndSend(queueName.replace("{GENERATION_TYPE}", generationType.name()), generationDTO,
                 message -> {
-                    message.setStringProperty("ObjectType", generationDTO.getClass().getCanonicalName());
+                    message.setJMSType(generationDTO.getClass().getName());
                     return message;
                 }
         );

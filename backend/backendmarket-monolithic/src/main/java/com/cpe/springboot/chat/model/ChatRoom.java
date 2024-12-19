@@ -1,37 +1,35 @@
 package com.cpe.springboot.chat.model;
 
 import com.cpe.springboot.user.model.UserModel;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
-public class Room {
+public class ChatRoom {
     @Id
-    private int id;
+    private UUID uuid;
 
     private String name;
 
     private boolean isGlobal;
 
-
-    @OneToMany(cascade = CascadeType.ALL,
-            mappedBy = "id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UserModel> users;
 
     @OneToMany(cascade = CascadeType.ALL,
-            mappedBy = "room")
+            mappedBy = "chatRoom", fetch = FetchType.LAZY)
     private List<ChatMessage> messages;
 
-    public void setId(int id) {
-        this.id = id;
+    private long timestamp;
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
-    public int getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getName() {
@@ -64,5 +62,13 @@ public class Room {
 
     public void setUsers(List<UserModel> users) {
         this.users = users;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

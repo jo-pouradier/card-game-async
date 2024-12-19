@@ -1,11 +1,13 @@
 package com.cpe.springboot.chat.model;
 
 import com.cpe.springboot.user.model.UserDTO;
+import com.cpe.springboot.user.model.UserModel;
 
 import java.util.List;
+import java.util.UUID;
 
-public class RoomDTO {
-    private int id;
+public class ChatRoomFullDTO {
+    private UUID uuid;
 
     private String name;
 
@@ -15,12 +17,14 @@ public class RoomDTO {
 
     private List<ChatMessageDTO> messages;
 
-    public void setId(int id) {
-        this.id = id;
+    private long timestamp;
+
+    public UUID getUuid() {
+        return this.uuid;
     }
 
-    public int getId() {
-        return id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getName() {
@@ -53,5 +57,13 @@ public class RoomDTO {
 
     public void setUsers(List<UserDTO> users) {
         this.users = users;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

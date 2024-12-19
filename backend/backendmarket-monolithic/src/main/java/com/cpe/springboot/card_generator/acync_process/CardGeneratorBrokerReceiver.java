@@ -27,7 +27,7 @@ public class CardGeneratorBrokerReceiver {
     @JmsListener(destination = "${generation-output.queue.name}", containerFactory = "queueConnectionFactory")
     public void receiveMessage(TextMessage message) {
         try {
-            String clazz = message.getStringProperty("ObjectType");
+            String clazz = message.getJMSType();
             GenerationDTOAbstact object = (GenerationDTOAbstact) objectMapper.readValue(message.getText(), Class.forName(clazz));
             switch (object.getGenerationType()) {
                 case IMAGE:

@@ -1,8 +1,10 @@
 package com.cpe.springboot.chat.model;
 
-public class ChatMessageDTO {
+import java.util.UUID;
 
-    private int id;
+public class ChatMessageDTO implements ChatBrokerReceivable {
+
+    private UUID uuid;
 
     private String content;
 
@@ -10,14 +12,14 @@ public class ChatMessageDTO {
 
     private Long timestamp;
 
-    private int roomId;
+    private UUID roomUuid;
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
-    public int getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getContent() {
@@ -44,11 +46,15 @@ public class ChatMessageDTO {
         this.timestamp = timestamp;
     }
 
-    public int getRoomId() {
-        return roomId;
+    public UUID getRoomUuid() {
+        return this.roomUuid;
     }
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
+    public void setRoomUuid(UUID roomUuid) {
+        this.roomUuid = roomUuid;
+    }
+
+    public void handle(ChatBrokerHandler handler) {
+        handler.handle(this);
     }
 }

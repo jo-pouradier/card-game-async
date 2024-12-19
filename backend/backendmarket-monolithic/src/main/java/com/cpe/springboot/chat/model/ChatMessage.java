@@ -2,33 +2,33 @@ package com.cpe.springboot.chat.model;
 
 import com.cpe.springboot.user.model.UserModel;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+
+import java.util.UUID;
 
 @Entity
 public class ChatMessage {
     @Id
-    private int id;
+    private UUID uuid;
 
     private String content;
 
     @ManyToOne
-    @JoinColumn
     private UserModel user;
 
-    private Long timestamp;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ChatRoom chatRoom;
 
-    @ManyToOne
-    @JoinColumn
-    private Room room;
+    private long timestamp;
 
-    public void setId(int id) {
-        this.id = id;
+    public UUID getUuid() {
+        return uuid;
     }
 
-    public int getId() {
-        return id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getContent() {
@@ -48,18 +48,18 @@ public class ChatMessage {
     }
 
     public Long getTimestamp() {
-        return timestamp;
+        return this.timestamp;
     }
 
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
-    public Room getRoom() {
-        return room;
+    public ChatRoom getRoom() {
+        return chatRoom;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
     }
 }
