@@ -4,6 +4,7 @@ import userRepository, { IUser } from "./userRepository";
 import roomRepository from "./roomRepository";
 import chatRepository, { chat } from "./chatRepository";
 
+
 export const io = new Server(server, {
   cors: {
     origin: "*", // On autorise tout le monde à se connecter
@@ -159,7 +160,7 @@ io.on("connection", (socket: Socket) => {
     });
     // check both ready
     if (
-      room.players.filter((player) => player.isReadyToPlay === true).length ===
+      room.players.filter((player) => player.isReadyToPlay).length ===
       2
     ) {
       // emit both deck in the right order
@@ -203,6 +204,25 @@ io.on("connection", (socket: Socket) => {
       roomRepo.removePlayer(userId);
     }
   });
+
+  socket.on('attack', (data: {card1: {cardId:number, playerId:number }, card2: {cardId:number, opponentId:number}}) => {
+    console.log("attack", data);
+    const room = roomRepo.getRoomByPlayer(<number>userRepo.getUserId(socket.id));
+    if (room === undefined) {
+      return;
+    }
+    const sender = data.card1.playerId;
+    const receiver = data.card2.opponentId;
+    const senderSocket = userRepo.getSocketId(sender);
+    const receiverSocket = userRepo.getSocketId(receiver);
+    if (senderSocket === undefined || receiverSocket === undefined) {
+      return;
+    }
+    io.to(receiverSocket).emit("attack", data);
+
+  });
+
+
 
   socket.on("joinRoom", (roomId: string) => {
     socket.join(roomId);
