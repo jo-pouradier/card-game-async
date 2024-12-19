@@ -15,6 +15,7 @@ export interface CardSelection extends ICard {
 }
 
 const CardSelection = () => {
+  const [isCardsLoading, setIsCardsLoading] = useState(false);
   const [selectedCard, setSelectedCard] = useState<number[]>([]);
   const [cards, setCards] = useState<ICard[]>([]);
   const user = useAppSelector(selectUser);
@@ -27,14 +28,15 @@ const CardSelection = () => {
     const fetchCards = async () => {
       const data = await getCards();
       if (active) {
-        setCards(data);
+        setCards(data.filter((card) => card.userId === user.id));
       }
     };
-    fetchCards();
+    setIsCardsLoading(() => true);
+    fetchCards().finally(() => setIsCardsLoading(() => false));
     return () => {
       active = false;
     };
-  }, []);
+  }, [user.id]);
 
   const handleCardSelection = (selected: boolean, cardId: number) => {
     if (selected) {
@@ -52,22 +54,16 @@ const CardSelection = () => {
     navigate('/game/waiting');
   }
 
-
-  socket.on('gameFound', (card1:number, card2:number, card3:number, card4:number, card5:number, card6:number, card7:number, card8:number, card9:number, card10:number) => {
-    navigate(`/game/playing?card1=${card1}&card2=${card2}&card3=${card3}&card4=${card4}&card5=${card5}&card6=${card6}&card7=${card7}&card8=${card8}&card9=${card9}&card10=${card10}`);
-  });
-
-
   return (
     <>
       <Container style={{ height: "50vh", overflowY: "scroll" }}>
         <Grid2 container spacing={1} direction={"row"}>
-          {cards
-            .filter((card) => card.id !== user.id)
+          {isCardsLoading && <Typography>Loading...</Typography>}
+          {cards.length !== 0 ? cards
             .map(
               (
                 card,
-                index, // TODO change for ===
+                index,
               ) => (
                 <Grid2 size={3} key={index}>
                   <CardSelect
@@ -77,7 +73,7 @@ const CardSelection = () => {
                   />
                 </Grid2>
               ),
-            )}
+            ) : <Typography>No cards found</Typography>}
         </Grid2>
       </Container>
       <Container style={{ marginTop: "2rem" }}>

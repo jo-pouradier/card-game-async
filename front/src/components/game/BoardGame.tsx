@@ -17,7 +17,9 @@ export interface BoardGameProps {
 const BoardGame = (_props: BoardGameProps) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isAttackLoading, setIsAttackLoading] = useState(false);
+  const [isOpponentCardLoading, setIsOpponentCardLoading] = useState(false);
+  const [isUserCardLoading, setIsUserCardLoading] = useState(false);
   const [userCards, setUserCards] = useState<ICard[]>([]);
   const [opponentCards, setOpponentCards] = useState<ICard[]>([]);
   const [currentOpponentCard, setCurrentOpponentCard] = useState<ICard | null>(
@@ -29,14 +31,21 @@ const BoardGame = (_props: BoardGameProps) => {
 
   useEffect(() => {
     socket.on("decks", (decks: { deck1: number[]; deck2: number[] }) => {
-      fetchMultipleCards(decks.deck1).then((data) => {
-        console.log("Fetched cards for current player", data);
-        setUserCards((previous: ICard[]) => [...previous, ...data]);
-      }); // Fetch user cards
-      fetchMultipleCards(decks.deck2).then((data) => {
-        console.log("Fetched cards for opponent", data);
-        setOpponentCards((previous: ICard[]) => [...previous, ...data]);
-      });
+      console.log("Decks received", decks);
+      setIsOpponentCardLoading(() => true);
+      setIsUserCardLoading(() => true);
+      fetchMultipleCards(decks.deck1)
+        .then((data) => {
+          console.log("Fetched cards for current player", data);
+          setUserCards((previous: ICard[]) => [...previous, ...data]);
+        })
+        .finally(() => setIsUserCardLoading(() => false));
+      fetchMultipleCards(decks.deck2)
+        .then((data) => {
+          console.log("Fetched cards for opponent", data);
+          setOpponentCards((previous: ICard[]) => [...previous, ...data]);
+        })
+        .finally(() => setIsOpponentCardLoading(() => false));
     });
 
     socket.emit("readyToPlay", user.id);
@@ -58,11 +67,11 @@ const BoardGame = (_props: BoardGameProps) => {
   };
 
   const attack = () => {
-    setIsLoading(() => true);
+    setIsAttackLoading(() => true);
     console.log("Attack", currentPlayerCard, currentOpponentCard);
     // TODO: implement socket communication
     setTimeout(() => {
-      setIsLoading(() => false);
+      setIsAttackLoading(() => false);
       dispatch(
         addNotification({
           id: Math.round(Math.random() * 10000),
@@ -72,29 +81,21 @@ const BoardGame = (_props: BoardGameProps) => {
     }, 2000);
   };
 
-  // useEffect(() => {
-  //   fetchMultipleCards(user.cardList).then((data) => {
-  //     console.log("Fetched cards", data);
-  //     setUserCards((previous: ICard[]) => [...previous, ...data]);
-  //   }); // Fetch user cards
-  //   fetchMultipleCards(user.cardList).then((data) =>
-  //     setOpponentCards((previous: ICard[]) => [...previous, ...data]),
-  //   ); // TODO: Fetch opponent cards from props
-  // }, [user]);
-
   return (
     <Container>
-      {createCardList(userCards, currentPlayerCard, handleCardClick)}
+      {
+      isOpponentCardLoading ? <p>Loading opponent cards...</p> : createCardList(opponentCards, currentOpponentCard, handleCardClick)
+      }
       <Divider textAlign="center">
         {" "}
         <Button
-          variant={isLoading ? "outlined" : "contained"}
+          variant={isAttackLoading ? "outlined" : "contained"}
           onClick={() => attack()}
         >
-          {isLoading ? "Loading" : "Attack"}
+          {isAttackLoading ? "Loading" : "Attack"}
         </Button>{" "}
       </Divider>
-      {createCardList(opponentCards, currentOpponentCard, handleCardClick)}
+      {isUserCardLoading ? <p>Loading User cards ...</p> : createCardList(userCards, currentPlayerCard, handleCardClick)}
     </Container>
   );
 };

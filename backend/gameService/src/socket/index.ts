@@ -165,18 +165,36 @@ io.on("connection", (socket: Socket) => {
       // emit both deck in the right order
       const deckCurrentPlayer = Array.from(userRepo.getDeck(userId) ?? []);
       const otherPlayerId =
-        room.players.filter((player) => player.userId !== userId)[0].userId ??
-        0;
-      const deckOtherPlayer = userRepo.getDeck(otherPlayerId);
+        room.players.filter((player) => player.userId !== userId)[0].userId;
+      if (otherPlayerId === undefined || otherPlayerId === null) {
+        io.to(socket.id).emit("notification", "Error with other player");
+        console.log("Error sending deck with other player");
+        return;
+      }
+      const deckOtherPlayer = Array.from(userRepo.getDeck(otherPlayerId)?? []);
+      const otherPlayerSocket = userRepo.getSocketId(otherPlayerId);
+      if (deckCurrentPlayer.length !== 5 || deckOtherPlayer.length !== 5) {
+        console.log("Error with deck length");
+        console.log("deckCurrentPlayer", deckCurrentPlayer);
+        console.log("deckOtherPlayer", deckOtherPlayer);
+        return;
+      }
 
-      socket.emit("decks", {
+      if (otherPlayerSocket === undefined) {
+        io.to(socket.id).emit("notification", "Error with your socket");
+        console.log("Error getting socket for other player");
+        return;
+      }
+
+      io.to(socket.id).emit("decks", {
         deck1: deckCurrentPlayer,
         deck2: deckOtherPlayer,
       });
-      io.to(userRepo.getSocketId(otherPlayerId) ?? "").emit("decks", {
+      io.to(otherPlayerSocket).emit("decks", {
         deck2: deckCurrentPlayer,
         deck1: deckOtherPlayer,
       });
+      console.log("Sended decks to both players");
     }
   });
   // Quitter la recherche de combat
@@ -193,7 +211,16 @@ io.on("connection", (socket: Socket) => {
 
   socket.on("leaveRoom", (roomId: string) => {
     socket.leave(roomId);
+    roomRepo.removePlayer(userRepo.getUserId(socket.id));
     console.log(`${socket.id} a quitté la room ${roomId}`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Un utilisateur s'est déconnecté :", socket.id);
+    const user = userRepo.getUserId(socket.id);
+    userRepo.deleteUser(socket.id);
+    roomRepo.removePlayer(user);
+    io.emit("playerDisconnected", user);
   });
 
   socket.on("getDecks", (userId: number, socketId: number) => {

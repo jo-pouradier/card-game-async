@@ -28,7 +28,7 @@ const UserSimpleDisplay = (props: UserSimpleDisplayProps) => {
       <CardActions>
         <IconButton disabled>
           <AttachMoney sx={{ verticalAlign: "middle", marginRight: 1 }} />
-          {props.money} $
+          {props.account} $
         </IconButton>
       </CardActions>
     </Card>
