@@ -4,7 +4,7 @@ import { capitalize, Card, CardHeader } from "@mui/material";
 export interface UserShortDisplayProps {
   surname?: string;
   lastname?: string;
-  money?: number;
+  account?: number;
 }
 
 const UserShortDisplay = (props: UserShortDisplayProps) => {
@@ -16,7 +16,7 @@ const UserShortDisplay = (props: UserShortDisplayProps) => {
             sx={{ color: "primary.main", width: 56, height: 56 }}
           />
         }
-        title={`${capitalize(props.surname ?? "")} ${(props.lastname ?? "").toUpperCase()}, ${props.money ?? 0}$`}
+        title={`${capitalize(props.surname ?? "")} ${(props.lastname ?? "").toUpperCase()}, ${props.account ?? 0}$`}
       />
     </Card>
   );

@@ -85,7 +85,7 @@ export const getCardById = async (id: number) => {
     if (response.status !== 200) {
       return { id: 0 } as ICard;
     }
-    const data = await response.json();
+    const data: ICard = await response.json();
     return data;
   } catch (error) {
     console.log(error);

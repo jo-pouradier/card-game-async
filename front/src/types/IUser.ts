@@ -6,6 +6,5 @@ export default interface IUser {
   lastName: string;
   email: string;
   pwd: string;
-  money: number;
   cardList: number[];
 }
