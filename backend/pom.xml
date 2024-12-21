@@ -12,6 +12,7 @@
         <module>backendmarket-monolithic</module>
         <module>generation</module>
         <module>CommonModel</module>
+        <module>Logger</module>
     </modules>
 
 

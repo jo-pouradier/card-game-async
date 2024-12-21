@@ -2,10 +2,10 @@ package com.cpe.springboot.store.controller;
 
 import com.cpe.springboot.card.controller.CardModelService;
 import com.cpe.springboot.card.model.CardDTO;
+import com.cpe.springboot.card.model.CardMapper;
 import com.cpe.springboot.card.model.CardModel;
-import com.cpe.springboot.card_generator.controller.CardGeneratorModel;
+import com.cpe.springboot.card_generator.model.CardGeneratorModel;
 import com.cpe.springboot.card_generator.controller.CardGeneratorService;
-import com.cpe.springboot.common.tools.DTOMapper;
 import com.cpe.springboot.store.model.CardGeneratorDTO;
 import com.cpe.springboot.store.model.StoreAction;
 import com.cpe.springboot.store.model.StoreTransaction;
@@ -18,6 +18,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class StoreService {
@@ -26,17 +28,18 @@ public class StoreService {
     private final CardModelService cardService;
     private final UserService userService;
     private final StoreRepository storeRepository;
-    private final DTOMapper dtoMapper;
+    private final CardMapper cardMapper;
 
     public final static Integer CURRENT_STORE_ID = -1;
 
-    public StoreService(CardGeneratorService cardGeneratorService, CardModelService cardService, UserService userService, StoreRepository storeRepository, DTOMapper dtoMapper) {
+    public StoreService(CardGeneratorService cardGeneratorService, CardModelService cardService, UserService userService, StoreRepository storeRepository, CardMapper cardMapper) {
         this.cardGeneratorService = cardGeneratorService;
         this.cardService = cardService;
         this.userService = userService;
         this.storeRepository = storeRepository;
-        this.dtoMapper = dtoMapper;
+        this.cardMapper = cardMapper;
     }
+
 
     public boolean buyCardInternal(Integer user_id, Integer card_id) {
         return buyCard(user_id, card_id, CURRENT_STORE_ID);
@@ -93,12 +96,9 @@ public class StoreService {
     }
 
     public List<CardDTO> listCardToSell() {
-        List<CardDTO> list = new ArrayList<>();
-        for (CardModel c : cardService.getAllCardToSell()) {
-            CardDTO cLight = dtoMapper.fromCardModelToCardDTO(c);
-            list.add(cLight);
-        }
-        return list;
+        return StreamSupport
+                .stream(cardMapper.toDto(cardService.getAllCardToSell()).spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     public List<CardDTO> listCardToSellBtob() {

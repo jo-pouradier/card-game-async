@@ -1,8 +1,6 @@
 import { Box, Container, Grid2 as Grid, Paper } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import User from "../components/user/User";
 import UserForm from "../components/user/UserForm";
-import IUser from "../types/IUser";
 import { UserDisplayLabelEnums } from "../types/UserDisplayLabelEnums";
 
 export interface FormDisplayProps {
@@ -10,12 +8,6 @@ export interface FormDisplayProps {
 }
 
 const FormDisplay = (props: FormDisplayProps) => {
-  const navigate = useNavigate();
-
-  const redirectHandler = (data: IUser) => {
-    console.log("user to submit", data);
-    navigate("/display");
-  };
 
   const id = props.id ?? -1;
 
@@ -28,7 +20,7 @@ const FormDisplay = (props: FormDisplayProps) => {
             <Grid size={4}>
               <Paper elevation={3}>
                 <Box p={2}>
-                  <UserForm redirect={redirectHandler} />
+                  <UserForm  />
                 </Box>
               </Paper>
             </Grid>
@@ -48,7 +40,7 @@ const FormDisplay = (props: FormDisplayProps) => {
         <Container>
           <Paper elevation={3}>
             <Box p={2}>
-              <UserForm redirect={redirectHandler} />
+              <UserForm  />
             </Box>
           </Paper>
         </Container>

@@ -1,5 +1,6 @@
 package com.cpe.springboot.asyncProcess;
 
+import com.cpe.springboot.generation.GenerationDTOAbstact;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,10 +41,10 @@ public class BrokerSender {
         return objectMapper;
     }
 
-    public void sendMessage(Object msg) {
+    public void sendMessage(GenerationDTOAbstact msg) {
         jmsTemplate.convertAndSend(queueName, msg,
                 message -> {
-                    message.setStringProperty("ObjectType", msg.getClass().getCanonicalName());
+                    message.setJMSType(msg.getClass().getName());
                     return message;
                 });
     }
