@@ -14,7 +14,7 @@ class RoomRepository {
   private idRoom: number;
   waitingRoom: Room;
 
-  constructor() {
+  constructor({}) {
     this.rooms = new Set();
     this.idRoom = 1;
     this.waitingRoom = {
@@ -91,4 +91,4 @@ class RoomRepository {
   }
 }
 
-export default RoomRepository;
+export default new RoomRepository({});

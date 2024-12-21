@@ -40,6 +40,14 @@ public class NotificationDTO<T extends INotificationMessage> {
         this.message.createMessage(message);
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public NotificationSeverity getSeverity() {
         return severity;
     }

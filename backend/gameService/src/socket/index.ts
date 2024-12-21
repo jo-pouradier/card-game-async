@@ -12,9 +12,9 @@ export const io = new Server(server, {
   },
 });
 
-const userRepo = new userRepository();
-const roomRepo = new roomRepository();
-const chatRepo = new chatRepository();
+const userRepo = userRepository;
+const roomRepo = roomRepository;
+const chatRepo = chatRepository;
 
 io.on("connection", (socket: Socket) => {
   socket.on("message", (msg: chat) => {
