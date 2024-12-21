@@ -4,7 +4,6 @@ import userRepository, { IUser } from "./userRepository";
 import roomRepository from "./roomRepository";
 import chatRepository, { chat } from "./chatRepository";
 
-
 export const io = new Server(server, {
   cors: {
     origin: "*", // On autorise tout le monde à se connecter
@@ -97,9 +96,12 @@ io.on("connection", (socket: Socket) => {
       );
       return;
     }
-    console.log(`findMatch: `+ user);
+    console.log(`findMatch: ` + user);
     if (roomRepo.getRoomByPlayer(user.id) !== undefined) {
-      socket.emit("notification", "Somthing went worng you are olready in game")
+      socket.emit(
+        "notification",
+        "Somthing went worng you are olready in game"
+      );
       return;
     }
 
@@ -136,7 +138,7 @@ io.on("connection", (socket: Socket) => {
             user.id
           )} et ${userRepo.getUserName(player)}`
         );
-        console.log("Combat trouvé")
+        console.log("Combat trouvé");
         io.to([socket.id, playerSocket]).emit("gameFound", roomId);
       }
     }
@@ -159,20 +161,18 @@ io.on("connection", (socket: Socket) => {
       if (player.userId === userId) player.isReadyToPlay = true;
     });
     // check both ready
-    if (
-      room.players.filter((player) => player.isReadyToPlay).length ===
-      2
-    ) {
+    if (room.players.filter((player) => player.isReadyToPlay).length === 2) {
       // emit both deck in the right order
       const deckCurrentPlayer = Array.from(userRepo.getDeck(userId) ?? []);
-      const otherPlayerId =
-        room.players.filter((player) => player.userId !== userId)[0].userId;
+      const otherPlayerId = room.players.filter(
+        (player) => player.userId !== userId
+      )[0].userId;
       if (otherPlayerId === undefined || otherPlayerId === null) {
         io.to(socket.id).emit("notification", "Error with other player");
         console.log("Error sending deck with other player");
         return;
       }
-      const deckOtherPlayer = Array.from(userRepo.getDeck(otherPlayerId)?? []);
+      const deckOtherPlayer = Array.from(userRepo.getDeck(otherPlayerId) ?? []);
       const otherPlayerSocket = userRepo.getSocketId(otherPlayerId);
       if (deckCurrentPlayer.length !== 5 || deckOtherPlayer.length !== 5) {
         console.log("Error with deck length");
@@ -205,24 +205,35 @@ io.on("connection", (socket: Socket) => {
     }
   });
 
-  socket.on('attack', (data: {card1: {cardId:number, playerId:number }, card2: {cardId:number, opponentId:number}}) => {
-    console.log("attack", data);
-    const room = roomRepo.getRoomByPlayer(<number>userRepo.getUserId(socket.id));
-    if (room === undefined) {
-      return;
+  socket.on(
+    "attack",
+    (data: {
+      card1: { cardId: number; playerId: number };
+      card2: { cardId: number; opponentId: number };
+    }) => {
+      console.log("attack", data);
+      const room = roomRepo.getRoomByPlayer(
+        <number>userRepo.getUserId(socket.id)
+      );
+      if (room === undefined) {
+        return;
+      }
+      console.log(
+        "Send attack to room",
+        room.id,
+        "and players :",
+        room.players
+      );
+      const roomSockets = room.players
+        .map((user) =>
+          user.userId !== null && user.userId !== undefined
+            ? userRepo.getSocketId(user.userId) ?? ""
+            : ""
+        )
+        .filter((socketId) => socketId !== "");
+      io.to(roomSockets).emit("attack", data);
     }
-    const sender = data.card1.playerId;
-    const receiver = data.card2.opponentId;
-    const senderSocket = userRepo.getSocketId(sender);
-    const receiverSocket = userRepo.getSocketId(receiver);
-    if (senderSocket === undefined || receiverSocket === undefined) {
-      return;
-    }
-    io.to(receiverSocket).emit("attack", data);
-
-  });
-
-
+  );
 
   socket.on("joinRoom", (roomId: string) => {
     socket.join(roomId);
