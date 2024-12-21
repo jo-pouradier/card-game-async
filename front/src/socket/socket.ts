@@ -15,7 +15,6 @@ export const initSocket = (dispatch: AppDispatch) => {
       severity: "info",
     }));
   }
-
   socket.on("notification", onNotification);
 
   return () => {

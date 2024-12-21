@@ -14,7 +14,7 @@ class ChatRepository {
     private chatRooms: Set<chatRoom>;
     private readonly ids: number = 0;
 
-    constructor() {
+    constructor({}) {
         this.chatRooms = new Set();
     }
 
@@ -44,4 +44,4 @@ class ChatRepository {
 }
 
 
-export default ChatRepository;
+export default new ChatRepository({});

@@ -19,7 +19,7 @@ export interface IUser {
 class UserSocketRepository {
     private users: Set<UserSocket>; // Map de userId -> socketId
 
-    constructor() {
+    constructor({}) {
         this.users = new Set();
     }
 
@@ -92,5 +92,5 @@ class UserSocketRepository {
 
 }
 
-export default UserSocketRepository;
+export default new UserSocketRepository({});
 export type { UserSocket };
