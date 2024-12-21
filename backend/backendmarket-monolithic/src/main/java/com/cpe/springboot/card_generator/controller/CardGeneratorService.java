@@ -5,6 +5,7 @@ import com.cpe.springboot.card.controller.CardReferenceService;
 import com.cpe.springboot.card.model.CardDTO;
 import com.cpe.springboot.card.model.CardReference;
 import com.cpe.springboot.card_generator.acync_process.CardGeneratorBrokerSender;
+import com.cpe.springboot.card_generator.model.CardGeneratorModel;
 import com.cpe.springboot.generation.ImageGenerationDTO;
 import com.cpe.springboot.generation.PropertiesGenerationDTO;
 import com.cpe.springboot.generation.TextGenerationDTO;
