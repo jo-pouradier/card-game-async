@@ -4,6 +4,7 @@ const AttackIcon = createSvgIcon(
     width="800px"
     height="800px"
     viewBox="0 0 512 512"
+    // eslint-disable-next-line react/no-unknown-property
     enable-background="new 0 0 512 512"
     id="Sword"
     version="1.1"

@@ -47,8 +47,10 @@ const ConnectedUserList = (props: ConnectedUserListProps) => {
       <h2>Connected Users</h2>
       <Select defaultValue={-1} onChange={(e) => props.setCurrentChat(Number(e.target.value))}>
         <MenuItem value={-1}>Global Chat</MenuItem>
-        {users.map((user: UserSocket) => (
-          <MenuItem value={user.userId}>{user.userName}</MenuItem>
+        {users.map((user: UserSocket, index: number) => (
+          <MenuItem key={index} value={user.userId}>
+            {user.userName}
+          </MenuItem>
         ))}
       </Select>
     </div>
