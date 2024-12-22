@@ -1,29 +1,24 @@
 package com.cpe.springboot.spring;
 
 import com.cpe.springboot.asyncProcess.BrokerReceiver;
+import com.cpe.springboot.generation.GenerationType;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.jms.ConnectionFactory;
-import jakarta.jms.MessageListener;
-import jakarta.jms.TextMessage;
-import jakarta.persistence.GenerationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.annotation.JmsListenerConfigurer;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerEndpointRegistrar;
 import org.springframework.jms.config.SimpleJmsListenerEndpoint;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +58,8 @@ public class JmsListenerConfig implements JmsListenerConfigurer {
 
     @Value("${nodejs-messaging.queue.name}")
     private String nodejsMessagingQueueName;
+    @Value("${chat.queue.name}")
+    private String chatQueueName;
 
     @Autowired
     private BrokerReceiver messageListener;
@@ -76,6 +73,7 @@ public class JmsListenerConfig implements JmsListenerConfigurer {
         }
         queueNames.add(generationOutputQueueName + queuePattern);
         queueNames.add(nodejsMessagingQueueName + queuePattern);
+        queueNames.add(chatQueueName + queuePattern);
 
         int counter = 1;
 
@@ -91,6 +89,7 @@ public class JmsListenerConfig implements JmsListenerConfigurer {
             counter++;
         }
     }
+
     @Bean
     public DefaultJmsListenerContainerFactory jmsTopicListenerContainerFactory(ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();

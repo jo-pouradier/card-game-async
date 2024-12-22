@@ -1,53 +1,22 @@
-# React + TypeScript + Vite
+# Front
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Chat
 
-Currently, two official plugins are available:
+The chat UI is already created, the only issue is notifing the user when a new message is received and storing the messages outside the component.
+With the current app architecture, we'll store the messages in the redux store. And listend the socket event globally in the app
+to update the store.
+Thus we'll be able to add a little notif to the user when a new message is received.
+With the message property `isRead` we can also know if the user has read the message or not.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+TODO:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from "eslint-plugin-react";
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: "18.3" } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs["jsx-runtime"].rules,
-  },
-});
-```
+- [x] Create the redux store
+- [x] Listen the socket event globally
+- [x] Add a notif (via notifications) to the user when a new message is received
+- [ ] Add a `isRead` property to the message
+- [ ] Add a notif (via a little `(n)` on the chat) to the user when a new message is received, until the message is read
+- [ ] Listen connected user globally in the app
+- [ ] Update component `ConnectedUserList` to display the connected user via the store
 
 ## React Router Type safe
 

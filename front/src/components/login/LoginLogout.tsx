@@ -1,22 +1,21 @@
 import { useNavigate } from "react-router-dom";
 // import { Button } from "semantic-ui-react";
 import { Button } from "@mui/material";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { addNotification } from "../../slices/notificationSlice";
 import { delete_user_action, selectUser } from "../../slices/userSlice";
+import { socket } from "../../socket/socket.ts";
 
 const LoginLogout = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const current_user = useSelector(selectUser);
+  const current_user = useAppSelector(selectUser) ?? { id: 0 };
   const isLogged = current_user.id !== 0;
 
   const handleClick = () => {
     if (isLogged) {
       dispatch(delete_user_action());
-      navigate("/");
       dispatch(
         addNotification({
           id: Math.random() * 100,
@@ -24,6 +23,8 @@ const LoginLogout = () => {
           severity: "info",
         }),
       );
+      socket.emit("disconnect");
+      navigate("/");
     } else {
       navigate("/login");
     }

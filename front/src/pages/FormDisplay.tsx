@@ -8,7 +8,6 @@ export interface FormDisplayProps {
 }
 
 const FormDisplay = (props: FormDisplayProps) => {
-
   const id = props.id ?? -1;
 
   let content;
@@ -20,7 +19,7 @@ const FormDisplay = (props: FormDisplayProps) => {
             <Grid size={4}>
               <Paper elevation={3}>
                 <Box p={2}>
-                  <UserForm  />
+                  <UserForm />
                 </Box>
               </Paper>
             </Grid>
@@ -40,7 +39,7 @@ const FormDisplay = (props: FormDisplayProps) => {
         <Container>
           <Paper elevation={3}>
             <Box p={2}>
-              <UserForm  />
+              <UserForm />
             </Box>
           </Paper>
         </Container>

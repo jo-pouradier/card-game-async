@@ -55,6 +55,11 @@
             <version>2.2.224</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.cpe.springboot</groupId>
+            <artifactId>CommonModel</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

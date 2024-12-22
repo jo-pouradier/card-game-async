@@ -18,6 +18,7 @@ public class LoggerService {
         if (log.getText().length() > 1000) {
             log.setText(log.getText().substring(0, 1000));
         }
+        System.out.println(log);
         loggerRepository.save(log);
     }
 }

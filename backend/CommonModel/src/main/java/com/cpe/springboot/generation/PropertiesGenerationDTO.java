@@ -8,7 +8,7 @@ public class PropertiesGenerationDTO extends GenerationDTOAbstact {
     private float energy;
     private float hp;
     private float attack;
-    private float defense;
+    private float defence;
 
     public PropertiesGenerationDTO() {
         super(0);
@@ -51,12 +51,12 @@ public class PropertiesGenerationDTO extends GenerationDTOAbstact {
         this.attack = attack;
     }
 
-    public float getDefense() {
-        return this.defense;
+    public float getDefence() {
+        return this.defence;
     }
 
-    public void setDefense(float defense) {
-        this.defense = defense;
+    public void setDefence(float defence) {
+        this.defence = defence;
     }
 
     @Override
