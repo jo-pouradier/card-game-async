@@ -3,8 +3,6 @@ import { server } from "../app";
 import userRepository, { IUser } from "./userRepository";
 import roomRepository from "./roomRepository";
 import chatRepository, { chat } from "./chatRepository";
-import {postInQueue} from "../notification";
-import CONFIG from "../../config.json"
 
 
 export const io = new Server(server, {
@@ -36,27 +34,23 @@ io.on("connection", (socket: Socket) => {
       socket.emit("notification", "Utilisateur inconnu");
       return;
     }
-    if (receiver === -1) {
-      io.emit("message", msg);
-      console.log(`Message envoyé à tout le monde : ${msg.message}`);
-      return;
-    } else if (receiver !== undefined) {
+    if (receiver !== undefined) {
       if (chatRepo.isRoomExist(sender, receiver)) {
         chatRepo.addMessage(sender, receiver, msg);
         console.info("Add message to existing room");
       } else {
-        const chatRoom = chatRepo.createRoom(sender, receiver);
-        postInQueue(
-        {
-          uuid: chatRoom.uuid,
-          name: "room_" + chatRoom.uuid,
-          isGlobal: false,
-          users: [],
-          messages: [],
-          timestamp: new Date()
-        }, CONFIG.connectOptions);
+        chatRepo.createRoom(sender, receiver);
         chatRepo.addMessage(sender, receiver, msg);
       }
+    }else{
+      console.log("Ca doit jamais arriver! Tant pis pour toi. Message non traité:" + msg);
+      return;
+    }
+
+    if (receiver === -1) {
+      io.emit("message", msg);
+      console.log(`Message envoyé à tout le monde : ${msg.message}`);
+      return;
     }
     if (receiverSocket) {
       io.to([receiverSocket, socket.id]).emit("message", msg);

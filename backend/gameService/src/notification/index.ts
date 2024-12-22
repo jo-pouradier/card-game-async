@@ -44,14 +44,15 @@ export const initNotification = (io: Server, connectOptions: ConnectOptions) => 
     });
 };
 
-export const postInQueue = (data: any, connectOptions: ConnectOptions) => {
+export const postInQueue = (data: any, connectOptions: ConnectOptions, dtoType: string) => {
     stompit.connect(connectOptions, (error, client) => {
         if (error) {
             console.error('Connection error: ' + error.message);
             return;
         }
         const frame = client.send({
-            'destination': 'fr.cpe.spring-app.in',
+            'destination': 'CHAT-QUEUE',
+            'type': dtoType,
         });
         frame.write(JSON.stringify(data));
         frame.end();
