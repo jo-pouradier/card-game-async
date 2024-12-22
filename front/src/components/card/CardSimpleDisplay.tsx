@@ -53,7 +53,7 @@ const CardSimpleDisplay = (props: CardSimpleDisplayProps) => {
           <BoltIcon color="warning" />
           <Typography variant="body1">{props?.energy?.toFixed(3)}</Typography>
           <ShieldIcon color="primary" />
-          <Typography variant="body1">{props?.defense?.toFixed(3)}</Typography>
+          <Typography variant="body1">{props?.defence?.toFixed(3)}</Typography>
           {/* <Flare color="warning" /> */}
           <AttackIcon />
           <Typography variant="body1">{props?.attack?.toFixed(3)}</Typography>

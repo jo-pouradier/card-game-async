@@ -28,7 +28,7 @@ const ShopSell = () => {
     { field: "price", headerName: "Price", width: 150 },
     { field: "attack", headerName: "Attack", width: 150 },
     { field: "hp", headerName: "HP", width: 150 },
-    { field: "defense", headerName: "Defense", width: 150 },
+    { field: "defence", headerName: "Defence", width: 150 },
     { field: "energy", headerName: "Energy", width: 150 },
   ];
 
