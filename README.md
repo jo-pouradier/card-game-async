@@ -8,7 +8,7 @@
 - **Joseph POURADIER DUTEIL**
 
 ## Lien du projet :
-
+[Video démo](https://youtu.be/AratjDDY58Y)
 [Projet gitlab](https://gitlab.com/cpelyon/4ETI-2024-2025-ASI-2/groupe-7/atelier1)
 [Projet github](https://github.com/jo-pouradier/card-game-async)
 
