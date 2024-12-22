@@ -15,12 +15,11 @@ export interface CardFormProps {
 }
 
 const CardForm = (props: CardFormProps) => {
-
   const user = useAppSelector(selectUser);
   const [currentCardPrompt, setCurrentCardPrompt] = useState<ICardForm>({
     descriptionPrompt: "",
     imagePrompt: "",
-    userId: user.id
+    userId: user.id,
   });
 
   const processInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +27,7 @@ const CardForm = (props: CardFormProps) => {
 
     setCurrentCardPrompt((prevCard) => ({
       ...prevCard,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -48,7 +47,7 @@ const CardForm = (props: CardFormProps) => {
         gap: 2,
         maxWidth: 400,
         margin: "0 auto",
-        marginBottom: 2
+        marginBottom: 2,
       }}
     >
       <Typography variant="h5" gutterBottom>
@@ -73,13 +72,19 @@ const CardForm = (props: CardFormProps) => {
         value={currentCardPrompt.imagePrompt}
       />
       <Box sx={{ display: "flex", justifyContent: "space-between", gap: 2 }}>
-        {props.isWaitingForGeneration ?
+        {props.isWaitingForGeneration ? (
           <Button variant="outlined" color="primary">
             Generating...
-          </Button> :
-          <Button variant="contained" color="primary" onClick={generateCardHandler}>
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={generateCardHandler}
+          >
             Generate (100$)
-          </Button>}
+          </Button>
+        )}
       </Box>
     </Box>
   );

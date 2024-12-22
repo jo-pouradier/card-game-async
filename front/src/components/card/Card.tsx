@@ -14,19 +14,11 @@ const User = (props: CardProps) => {
   let display: JSX.Element = <></>;
   switch (props.display_type) {
     case CardDisplayLabelEnums.SHORT:
-      display = (
-        <CardShortDisplay
-          {...current_card}
-        ></CardShortDisplay>
-      );
+      display = <CardShortDisplay {...current_card}></CardShortDisplay>;
 
       break;
     case CardDisplayLabelEnums.FULL:
-      display = (
-        <CardSimpleDisplay
-          {...current_card}
-        ></CardSimpleDisplay>
-      );
+      display = <CardSimpleDisplay {...current_card}></CardSimpleDisplay>;
       break;
     default:
       display = <h4>No Display Available</h4>;

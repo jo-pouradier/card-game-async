@@ -35,7 +35,11 @@ const ConnectedUserList = (_props: unknown) => {
             return;
           }
           return (
-            <MenuItem key={index} value={connectedUser.id} disabled={!connectedUser.isConnected}>
+            <MenuItem
+              key={index}
+              value={connectedUser.id}
+              disabled={!connectedUser.isConnected}
+            >
               {connectedUser.username}
             </MenuItem>
           );

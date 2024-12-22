@@ -8,23 +8,23 @@ import { socket } from "../../socket/socket.ts";
 import { useAppDispatch } from "../../hooks.ts";
 
 const ShopCreate = () => {
-    const [generatedCard, setGeneratedCard] = useState<ICard>({
-      id: 0,
-      name: "",
-      family: "",
-      description: "",
-      hp: 0,
-      energy: 0,
-      defense: 0,
-      attack: 0,
-      price: 0,
-      imgUrl: "",
-      affinity: "",
-      smallImgUrl: "",
-      userId: 0
-    });
-    const [isWaitingForGeneration, setIsWaitingForGeneration] = useState(false);
-    const dispatch = useAppDispatch();
+  const [generatedCard, setGeneratedCard] = useState<ICard>({
+    id: 0,
+    name: "",
+    family: "",
+    description: "",
+    hp: 0,
+    energy: 0,
+    defense: 0,
+    attack: 0,
+    price: 0,
+    imgUrl: "",
+    affinity: "",
+    smallImgUrl: "",
+    userId: 0,
+  });
+  const [isWaitingForGeneration, setIsWaitingForGeneration] = useState(false);
+  const dispatch = useAppDispatch();
 
   const onCardGeneratedReceived = useCallback(
     (data: object) => {
@@ -39,11 +39,13 @@ const ShopCreate = () => {
         .catch((error) => {
           console.error("Error:", error);
         });
-      dispatch(addNotification({
-        id: Math.random() * 100,
-        message: "New card added to your collection",
-        severity: "info"
-      }));
+      dispatch(
+        addNotification({
+          id: Math.random() * 100,
+          message: "New card added to your collection",
+          severity: "info",
+        }),
+      );
       setIsWaitingForGeneration(false);
     },
     [dispatch],
@@ -53,45 +55,44 @@ const ShopCreate = () => {
     socket.on("cardGenerated", onCardGeneratedReceived);
   }, [onCardGeneratedReceived]);
 
-    const generateCardHanlder = (card: ICardForm) => {
-      console.log("generate card: ", card);
+  const generateCardHanlder = (card: ICardForm) => {
+    console.log("generate card: ", card);
 
-      fetch("/api/store/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(card)
-      }).then((reponse) => {
+    fetch("/api/store/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(card),
+    })
+      .then((reponse) => {
         console.log("Success:", reponse);
         setIsWaitingForGeneration(true);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.error("Error:", error);
       });
-    };
+  };
 
-
-    return (
-      <Container>
-        <CardForm
-          generateCardHanlder={generateCardHanlder}
-          isWaitingForGeneration={isWaitingForGeneration}
-        />
-        <CardSimpleDisplay
-          id={generatedCard.id}
-          name={generatedCard.name}
-          family={generatedCard.family}
-          description={generatedCard.description}
-          hp={generatedCard.hp}
-          energy={generatedCard.energy}
-          defense={generatedCard.defense}
-          attack={generatedCard.attack}
-          price={generatedCard.price}
-          imgUrl={generatedCard.imgUrl}
-        />
-      </Container>
-    );
-  }
-;
-
+  return (
+    <Container>
+      <CardForm
+        generateCardHanlder={generateCardHanlder}
+        isWaitingForGeneration={isWaitingForGeneration}
+      />
+      <CardSimpleDisplay
+        id={generatedCard.id}
+        name={generatedCard.name}
+        family={generatedCard.family}
+        description={generatedCard.description}
+        hp={generatedCard.hp}
+        energy={generatedCard.energy}
+        defense={generatedCard.defense}
+        attack={generatedCard.attack}
+        price={generatedCard.price}
+        imgUrl={generatedCard.imgUrl}
+      />
+    </Container>
+  );
+};
 export default ShopCreate;
