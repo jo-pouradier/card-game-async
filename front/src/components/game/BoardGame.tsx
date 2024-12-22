@@ -101,6 +101,11 @@ const BoardGame = (_props: BoardGameProps) => {
         if (previous === null) {
           previous = cardAttacked;
         }
+        if (previous.hp <= cardAttacking.attack) {
+          previous.hp = 0;
+          return null;
+        }
+
         previous.hp -= cardAttacking.attack;
         return previous;
       });
