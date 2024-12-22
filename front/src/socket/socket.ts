@@ -24,9 +24,9 @@ export const initSocket = (dispatch: AppDispatch) => {
 };
 
 export const initChat = (dispatch: AppDispatch) => {
-  function onMessage(msg: Message) {
+  function onMessage(msg: Omit<Message, "isRead">) {
     console.info("Message received:", msg);
-    dispatch(add_chat_message_action(msg));
+    dispatch(add_chat_message_action({...msg, isRead: false}));
     dispatch(addNotification({ id: Math.random() * 100000, message: "New message", severity: "info" }));
   }
   socket.on("message", onMessage);

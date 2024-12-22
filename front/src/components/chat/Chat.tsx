@@ -24,7 +24,6 @@ const Chat = (props: ChatProps) => {
     } else {
       dispatch(addNotification({ id: Math.round(Math.random() * 100000), message: "Message cannot be empty", severity: "error" }));
     }
-
   };
 
 
