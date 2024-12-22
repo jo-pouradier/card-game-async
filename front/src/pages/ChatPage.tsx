@@ -1,28 +1,13 @@
-import { useState } from "react";
 import Chat from "../components/chat/Chat";
 import ConnectedUserList from "../components/chat/ConnectedUserList";
 import { useAppSelector } from "../hooks";
-import { Message, selectChat } from "../slices/chatSlice";
+import { selectCurrentUserId } from "../slices/connectedUserSlice";
 import { selectUser } from "../slices/userSlice";
 import { socket } from "../socket/socket";
 
 const ChatPage = () => {
-  console.log('SELECTUSER' , selectUser)
   const user = useAppSelector(selectUser);
-  const globalMessages = useAppSelector(selectChat);
-  const [chatId, setChatId] = useState<number>(-1);
-  const [currentDiscussion, setCurrentDiscussion] = useState<Message[]>([]);
-
-  // Initialize discussions
-  // if (chatId === -1 && globalMessages.length > 0) {
-  //   console.log("Initializing global chat");
-  //   console.log('GLOBALMESSAGES', globalMessages)
-  //   setCurrentDiscussion(
-  //     globalMessages
-  //       .filter((msg) => msg.to === chatId)
-  //       .map((msg) => ({ ...msg, isRead: true })),
-  //   );
-  // }
+  const chatId = useAppSelector(selectCurrentUserId);
 
   const sendMessage = (input: string) => {
     if (!input) {
@@ -62,21 +47,10 @@ const ChatPage = () => {
   //   [chatId],
   // );
 
-  const setCurrentChat = (userId: number) => {
-    setChatId(userId);
-    console.log("Setting chat to:", userId);
-
-    setCurrentDiscussion(
-      globalMessages
-        .filter((msg) => msg.to === userId)
-        .map((msg) => ({ ...msg, isRead: true })),
-    );
-  };
-
   return (
     <>
-      <ConnectedUserList setCurrentChat={setCurrentChat} />
-      <Chat messages={currentDiscussion} sendMessage={sendMessage} />
+      <ConnectedUserList />
+      <Chat sendMessage={sendMessage} />
     </>
   );
 };

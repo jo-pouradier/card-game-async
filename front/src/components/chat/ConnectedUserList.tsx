@@ -1,57 +1,45 @@
-import { useEffect, useState } from "react";
-import { socket } from "../../socket/socket";
-import { Select, MenuItem } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import {
+  selectConnectedUser,
+  selectCurrentUserId,
+  set_current_user_action,
+} from "../../slices/connectedUserSlice";
+import { selectUser } from "../../slices/userSlice";
 
 export interface UserSocket {
-    userId: number;
-    socketId: string;
-    userName: string;
-    deck: Set<number>| null;
-};
+  userId: number;
+  socketId: string;
+  userName: string;
+  deck: Set<number> | null;
+}
 
-export interface ConnectedUserListProps {
-    setCurrentChat: (userId: number) => void;
-};
-
-const ConnectedUserList = (props: ConnectedUserListProps) => {
-  const [users, setUsers] = useState<UserSocket[]>([]);
-
-  useEffect(() => {
-    socket.emit("getPlayers");
-
-    socket.on("players", (players: UserSocket[]) => {
-      setUsers(players);
-    });
-
-    socket.on("newPlayer", (newPlayer: UserSocket) => {
-        console.info("New player connected:", newPlayer);
-      setUsers((prevUsers) => [...prevUsers, newPlayer]);
-    });
-
-    socket.on("playerDisconnected", (disconnectedPlayerId: number) => {
-        console.info("Player disconnected:", disconnectedPlayerId);
-      setUsers((prevUsers) =>
-        prevUsers.filter((user) => user.userId !== disconnectedPlayerId),
-      );
-    });
-
-    return () => {
-      socket.off("players");
-      socket.off("newPlayer");
-      socket.off("playerDisconnected");
-    };
-  }, []);
+const ConnectedUserList = (_props: unknown) => {
+  const user = useAppSelector(selectUser);
+  const connectedUsers = useAppSelector(selectConnectedUser);
+  const currentUserId = useAppSelector(selectCurrentUserId);
+  const dispatch = useAppDispatch();
 
   return (
     <div>
       <h2>Connected Users</h2>
-      <Select defaultValue={-1} onChange={(e) => props.setCurrentChat(Number(e.target.value))}>
+      <Select
+        defaultValue={currentUserId}
+        onChange={(e) =>
+          dispatch(set_current_user_action(Number(e.target.value)))
+        }
+      >
         <MenuItem value={-1}>Global Chat</MenuItem>
-        {users.map((user: UserSocket, index: number) => (
-          <MenuItem key={index} value={user.userId}>
-            {user.userName}
-          </MenuItem>
-        ))}
+        {connectedUsers.map((connectedUser, index: number) => {
+          if (connectedUser.id === user.id) {
+            return;
+          }
+          return (
+            <MenuItem key={index} value={connectedUser.id} disabled={!connectedUser.isConnected}>
+              {connectedUser.username}
+            </MenuItem>
+          );
+        })}
       </Select>
     </div>
   );
