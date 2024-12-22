@@ -7,6 +7,7 @@ import { socket } from "../../socket/socket";
 import ICard from "../../types/ICard";
 import CardShortDisplay from "../card/CardShortDisplay";
 import CardSimpleDisplay from "../card/CardSimpleDisplay";
+import {useNavigate} from "react-router-dom";
 
 export interface BoardGameProps {
   opponentId: number;
@@ -26,6 +27,9 @@ const BoardGame = (_props: BoardGameProps) => {
   const [currentPlayerCard, setCurrentPlayerCard] = useState<ICard | null>(
     null,
   );
+
+  const navigate = useNavigate();
+
 
   const handleCardSetCurrent = useCallback(
     (card: ICard) => {
@@ -86,6 +90,7 @@ const BoardGame = (_props: BoardGameProps) => {
         cardAttacked.userId === user.id
           ? setCurrentPlayerCard
           : setCurrentOpponentCard;
+      const isPlayerAttacking = cardAttacking.userId === user.id;
 
       console.log(
         "Attacking with current setup: cardAttacking=",
@@ -93,6 +98,28 @@ const BoardGame = (_props: BoardGameProps) => {
         ", cardAttacked=",
         cardAttacked,
       );
+
+      let gameIsOver = true;
+      if(isPlayerAttacking) {
+        for (let i = 0; i < opponentCards.length-1; i++) {
+          if (opponentCards[i] !== null && opponentCards[i].hp > 0) {
+            gameIsOver = false;
+          }
+        }
+      } else if(!isPlayerAttacking) {
+        for (let i = 0; i < userCards.length-1; i++) {
+          if (userCards[i] !== null && userCards[i].hp > 0) {
+            gameIsOver = false;
+          }
+        }
+      }
+      console.log("gameIsOver", gameIsOver);
+      console.log("hp", cardAttacked.hp);
+      if (gameIsOver && cardAttacked.hp - cardAttacking.attack <= 0) {
+        console.log("Game Over");
+        socket.emit("gameOver", cardAttacking.userId);
+        navigate("/game/selection");
+      }
 
       handleCardSetCurrent(cardAttacking);
       handleCardSetCurrent(cardAttacked);
@@ -105,7 +132,6 @@ const BoardGame = (_props: BoardGameProps) => {
           previous.hp = 0;
           return null;
         }
-
         previous.hp -= cardAttacking.attack;
         return previous;
       });
@@ -120,6 +146,7 @@ const BoardGame = (_props: BoardGameProps) => {
       opponentCards,
       userCards,
       handleCardSetCurrent,
+      navigate
     ],
   );
 
@@ -156,6 +183,7 @@ const BoardGame = (_props: BoardGameProps) => {
       socket.off("attack", attackAction);
     };
   }, [attackAction]);
+
 
   const sendAttack = () => {
     setIsAttackLoading(() => true);

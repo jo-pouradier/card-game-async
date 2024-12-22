@@ -4,6 +4,7 @@ import userRepository, { IUser } from "./userRepository";
 import roomRepository from "./roomRepository";
 import chatRepository, { chat } from "./chatRepository";
 import {postInQueue} from "../notification";
+// @ts-ignore
 import CONFIG from "../../config.json"
 
 
@@ -247,6 +248,26 @@ io.on("connection", (socket: Socket) => {
       io.to(roomSockets).emit("attack", data);
     }
   );
+
+  socket.on("gameOver", (userId: number) => {
+    console.log("Game over for", userId);
+    const room = roomRepo.getRoomByPlayer(userId);
+    if (room === undefined || room.players.length !== 2) {
+      return;
+    }
+    const loser = room.players.find((player) => player.userId !== userId);
+    if (loser?.userId === undefined || loser.userId === null) {
+      return;
+    }
+    roomRepo.removePlayer(userId);
+    roomRepo.removePlayer(loser.userId);
+    roomRepo.deleteRoom(room.uuid);
+    // @ts-ignore
+    io.to(userRepo.getSocketId(loser.userId)).emit("notification", "You lost!");
+    // @ts-ignore
+    io.to(userRepo.getSocketId(userId)).emit("gameOver", "You won!");
+  });
+
 
   socket.on("joinRoom", (roomId: string) => {
     socket.join(roomId);
