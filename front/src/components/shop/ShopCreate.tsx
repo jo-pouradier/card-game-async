@@ -2,7 +2,7 @@ import { Container } from "@mui/material";
 import CardForm, { ICardForm } from "../card/CardForm";
 import CardSimpleDisplay from "../card/CardSimpleDisplay";
 import ICard from "../../types/ICard";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { addNotification } from "../../slices/notificationSlice.ts";
 import { socket } from "../../socket/socket.ts";
 import { useAppDispatch } from "../../hooks.ts";
@@ -25,11 +25,9 @@ const ShopCreate = () => {
     });
     const [isWaitingForGeneration, setIsWaitingForGeneration] = useState(false);
     const dispatch = useAppDispatch();
-    useEffect(() => {
-      socket.on("cardGenerated", onCardGeneratedReceived);
-    }, []);
 
-    function onCardGeneratedReceived(data: object) {
+  const onCardGeneratedReceived = useCallback(
+    (data: object) => {
       console.info("Card generated:", data);
       // {"cardId":12,"userId":1} format it, get the card and set it
       const messageJson = JSON.parse(data.toString());
@@ -47,7 +45,13 @@ const ShopCreate = () => {
         severity: "info"
       }));
       setIsWaitingForGeneration(false);
-    }
+    },
+    [dispatch],
+  );
+
+  useEffect(() => {
+    socket.on("cardGenerated", onCardGeneratedReceived);
+  }, [onCardGeneratedReceived]);
 
     const generateCardHanlder = (card: ICardForm) => {
       console.log("generate card: ", card);
