@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Chat from "../components/chat/Chat";
 import ConnectedUserList from "../components/chat/ConnectedUserList";
 import { useAppSelector } from "../hooks";
@@ -8,22 +8,18 @@ import { socket } from "../socket/socket";
 
 const ChatPage = () => {
   const user = useAppSelector(selectUser);
-  const globalMessages = useAppSelector(selectChat)
+  const globalMessages = useAppSelector(selectChat);
   const [chatId, setChatId] = useState<number>(-1);
   const [currentDiscussion, setCurrentDiscussion] = useState<Message[]>([]);
-  const [discussions, setDiscussions] = useState<{ [key: number]: Message[] }>(
-    {},
-  );
 
   // Initialize discussions
-  useEffect(() => {
-    const newDiscussions: { [key: number]: Message[] } = {};
-    globalMessages.forEach((message) => {
-      const userMessages = newDiscussions[message.to] || [];
-      newDiscussions[message.to] = [...userMessages, message];
-    });
-    setDiscussions(newDiscussions);
-  }, [globalMessages]);
+  if (chatId === -1 && globalMessages.length > 0) {
+    setCurrentDiscussion(
+      globalMessages
+        .filter((msg) => msg.to === chatId)
+        .map((msg) => ({ ...msg, isRead: true })),
+    );
+  }
 
   const sendMessage = (input: string) => {
     if (!input) {
@@ -66,8 +62,12 @@ const ChatPage = () => {
   const setCurrentChat = (userId: number) => {
     setChatId(userId);
     console.log("Setting chat to:", userId);
-    console.log("Discussions:", discussions);
-    setCurrentDiscussion(discussions[userId] ?? []);
+
+    setCurrentDiscussion(
+      globalMessages
+        .filter((msg) => msg.to === userId)
+        .map((msg) => ({ ...msg, isRead: true })),
+    );
   };
 
   return (

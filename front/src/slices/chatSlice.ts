@@ -6,6 +6,7 @@ export interface Message {
   to: number;
   message: string;
   date: Date;
+  isRead: boolean;
 }
 export type ChatSliceActions = PayloadAction<Message>
 export interface ChatSliceState {
