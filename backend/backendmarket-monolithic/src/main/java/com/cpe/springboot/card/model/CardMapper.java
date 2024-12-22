@@ -25,7 +25,8 @@ public class CardMapper implements DtoMapper<CardModel, CardDTO> {
         cDTO.setAttack(entity.getAttack());
         cDTO.setImgUrl(entity.getImgUrl());
         cDTO.setPrice(entity.getPrice());
-        cDTO.setUserId(entity.getUser().getId());
+        if (entity.getUser() != null)
+            cDTO.setUserId(entity.getUser().getId());
         return cDTO;
     }
 

@@ -49,10 +49,10 @@ public class UserService {
         UserModel u_saved = userRepository.save(u);
         List<CardModel> cardList = cardModelService.getRandCard(5);
         for (CardModel card : cardList) {
-            u.addCard(card);
+            u_saved.addCard(card);
         }
         // init money
-        u_saved.setAccount(1000);
+        u_saved.setAccount(10000);
         UserModel uBd = userRepository.save(u_saved);
         return userMapper.toDto(uBd);
     }
@@ -90,4 +90,9 @@ public class UserService {
         return u;
     }
 
+    public void winBatte(int userId) {
+        UserModel u = userRepository.findById(userId).get();
+        u.setAccount(u.getAccount() + 100);
+        userRepository.save(u);
+    }
 }

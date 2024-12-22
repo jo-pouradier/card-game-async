@@ -1,11 +1,15 @@
-import { AppBar, Box, Button, Toolbar } from "@mui/material";
+import { AttachMoney } from "@mui/icons-material";
+import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../hooks";
+import { selectUser } from "../../slices/userSlice";
 import LoginLogout from "../login/LoginLogout";
 
 const Navbar = (_props: unknown) => {
   const navigate = useNavigate();
   const [activeItem, setActiveItem] = useState("home");
+  const user = useAppSelector(selectUser);
 
   const createOnClickHandler = (path: string, name: string) => {
     return () => {
@@ -42,8 +46,25 @@ const Navbar = (_props: unknown) => {
           >
             Shop
           </Button>
+          <Button
+            variant={activeItem === "chat" ? "outlined" : "text"}
+            onClick={createOnClickHandler("/chat", "chat")}
+          >
+            Chat
+          </Button>
+          <Button
+            variant={activeItem === "game" ? "outlined" : "text"}
+            onClick={createOnClickHandler("/game/selection", "game")}
+          >
+            Game
+          </Button>
         </Box>
         <Box>
+          <div style={{ display: "flex", gap: 1 }}>
+            {user.login}
+            <AttachMoney />
+            <Typography>{user.account ?? 0}</Typography>
+          </div>
           <LoginLogout />
         </Box>
       </Toolbar>

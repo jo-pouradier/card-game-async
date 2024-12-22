@@ -9,15 +9,11 @@ import java.util.UUID;
 public class ChatRoomFullDTO {
     private UUID uuid;
 
-    private String name;
-
     private boolean isGlobal;
 
     private List<UserDTO> users;
 
     private List<ChatMessageDTO> messages;
-
-    private long timestamp;
 
     public UUID getUuid() {
         return this.uuid;
@@ -25,14 +21,6 @@ public class ChatRoomFullDTO {
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public List<ChatMessageDTO> getMessages() {
@@ -57,13 +45,5 @@ public class ChatRoomFullDTO {
 
     public void setUsers(List<UserDTO> users) {
         this.users = users;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
     }
 }

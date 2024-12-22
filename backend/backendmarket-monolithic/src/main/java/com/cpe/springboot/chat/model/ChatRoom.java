@@ -11,8 +11,6 @@ public class ChatRoom {
     @Id
     private UUID uuid;
 
-    private String name;
-
     private boolean isGlobal;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -22,22 +20,12 @@ public class ChatRoom {
             mappedBy = "chatRoom", fetch = FetchType.LAZY)
     private List<ChatMessage> messages;
 
-    private long timestamp;
-
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 
     public UUID getUuid() {
         return uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public List<ChatMessage> getMessages() {
@@ -62,13 +50,5 @@ public class ChatRoom {
 
     public void setUsers(List<UserModel> users) {
         this.users = users;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
     }
 }

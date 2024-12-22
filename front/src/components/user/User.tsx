@@ -27,7 +27,7 @@ const User = (props: UserProps) => {
               ? current_user.lastName
               : current_user.lastName + "/" + modified_user.lastName
           }
-          money={current_user.money}
+          account={current_user.account}
         ></UserShortDisplay>
       );
 

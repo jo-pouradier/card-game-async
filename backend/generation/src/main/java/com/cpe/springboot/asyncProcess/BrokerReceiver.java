@@ -85,7 +85,7 @@ public class BrokerReceiver {
         message.setEnergy(properties.get("ENERGY"));
         message.setHp(properties.get("HP"));
         message.setAttack(properties.get("ATTACK"));
-        message.setDefense(properties.get("DEFENSE"));
+        message.setDefence(properties.get("DEFENSE"));
         sender.sendMessage(message);
     }
 

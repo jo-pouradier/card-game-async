@@ -1,3 +1,4 @@
+import ICard from "../../types/ICard";
 import IUser from "../../types/IUser";
 
 export interface UserConnectionData {
@@ -23,9 +24,31 @@ export const connectUser = async (userData: UserConnectionData) => {
   }
 };
 
+export const getUsers = async () => {
+  try {
+    const response = await fetch("/api/users");
+    if (!response.ok) {
+      return [];
+    }
+    if (response.status !== 200) {
+      return [];
+    }
+    const data: IUser[] = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getUserById = async (id: number) => {
   try {
     const response = await fetch(`/api/user/${id}`);
+    if (!response.ok) {
+      return { id: 0 } as IUser;
+    }
+    if (response.status !== 200) {
+      return { id: 0 } as IUser;
+    }
     const data = await response.json();
     console.log(data);
     return data;
@@ -51,6 +74,41 @@ export const postNewUser = async (user: IUser): Promise<IUser> => {
   }
 };
 
+export const getCards = async () => {
+  try {
+    const response = await fetch("/api/cards");
+    if (!response.ok) {
+      return [];
+    }
+    if (response.status !== 200) {
+      return [];
+    }
+    const data: ICard[] = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getCardById = async (id: number) => {
+  try {
+    const response = await fetch(`/api/card/${id}`);
+    console.log(response);
+    if (!response.ok) {
+      return { id: 0 } as ICard;
+    }
+    if (response.status !== 200) {
+      return { id: 0 } as ICard;
+    }
+    const data: ICard = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 export const buyCard = async (userId: number, cardId: number) => {
   try {
     const response = await fetch(`/api/store/buy`, {
@@ -61,7 +119,7 @@ export const buyCard = async (userId: number, cardId: number) => {
       },
     });
     if (!response.ok) {
-      return false
+      return false;
     }
     if (response.status !== 200) {
       return false;

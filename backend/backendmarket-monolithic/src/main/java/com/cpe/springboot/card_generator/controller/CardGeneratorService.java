@@ -105,7 +105,7 @@ public class CardGeneratorService {
         cardGenerator.setEnergy(propertiesGenerationDTO.getEnergy());
         cardGenerator.setHp(propertiesGenerationDTO.getHp());
         cardGenerator.setAttack(propertiesGenerationDTO.getAttack());
-        cardGenerator.setDefence(propertiesGenerationDTO.getDefense());
+        cardGenerator.setDefence(propertiesGenerationDTO.getDefence());
         deleteCardGenerator(cardGenerator);
         CardDTO card = cardModelService.addCard(cardGenerator.toCardModel());
         NotificationDTO<CardGenerationNotificationMessage> notificationDTO
