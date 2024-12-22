@@ -3,13 +3,9 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { addNotification } from "../../slices/notificationSlice";
 import { selectUser } from "../../slices/userSlice";
+import { Message } from "../../slices/chatSlice";
 
-export interface Message {
-  from: number;
-  to: number;
-  message: string;
-  date: Date;
-}
+
 
 export interface ChatProps {
   messages: Message[];
