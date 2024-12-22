@@ -14,7 +14,7 @@ import { addNotification } from "../../slices/notificationSlice";
 import { selectUser } from "../../slices/userSlice";
 
 export interface ChatProps {
-  sendMessage: (message: string) => boolean;
+  sendMessage: (message: string, chatId: number, userId: number) => boolean;
 }
 
 const Chat = (props: ChatProps) => {
@@ -34,7 +34,7 @@ const Chat = (props: ChatProps) => {
   }, [userId]);
 
   const sendMessage = () => {
-    const ok = props.sendMessage(input);
+    const ok = props.sendMessage(input, currentDiscussion, user.id);
     if (ok) {
       setInput("");
     } else {
