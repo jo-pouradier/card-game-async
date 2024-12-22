@@ -35,20 +35,14 @@ const LoginForm = (props: LoginFormProps) => {
       console.log(id);
       const user: IUser = await getUserById(id);
       console.log(user);
-      try {
+      try{
         socket.emit("login", user);
       } catch (error) {
         console.log(error);
-        dispatch(
-          addNotification({
-            id: 0,
-            message: "Error connecting to socket",
-            severity: "error",
-          }),
-        );
+        dispatch(addNotification({ id: 0, message: "Error connecting to socket", severity: "error" }));
       }
       dispatch(connect_user_action({ user: user }));
-      console.debug("navigate to:" + props.returnTo);
+      console.debug("navigate to:" + props.returnTo)
       navigate("/" + props.returnTo);
     } else {
       console.log("no data");

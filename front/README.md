@@ -9,7 +9,6 @@ Thus we'll be able to add a little notif to the user when a new message is recei
 With the message property `isRead` we can also know if the user has read the message or not.
 
 TODO:
-
 - [x] Create the redux store
 - [x] Listen the socket event globally
 - [x] Add a notif (via notifications) to the user when a new message is received

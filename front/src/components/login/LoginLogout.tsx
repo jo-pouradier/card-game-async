@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { addNotification } from "../../slices/notificationSlice";
 import { delete_user_action, selectUser } from "../../slices/userSlice";
-import { socket } from "../../socket/socket.ts";
+import {socket} from "../../socket/socket.ts";
 
 const LoginLogout = () => {
   const navigate = useNavigate();
@@ -16,15 +16,15 @@ const LoginLogout = () => {
   const handleClick = () => {
     if (isLogged) {
       dispatch(delete_user_action());
+      navigate("/");
       dispatch(
         addNotification({
           id: Math.random() * 100,
           message: "Logged out",
           severity: "info",
         }),
+          socket.emit('disconnect'),
       );
-      socket.emit("disconnect");
-      navigate("/");
     } else {
       navigate("/login");
     }

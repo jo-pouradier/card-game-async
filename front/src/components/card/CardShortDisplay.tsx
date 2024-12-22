@@ -34,12 +34,7 @@ const CardShortDisplay = (props: CardShortDisplayProps) => {
           <FavoriteIcon color="error" />, {props.energy.toFixed(3)}{" "}
           <BoltIcon color="warning" />
         </Typography>
-        <Box
-          component={"img"}
-          src={props.smallImgUrl}
-          alt={props.name}
-          sx={{ width: 100, height: 70 }}
-        />
+        <Box component={"img"} src={props.smallImgUrl} alt={props.name} sx={{width: 100, height: 70}}/>
       </Box>
     </Box>
   );
