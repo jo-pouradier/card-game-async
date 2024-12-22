@@ -1,24 +1,25 @@
+import { v4 as uuidv4 } from 'uuid';
+
 type Player = {
   userId: number | null | undefined;
   isReadyToPlay: boolean;
 };
 
 type Room = {
-  id: number;
+  uuid: string;
   players: [Player, Player];
   date: Date | null;
 };
 
+
 class RoomRepository {
   private rooms: Set<Room>;
-  private idRoom: number;
   waitingRoom: Room;
 
   constructor({}) {
     this.rooms = new Set();
-    this.idRoom = 1;
     this.waitingRoom = {
-      id: 0,
+      uuid: uuidv4(),
       players: [
         { userId: null, isReadyToPlay: false },
         { userId: null, isReadyToPlay: false },
@@ -28,20 +29,20 @@ class RoomRepository {
   }
 
   createRoom() {
+    const uuid = uuidv4()
     this.rooms.add({
-      id: this.idRoom,
+      uuid: uuid,
       players: [
         { userId: null, isReadyToPlay: false },
         { userId: null, isReadyToPlay: false },
       ],
       date: new Date(),
     });
-    this.idRoom++;
-    return this.idRoom - 1;
+    return uuid;
   }
 
-  deleteRoom(id: number) {
-    const room = this.getRoom(id);
+  deleteRoom(uuid: string) {
+    const room = this.getRoom(uuid);
     if (room) {
       this.rooms.delete(room);
       return true;
@@ -49,23 +50,23 @@ class RoomRepository {
     return false;
   }
 
-  getRoom(id: number) {
-    return Array.from(this.rooms).find((room) => room.id === id);
+  getRoom(uuid: string) {
+    return Array.from(this.rooms).find((room) => room.uuid === uuid);
   }
 
   getRoomByPlayer(userId: number) {
     return Array.from(this.rooms).find((room) => room.players[0].userId == userId || room.players[1].userId == userId);
   }
 
-  isEmpty(roomId: number) {
+  isEmpty(uuid: string) {
     return (
-      this.getRoom(roomId)?.players[0] === null &&
-      this.getRoom(roomId)?.players[1] === null
+      this.getRoom(uuid)?.players[0] === null &&
+      this.getRoom(uuid)?.players[1] === null
     );
   }
 
-  addPlayer(roomId: number, userId: number) {
-    const room = this.getRoom(roomId);
+  addPlayer(uuid: string, userId: number) {
+    const room = this.getRoom(uuid);
     if (room !== undefined) {
       if (room.players[0].userId === null) {
         room.players[0].userId = userId;
