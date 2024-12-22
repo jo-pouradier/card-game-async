@@ -7,19 +7,22 @@ import { selectUser } from "../slices/userSlice";
 import { socket } from "../socket/socket";
 
 const ChatPage = () => {
+  console.log('SELECTUSER' , selectUser)
   const user = useAppSelector(selectUser);
   const globalMessages = useAppSelector(selectChat);
   const [chatId, setChatId] = useState<number>(-1);
   const [currentDiscussion, setCurrentDiscussion] = useState<Message[]>([]);
 
   // Initialize discussions
-  if (chatId === -1 && globalMessages.length > 0) {
-    setCurrentDiscussion(
-      globalMessages
-        .filter((msg) => msg.to === chatId)
-        .map((msg) => ({ ...msg, isRead: true })),
-    );
-  }
+  // if (chatId === -1 && globalMessages.length > 0) {
+  //   console.log("Initializing global chat");
+  //   console.log('GLOBALMESSAGES', globalMessages)
+  //   setCurrentDiscussion(
+  //     globalMessages
+  //       .filter((msg) => msg.to === chatId)
+  //       .map((msg) => ({ ...msg, isRead: true })),
+  //   );
+  // }
 
   const sendMessage = (input: string) => {
     if (!input) {

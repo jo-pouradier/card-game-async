@@ -24,6 +24,7 @@
     "express": "^4.21.2",
     "gameservice": "file:",
     "socket.io": "^4.8.1",
-    "stompit": "^1.0.0"
+    "stompit": "^1.0.0",
+    "uuid": "^11.0.3"
   }
 }
