@@ -1,0 +1,105 @@
+stages:
+  - package
+  - build
+
+job_package_monolithic:
+  image: maven:3.8.3-openjdk-17
+  stage: package
+  script:
+    - cd backend/backendmarket-monolithic
+    - mvn package
+  artifacts:
+    paths:
+    - ./target/*.jar
+    expire_in: 1 week
+  only:
+    - ci-cd
+
+job_package_generation:
+  image: maven:3.8.3-openjdk-17
+  stage: package
+  script:
+    - cd backend/generation
+    - mvn package
+  artifacts:
+    paths:
+    - ./target/*.jar
+    expire_in: 1 week
+  only:
+    - ci-cd
+
+
+job_build_monolithic:
+  image: docker:19.03.12
+  stage: build
+  services:
+    - docker:19.03.12-dind
+  script:
+    - cd backend/backendmarket-monolithic
+    - ls -a .
+    - ls -a ./target/ 
+    - export GIT_SHA_SHORT=$(git rev-parse --short HEAD)
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY/monolithic:$GIT_SHA_SHORT .
+    - docker push $CI_REGISTRY/monolithic:$GIT_SHA_SHORT
+  only:
+    - ci-cd
+
+job_build_generation:
+  image: docker:19.03.12
+  stage: build
+  services:
+    - docker:19.03.12-dind
+  script:
+    - cd backend/generation
+    - ls -a .
+    - ls -a ./target/ 
+    - export GIT_SHA_SHORT=$(git rev-parse --short HEAD)
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY/generation:$GIT_SHA_SHORT .
+    - docker push $CI_REGISTRY/generation:$GIT_SHA_SHORT
+  only:
+    - ci-cd
+  
+job_package_logger:
+  image: maven:3.8.3-openjdk-17
+  stage: package
+  script:
+    - cd backend/Logger
+    - mvn package
+  artifacts:
+    paths:
+    - ./target/*.jar
+    expire_in: 1 week
+  only:
+    - ci-cd
+  
+job_build_logger:
+  image: docker:19.03.12
+  stage: build
+  services:
+    - docker:19.03.12-dind
+  script:
+    - cd backend/Logger
+    - ls -a .
+    - ls -a ./target/ 
+    - export GIT_SHA_SHORT=$(git rev-parse --short HEAD)
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY/logger:$GIT_SHA_SHORT .
+    - docker push $CI_REGISTRY/logger:$GIT_SHA_SHORT
+  only:
+    - ci-cd
+  
+job_build_front:
+  image: docker:19.03.12
+  stage: build
+  services:
+    - docker:19.03.12-dind
+  script:
+    - cd front
+    - export GIT_SHA_SHORT=$(git rev-parse --short HEAD)
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY/front:$GIT_SHA_SHORT .
+    - docker push $CI_REGISTRY/front:$GIT_SHA_SHORT
+  only:
+    - ci-cd
