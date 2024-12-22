@@ -15,7 +15,7 @@ const ShopCreate = () => {
       description: "",
       hp: 0,
       energy: 0,
-      defense: 0,
+      defence: 0,
       attack: 0,
       price: 0,
       imgUrl: "",
@@ -84,7 +84,7 @@ const ShopCreate = () => {
           description={generatedCard.description}
           hp={generatedCard.hp}
           energy={generatedCard.energy}
-          defense={generatedCard.defense}
+          defence={generatedCard.defence}
           attack={generatedCard.attack}
           price={generatedCard.price}
           imgUrl={generatedCard.imgUrl}

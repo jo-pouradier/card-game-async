@@ -49,7 +49,7 @@ public class UserService {
         UserModel u_saved = userRepository.save(u);
         List<CardModel> cardList = cardModelService.getRandCard(5);
         for (CardModel card : cardList) {
-            u.addCard(card);
+            u_saved.addCard(card);
         }
         // init money
         u_saved.setAccount(1000);

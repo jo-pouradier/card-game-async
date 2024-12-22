@@ -9,7 +9,7 @@ type ICard = {
   hp: number;
   energy: number;
   attack: number;
-  defense: number;
+  defence: number;
   price: number;
   userId: number;
 };
