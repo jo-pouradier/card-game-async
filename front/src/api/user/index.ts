@@ -38,7 +38,7 @@ export const getUsers = async () => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const getUserById = async (id: number) => {
   try {

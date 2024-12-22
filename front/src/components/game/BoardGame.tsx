@@ -9,7 +9,7 @@ import CardShortDisplay from "../card/CardShortDisplay";
 import CardSimpleDisplay from "../card/CardSimpleDisplay";
 import Chat from "../chat/Chat";
 import ConnectedUserList from "../chat/ConnectedUserList";
-import { sendMessage } from "../../pages/ChatPage";
+import sendMessage from "../chat/sendMessage";
 
 export interface BoardGameProps {
   opponentId: number;
@@ -185,13 +185,10 @@ const BoardGame = (_props: BoardGameProps) => {
       <Drawer anchor="left" open={isChatOpen} onClose={toggleChat}>
         <Box sx={{ width: 300, p: 2 }}>
           <ConnectedUserList />
-      <Chat sendMessage={sendMessage} />
+          <Chat sendMessage={sendMessage} />
         </Box>
       </Drawer>
-      <Button
-        variant="contained"
-        onClick={toggleChat}
-      >
+      <Button variant="contained" onClick={toggleChat}>
         Toggle Chat
       </Button>
       <Container>

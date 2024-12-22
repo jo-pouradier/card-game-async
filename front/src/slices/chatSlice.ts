@@ -8,7 +8,7 @@ export interface Message {
   date: string;
   isRead: boolean;
 }
-export type ChatSliceActions = PayloadAction<Message>
+export type ChatSliceActions = PayloadAction<Message>;
 export interface ChatSliceState {
   messages: Message[];
 }
@@ -18,14 +18,14 @@ export type ChatSlice = Slice<
   {
     add_chat_message_action: (
       state: ChatSliceState,
-      action: ChatSliceActions
+      action: ChatSliceActions,
     ) => void;
     set_chat_messages_action: (
       state: ChatSliceState,
-      action: PayloadAction<Message[]>
+      action: PayloadAction<Message[]>,
     ) => void;
   }
->
+>;
 
 const initialState: ChatSliceState = {
   messages: [],
@@ -37,12 +37,18 @@ export const chatSlice: ChatSlice = createSlice({
   initialState,
   // Define the reducers
   reducers: {
-    add_chat_message_action: (state: ChatSliceState, action: ChatSliceActions) => {
+    add_chat_message_action: (
+      state: ChatSliceState,
+      action: ChatSliceActions,
+    ) => {
       state.messages.push(action.payload);
     },
-    set_chat_messages_action: (state: ChatSliceState, action: PayloadAction<Message[]>) => {
+    set_chat_messages_action: (
+      state: ChatSliceState,
+      action: PayloadAction<Message[]>,
+    ) => {
       state.messages = action.payload;
-    }
+    },
   },
 });
 
