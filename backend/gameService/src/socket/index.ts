@@ -50,9 +50,9 @@ io.on("connection", (socket: Socket) => {
       io.to([receiverSocket, socket.id]).emit("message", msg);
       io.to(receiverSocket).emit("notification", "Vous avez reçu un message");
       console.log(
-        `Message envoyé à ${userRepo.getUserName(
+        `Message envoyé à "${userRepo.getUserName(
           receiver
-        )} depuis ${userRepo.getUserName(sender)} : ${msg.message}`
+        )}":${receiverSocket} depuis "${userRepo.getUserName(sender)}":${socket.id} : ${msg}`
       );
     } else {
       console.log(`Utilisateur ${receiver} inconnu`);
@@ -69,18 +69,18 @@ io.on("connection", (socket: Socket) => {
     }
     userRepo.addUser(user.id, socket.id);
     userRepo.setUserName(user.id, user.surName);
-    const userSocket = userRepo.getSocketId(user.id);
     console.log(
       `Utilisateur ajouté au repo : ${userRepo.getUserName(
         user.id
       )}  with id : ${user.id}, socket: ${socket.id}`
     );
-    io.emit("newPlayer", userSocket);
+    console.log("Emit new player:", user.id);
+    io.emit("newPlayer", user.id);
   });
 
   socket.on("getPlayers", () => {
     const users = userRepo.getAllUsers();
-    io.to(socket.id).emit("players", users);
+    io.to(socket.id).emit("players", users.map((user) => user.userId));
   });
 
   // Recherche de combat
@@ -262,12 +262,6 @@ io.on("connection", (socket: Socket) => {
       userRepo.getDeck(userId),
       userRepo.getDeck(roomRepo.getRoomByPlayer(userId)?.players[0].userId || 0)
     );
-  });
-
-  socket.on("disconnect", () => {
-    console.log("Un utilisateur s'est déconnecté :", socket.id);
-    userRepo.deleteUser(socket.id);
-    roomRepo.removePlayer(userRepo.getUserId(socket.id));
   });
 
   socket.on("error", (err) => {

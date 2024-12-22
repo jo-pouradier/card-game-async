@@ -5,7 +5,7 @@ export interface Message {
   from: number;
   to: number;
   message: string;
-  date: Date;
+  date: string;
   isRead: boolean;
 }
 export type ChatSliceActions = PayloadAction<Message>

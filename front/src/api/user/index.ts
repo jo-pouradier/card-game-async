@@ -24,6 +24,22 @@ export const connectUser = async (userData: UserConnectionData) => {
   }
 };
 
+export const getUsers = async () => {
+  try {
+    const response = await fetch("/api/users");
+    if (!response.ok) {
+      return [];
+    }
+    if (response.status !== 200) {
+      return [];
+    }
+    const data: IUser[] = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const getUserById = async (id: number) => {
   try {
     const response = await fetch(`/api/user/${id}`);

@@ -61,6 +61,7 @@ const Navbar = (_props: unknown) => {
         </Box>
         <Box>
           <div style={{ display: "flex", gap: 1 }}>
+            {user.login}
             <AttachMoney />
             <Typography>{user.account ?? 0}</Typography>
           </div>
