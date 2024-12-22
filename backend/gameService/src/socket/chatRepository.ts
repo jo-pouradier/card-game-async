@@ -1,3 +1,6 @@
+import { v4 as uuidv4 } from 'uuid';
+import {postInQueue} from "../notification";
+
 export type chat = {
     from: number;
     to: number;
@@ -6,20 +9,22 @@ export type chat = {
 }
 
 type chatRoom = {
+    uuid: string;
     userIds: number[];
     chats: chat[];
 }
 
 class ChatRepository {
     private chatRooms: Set<chatRoom>;
-    private readonly ids: number = 0;
-
     constructor({}) {
         this.chatRooms = new Set();
     }
 
     createRoom(userId1: number, userId2: number) {
-        this.chatRooms.add({userIds:[userId1, userId2], chats: []});
+        const room = {uuid:uuidv4(), userIds:[userId1, userId2], chats: []};
+
+        this.chatRooms.add(room);
+        return room;
     }
 
     addMessage(userId1: number, userId2:number, message: chat) {
@@ -39,6 +44,10 @@ class ChatRepository {
 
     isRoomExist(player1: number, player2: number) {
         return this.getRoomByPlayerIds(player1, player2) !== undefined;
+    }
+
+    getRoomByUUID(uuid: string) {
+        return Array.from(this.chatRooms).find((room) => room.uuid === uuid);
     }
 
 }

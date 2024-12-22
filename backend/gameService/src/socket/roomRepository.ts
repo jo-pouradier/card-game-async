@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 type Player = {
   userId: number | null | undefined;
@@ -38,7 +38,7 @@ class RoomRepository {
       ],
       date: new Date(),
     });
-    return uuid;
+    return uuid
   }
 
   deleteRoom(uuid: string) {

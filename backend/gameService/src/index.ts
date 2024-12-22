@@ -5,6 +5,7 @@ import { initNotification } from "./notification";
 import CONFIG from "../config.json"
 initNotification(io, CONFIG.connectOptions);
 
+
 //in last
 server.listen(CONFIG.port, () => {
   console.log(`Serveur Socket.IO lancé sur le port ${CONFIG.port}`);

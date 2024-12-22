@@ -3,6 +3,9 @@ import { server } from "../app";
 import userRepository, { IUser } from "./userRepository";
 import roomRepository from "./roomRepository";
 import chatRepository, { chat } from "./chatRepository";
+import {postInQueue} from "../notification";
+import CONFIG from "../../config.json"
+
 
 export const io = new Server(server, {
   cors: {
@@ -42,13 +45,23 @@ io.on("connection", (socket: Socket) => {
         chatRepo.addMessage(sender, receiver, msg);
         console.info("Add message to existing room");
       } else {
-        chatRepo.createRoom(sender, receiver);
+        const chatRoom = chatRepo.createRoom(sender, receiver);
+        postInQueue(
+        {
+          uuid: chatRoom.uuid,
+          name: "room_" + chatRoom.uuid,
+          isGlobal: false,
+          users: [],
+          messages: [],
+          timestamp: new Date()
+        }, CONFIG.connectOptions);
         chatRepo.addMessage(sender, receiver, msg);
       }
     }
     if (receiverSocket) {
       io.to([receiverSocket, socket.id]).emit("message", msg);
       io.to(receiverSocket).emit("notification", "Vous avez reçu un message");
+
       console.log(
         `Message envoyé à ${userRepo.getUserName(
           receiver
