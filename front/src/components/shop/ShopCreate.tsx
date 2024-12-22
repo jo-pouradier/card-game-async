@@ -39,11 +39,13 @@ const ShopCreate = () => {
         .catch((error) => {
           console.error("Error:", error);
         });
-      dispatch(addNotification({
-        id: Math.random() * 100,
-        message: "New card added to your collection",
-        severity: "info"
-      }));
+      dispatch(
+        addNotification({
+          id: Math.random() * 100,
+          message: "New card added to your collection",
+          severity: "info",
+        }),
+      );
       setIsWaitingForGeneration(false);
     },
     [dispatch],
@@ -53,22 +55,24 @@ const ShopCreate = () => {
     socket.on("cardGenerated", onCardGeneratedReceived);
   }, [onCardGeneratedReceived]);
 
-    const generateCardHanlder = (card: ICardForm) => {
-      console.log("generate card: ", card);
+  const generateCardHanlder = (card: ICardForm) => {
+    console.log("generate card: ", card);
 
-      fetch("/api/store/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(card)
-      }).then((reponse) => {
+    fetch("/api/store/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(card),
+    })
+      .then((reponse) => {
         console.log("Success:", reponse);
         setIsWaitingForGeneration(true);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.error("Error:", error);
       });
-    };
+  };
 
 
     return (

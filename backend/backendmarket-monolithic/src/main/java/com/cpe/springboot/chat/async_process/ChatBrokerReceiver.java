@@ -1,6 +1,7 @@
 package com.cpe.springboot.chat.async_process;
 
 import com.cpe.springboot.chat.controller.ChatMessagesService;
+import com.cpe.springboot.chat.controller.ChatRoomRepository;
 import com.cpe.springboot.chat.controller.ChatRoomService;
 import com.cpe.springboot.chat.model.ChatBrokerHandler;
 import com.cpe.springboot.chat.model.ChatBrokerReceivable;
@@ -14,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @Component
@@ -28,8 +32,11 @@ public class ChatBrokerReceiver implements ChatBrokerHandler {
 
     @JmsListener(destination = "${chat.queue.name}", containerFactory = "queueConnectionFactory")
     public void receiveMessage(TextMessage message) {
+        chatRoomService.generateGlobalChatRoom();
         logger.info("Received message: " + message);
         try {
+            logger.info("Received message type: " + message.getJMSType());
+            logger.info("Received message text: " + message.getText());
             Class<ChatBrokerReceivable> clazz = classMapper(message.getJMSType());
             ChatBrokerReceivable chatMessage = objectMapper.readValue(message.getText(), clazz);
             chatMessage.handle(this);
@@ -49,4 +56,8 @@ public class ChatBrokerReceiver implements ChatBrokerHandler {
     private Class<ChatBrokerReceivable> classMapper(String className) throws ClassNotFoundException {
         return (Class<ChatBrokerReceivable>) Class.forName("com.cpe.springboot.chat.model." + className);
     }
+
+
+
+
 }

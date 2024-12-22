@@ -1,6 +1,3 @@
-// @ts-ignore
-// @ts-ignore
-
 import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
@@ -109,9 +106,7 @@ export const {
   remove_connected_user_action,
 } = connectedUserSlice.actions;
 export const selectConnectedUser = (state: RootState) =>
-    // @ts-expect-error : fix this
-    state.connectedUserReducer.connectedUsers;
+  state.connectedUserReducer.connectedUsers;
 export const selectCurrentUserId = (state: RootState) =>
-    // @ts-expect-error : fix this
-    state.connectedUserReducer.currentUserId;
+  state.connectedUserReducer.currentUserId;
 export default connectedUserSlice.reducer;

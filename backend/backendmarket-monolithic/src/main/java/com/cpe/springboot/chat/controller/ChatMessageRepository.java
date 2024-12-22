@@ -2,7 +2,6 @@ package com.cpe.springboot.chat.controller;
 
 import com.cpe.springboot.chat.model.ChatMessage;
 import com.cpe.springboot.chat.model.ChatRoom;
-import com.cpe.springboot.chat.model.IdTimestampKey;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

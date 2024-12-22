@@ -3,9 +3,6 @@ import { server } from "../app";
 import userRepository, { IUser } from "./userRepository";
 import roomRepository from "./roomRepository";
 import chatRepository, { chat } from "./chatRepository";
-import { postInQueue } from "../notification";
-// @ts-ignore
-import CONFIG from "../../config.json";
 
 
 export const io = new Server(server, {
@@ -37,36 +34,32 @@ io.on("connection", (socket: Socket) => {
       socket.emit("notification", "Utilisateur inconnu");
       return;
     }
-    if (receiver === -1) {
-      io.emit("message", msg);
-      console.log(`Message envoyé à tout le monde : ${msg.message}`);
-      return;
-    } else if (receiver !== undefined) {
+    if (receiver !== undefined) {
       if (chatRepo.isRoomExist(sender, receiver)) {
         chatRepo.addMessage(sender, receiver, msg);
         console.info("Add message to existing room");
       } else {
-        const chatRoom = chatRepo.createRoom(sender, receiver);
-        postInQueue(
-        {
-          uuid: chatRoom.uuid,
-          name: "room_" + chatRoom.uuid,
-          isGlobal: false,
-          users: [],
-          messages: [],
-          timestamp: new Date()
-        }, CONFIG.connectOptions);
+        chatRepo.createRoom(sender, receiver);
         chatRepo.addMessage(sender, receiver, msg);
       }
+    }else{
+      console.log("Ca doit jamais arriver! Tant pis pour toi. Message non traité:" + msg);
+      return;
+    }
+
+    if (receiver === -1) {
+      io.emit("message", msg);
+      console.log(`Message envoyé à tout le monde : ${msg.message}`);
+      return;
     }
     if (receiverSocket) {
       io.to([receiverSocket, socket.id]).emit("message", msg);
       io.to(receiverSocket).emit("notification", "Vous avez reçu un message");
 
       console.log(
-        `Message envoyé à ${userRepo.getUserName(
+        `Message envoyé à "${userRepo.getUserName(
           receiver
-        )} depuis ${userRepo.getUserName(sender)} : ${msg.message}`
+        )}":${receiverSocket} depuis "${userRepo.getUserName(sender)}":${socket.id} : ${msg}`
       );
     } else {
       console.log(`Utilisateur ${receiver} inconnu`);
@@ -83,18 +76,18 @@ io.on("connection", (socket: Socket) => {
     }
     userRepo.addUser(user.id, socket.id);
     userRepo.setUserName(user.id, user.surName);
-    const userSocket = userRepo.getSocketId(user.id);
     console.log(
       `Utilisateur ajouté au repo : ${userRepo.getUserName(
         user.id
       )}  with id : ${user.id}, socket: ${socket.id}`
     );
-    io.emit("newPlayer", userSocket);
+    console.log("Emit new player:", user.id);
+    io.emit("newPlayer", user.id);
   });
 
   socket.on("getPlayers", () => {
     const users = userRepo.getAllUsers();
-    io.to(socket.id).emit("players", users);
+    io.to(socket.id).emit("players", users.map((user) => user.userId));
   });
 
   // Recherche de combat
@@ -303,12 +296,6 @@ io.on("connection", (socket: Socket) => {
       userRepo.getDeck(userId),
       userRepo.getDeck(roomRepo.getRoomByPlayer(userId)?.players[0].userId || 0)
     );
-  });
-
-  socket.on("disconnect", () => {
-    console.log("Un utilisateur s'est déconnecté :", socket.id);
-    userRepo.deleteUser(socket.id);
-    roomRepo.removePlayer(userRepo.getUserId(socket.id));
   });
 
   socket.on("error", (err) => {
