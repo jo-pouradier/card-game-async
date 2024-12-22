@@ -7,10 +7,10 @@
 - **Adrien DALBEIGUE**
 - **Joseph POURADIER DUTEIL**
 
-
 ## Lien du projet :
 
-[Projet](https://gitlab.com/cpelyon/4ETI-2024-2025-ASI-2/groupe-7/atelier1)
+[Projet gitlab](https://gitlab.com/cpelyon/4ETI-2024-2025-ASI-2/groupe-7/atelier1)
+[Projet github](https://github.com/jo-pouradier/card-game-async)
 
 ## Activités réalisées par les personnes du groupe
 
@@ -30,20 +30,18 @@
   - card generator
 - Travaux sur les microservices de génération
 
-
 ### Adrien DALBEIGUE
 
 - Travail sur nodejs mise en place des sockets:
-  - Socket du chat 
+  - Socket du chat
   - Socket du combat
   - Socket du jeu
 - Gestion des room eet match making
 
 ### Joseph POURADIER DUTEIL
 
-- Front end 
+- Front end
 - Nodejs socket
-
 
 ## Elements réalisés
 
@@ -51,4 +49,8 @@
 - Mise en place du match making
 - Sauvegarde des logs sur le broker
 - mise en place du proxy
+
+## Elements non réalisés
+
+- Pendant le jeu, il n'y a pas d'energie pour jouer
 
