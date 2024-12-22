@@ -1,18 +1,18 @@
-import { DefaultEventsMap, Server, Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { server } from "../app";
 import userRepository, { IUser } from "./userRepository";
 import roomRepository from "./roomRepository";
 import chatRepository, { chat } from "./chatRepository";
-import {postInQueue} from "../notification";
+import { postInQueue } from "../notification";
 // @ts-ignore
-import CONFIG from "../../config.json"
+import CONFIG from "../../config.json";
 
 
 export const io = new Server(server, {
   cors: {
     origin: "*", // On autorise tout le monde à se connecter
-    methods: ["GET", "POST"],
-  },
+    methods: ["GET", "POST"]
+  }
 });
 
 const userRepo = userRepository;
@@ -106,7 +106,7 @@ io.on("connection", (socket: Socket) => {
       );
       console.log(
         "Error with identification, did not receive a IUser object, socket:" +
-          socket.id
+        socket.id
       );
       return;
     }
@@ -203,11 +203,11 @@ io.on("connection", (socket: Socket) => {
 
       io.to(socket.id).emit("decks", {
         deck1: deckCurrentPlayer,
-        deck2: deckOtherPlayer,
+        deck2: deckOtherPlayer
       });
       io.to(otherPlayerSocket).emit("decks", {
         deck2: deckCurrentPlayer,
-        deck1: deckOtherPlayer,
+        deck1: deckOtherPlayer
       });
       console.log("Sended decks to both players");
     }
@@ -265,7 +265,14 @@ io.on("connection", (socket: Socket) => {
     // @ts-ignore
     io.to(userRepo.getSocketId(loser.userId)).emit("notification", "You lost!");
     // @ts-ignore
-    io.to(userRepo.getSocketId(userId)).emit("gameOver", "You won!");
+    io.to(userRepo.getSocketId(userId)).emit("notification", "You won! You earned 100 coins");
+    fetch("http://localhost:8083/user/winbatte/" + userId, {
+      method: "GET"
+    }).then((reponse) => {
+      console.log("Success:", reponse);
+    }).catch((error) => {
+      console.error("Error:", error);
+    });
   });
 
 
