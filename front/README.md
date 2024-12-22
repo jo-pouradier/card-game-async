@@ -14,6 +14,8 @@ TODO:
 - [x] Add a notif (via notifications) to the user when a new message is received
 - [ ] Add a `isRead` property to the message
 - [ ] Add a notif (via a little `(n)` on the chat) to the user when a new message is received, until the message is read
+- [ ] Listen connected user globally in the app
+- [ ] Update component `ConnectedUserList` to display the connected user via the store
 
 ## React Router Type safe
 
