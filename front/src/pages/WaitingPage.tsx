@@ -1,7 +1,7 @@
 import WaitingRoom from "../components/waitingRoom/WaitingRoom.tsx";
 
 const WaitingPage = () => {
-  return WaitingRoom();
-};
+    return WaitingRoom();
+}
 
 export default WaitingPage;

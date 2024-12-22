@@ -1,4 +1,4 @@
-import { Box, Button, Container, Divider, Drawer, Grid2 } from "@mui/material";
+import { Button, Container, Divider, Grid2 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { getCardById } from "../../api/user";
 import { useAppSelector } from "../../hooks";
@@ -7,9 +7,6 @@ import { socket } from "../../socket/socket";
 import ICard from "../../types/ICard";
 import CardShortDisplay from "../card/CardShortDisplay";
 import CardSimpleDisplay from "../card/CardSimpleDisplay";
-import Chat from "../chat/Chat";
-import ConnectedUserList from "../chat/ConnectedUserList";
-import sendMessage from "../chat/sendMessage";
 
 export interface BoardGameProps {
   opponentId: number;
@@ -29,11 +26,6 @@ const BoardGame = (_props: BoardGameProps) => {
   const [currentPlayerCard, setCurrentPlayerCard] = useState<ICard | null>(
     null,
   );
-  const [isChatOpen, setIsChatOpen] = useState(false);
-
-  const toggleChat = () => {
-    setIsChatOpen((prev) => !prev);
-  };
 
   const handleCardSetCurrent = useCallback(
     (card: ICard) => {
@@ -52,7 +44,7 @@ const BoardGame = (_props: BoardGameProps) => {
     },
     [currentOpponentCard, currentPlayerCard, user.id],
   );
-
+  
   const attackAction = useCallback(
     (data: {
       card1: { id: number; userId: number };
@@ -176,42 +168,27 @@ const BoardGame = (_props: BoardGameProps) => {
   };
 
   return (
-    <>
-      <Drawer anchor="left" open={isChatOpen} onClose={toggleChat}>
-        <Box sx={{ width: 300, p: 2 }}>
-          <ConnectedUserList />
-          <Chat sendMessage={sendMessage} />
-        </Box>
-      </Drawer>
-      <Button variant="contained" onClick={toggleChat}>
-        Toggle Chat
-      </Button>
-      <Container>
-        {isOpponentCardLoading ? (
-          <p>Loading opponent cards...</p>
-        ) : (
-          createCardList(
-            opponentCards,
-            currentOpponentCard,
-            handleCardSetCurrent,
-          )
-        )}
-        <Divider textAlign="center">
-          {" "}
-          <Button
-            variant={isAttackLoading ? "outlined" : "contained"}
-            onClick={() => sendAttack()}
-          >
-            {isAttackLoading ? "Loading" : "Attack"}
-          </Button>{" "}
-        </Divider>
-        {isUserCardLoading ? (
-          <p>Loading User cards ...</p>
-        ) : (
-          createCardList(userCards, currentPlayerCard, handleCardSetCurrent)
-        )}
-      </Container>
-    </>
+    <Container>
+      {isOpponentCardLoading ? (
+        <p>Loading opponent cards...</p>
+      ) : (
+        createCardList(opponentCards, currentOpponentCard, handleCardSetCurrent)
+      )}
+      <Divider textAlign="center">
+        {" "}
+        <Button
+          variant={isAttackLoading ? "outlined" : "contained"}
+          onClick={() => sendAttack()}
+        >
+          {isAttackLoading ? "Loading" : "Attack"}
+        </Button>{" "}
+      </Divider>
+      {isUserCardLoading ? (
+        <p>Loading User cards ...</p>
+      ) : (
+        createCardList(userCards, currentPlayerCard, handleCardSetCurrent)
+      )}
+    </Container>
   );
 };
 

@@ -5,14 +5,13 @@ import Navbar from "./components/utils/Navbar";
 import Notification from "./components/utils/Notification";
 import { useAppDispatch } from "./hooks.ts";
 import AppRouter from "./router/AppRouter";
-import { initChat, initConnectedUsers, initSocket } from "./socket/socket.ts";
+import { initChat, initSocket } from "./socket/socket.ts";
 import { store } from "./store";
 
 const App = (_props: unknown) => {
   const dispatch = useAppDispatch();
   useEffect(() => initSocket(dispatch), [dispatch]);
   useEffect(() => initChat(dispatch), [dispatch]);
-  useEffect(() => initConnectedUsers(dispatch), [dispatch]);
 
   return (
     <Provider store={store}>

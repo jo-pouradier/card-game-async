@@ -7,8 +7,8 @@ import { selectUser } from "../../slices/userSlice";
 import ICard from "../../types/ICard";
 import CardSelect from "../card/CardSelectPlay";
 import CardShortDisplay from "../card/CardShortDisplay";
-import { socket } from "../../socket/socket.ts";
-import { useNavigate } from "react-router-dom";
+import {socket} from "../../socket/socket.ts";
+import {useNavigate} from "react-router-dom";
 
 export interface CardSelection extends ICard {
   isSelected: boolean;
@@ -48,49 +48,41 @@ const CardSelection = () => {
   };
 
   const searchGame = () => {
-    console.log("Search Game");
-    dispatch(
-      addNotification({
-        id: 0,
-        message: "Searching for game",
-        severity: "info",
-      }),
-    );
-    socket.emit("findMatch", selectedCard, user);
-    navigate("/game/waiting");
-  };
+    console.log('Search Game');
+    dispatch(addNotification({id: 0, message: 'Searching for game', severity: 'info'}));
+    socket.emit('findMatch', selectedCard, user);
+    navigate('/game/waiting');
+  }
 
   return (
     <>
       <Container style={{ height: "50vh", overflowY: "scroll" }}>
         <Grid2 container spacing={1} direction={"row"}>
           {isCardsLoading && <Typography>Loading...</Typography>}
-          {cards.length !== 0 ? (
-            cards.map((card, index) => (
-              <Grid2 size={3} key={index}>
-                <CardSelect
-                  {...card}
-                  isSelected={selectedCard.includes(card.id)}
-                  onSelection={handleCardSelection}
-                />
-              </Grid2>
-            ))
-          ) : (
-            <Typography>No cards found</Typography>
-          )}
+          {cards.length !== 0 ? cards
+            .map(
+              (
+                card,
+                index,
+              ) => (
+                <Grid2 size={3} key={index}>
+                  <CardSelect
+                    {...card}
+                    isSelected={selectedCard.includes(card.id)}
+                    onSelection={handleCardSelection}
+                  />
+                </Grid2>
+              ),
+            ) : <Typography>No cards found</Typography>}
         </Grid2>
       </Container>
       <Container style={{ marginTop: "2rem" }}>
-        <div style={{ display: "flex" }}>
-          <Typography variant="h4" style={{ marginRight: "1rem" }}>
+        <div style={{display: 'flex'}}>
+          <Typography variant="h4" style={{marginRight: '1rem'}}>
             Selected Cards ({selectedCard.length}/5)
           </Typography>
           {selectedCard.length === 5 && (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => searchGame()}
-            >
+            <Button variant="contained" color="primary" onClick={() => searchGame()}>
               Play
             </Button>
           )}
