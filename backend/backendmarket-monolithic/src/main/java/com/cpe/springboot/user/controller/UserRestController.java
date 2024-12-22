@@ -70,8 +70,11 @@ public class UserRestController {
             return uList.get(0).getId();
         }
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Authentification Failed", null);
-
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/user/winbatte/{id}")
+    private void winBatte(@PathVariable int userId) {
+        userService.winBatte(userId);
+    }
 
 }

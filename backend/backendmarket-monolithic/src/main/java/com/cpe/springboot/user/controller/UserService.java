@@ -90,4 +90,9 @@ public class UserService {
         return u;
     }
 
+    public void winBatte(int userId) {
+        UserModel u = userRepository.findById(userId).get();
+        u.setAccount(u.getAccount() + 100);
+        userRepository.save(u);
+    }
 }

@@ -1,4 +1,4 @@
-import { DefaultEventsMap, Server, Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { server } from "../app";
 import userRepository, { IUser } from "./userRepository";
 import roomRepository from "./roomRepository";
@@ -8,8 +8,8 @@ import chatRepository, { chat } from "./chatRepository";
 export const io = new Server(server, {
   cors: {
     origin: "*", // On autorise tout le monde à se connecter
-    methods: ["GET", "POST"],
-  },
+    methods: ["GET", "POST"]
+  }
 });
 
 const userRepo = userRepository;
@@ -99,7 +99,7 @@ io.on("connection", (socket: Socket) => {
       );
       console.log(
         "Error with identification, did not receive a IUser object, socket:" +
-          socket.id
+        socket.id
       );
       return;
     }
@@ -196,11 +196,11 @@ io.on("connection", (socket: Socket) => {
 
       io.to(socket.id).emit("decks", {
         deck1: deckCurrentPlayer,
-        deck2: deckOtherPlayer,
+        deck2: deckOtherPlayer
       });
       io.to(otherPlayerSocket).emit("decks", {
         deck2: deckCurrentPlayer,
-        deck1: deckOtherPlayer,
+        deck1: deckOtherPlayer
       });
       console.log("Sended decks to both players");
     }
@@ -241,6 +241,33 @@ io.on("connection", (socket: Socket) => {
       io.to(roomSockets).emit("attack", data);
     }
   );
+
+  socket.on("gameOver", (userId: number) => {
+    console.log("Game over for", userId);
+    const room = roomRepo.getRoomByPlayer(userId);
+    if (room === undefined || room.players.length !== 2) {
+      return;
+    }
+    const loser = room.players.find((player) => player.userId !== userId);
+    if (loser?.userId === undefined || loser.userId === null) {
+      return;
+    }
+    roomRepo.removePlayer(userId);
+    roomRepo.removePlayer(loser.userId);
+    roomRepo.deleteRoom(room.uuid);
+    // @ts-ignore
+    io.to(userRepo.getSocketId(loser.userId)).emit("notification", "You lost!");
+    // @ts-ignore
+    io.to(userRepo.getSocketId(userId)).emit("notification", "You won! You earned 100 coins");
+    fetch("http://localhost:8083/user/winbatte/" + userId, {
+      method: "GET"
+    }).then((reponse) => {
+      console.log("Success:", reponse);
+    }).catch((error) => {
+      console.error("Error:", error);
+    });
+  });
+
 
   socket.on("joinRoom", (roomId: string) => {
     socket.join(roomId);
