@@ -200,7 +200,7 @@ io.on("connection", (socket: Socket) => {
   });
   // Quitter la recherche de combat
   socket.on("cancelMatchmaking", (userId: number) => {
-    if (roomRepo.getRoomByPlayer(userId)?.id === 0) {
+    if (roomRepo.getRoomByPlayer(userId) === undefined) {
       roomRepo.removePlayer(userId);
     }
   });
@@ -220,7 +220,7 @@ io.on("connection", (socket: Socket) => {
       }
       console.log(
         "Send attack to room",
-        room.id,
+        room.uuid,
         "and players :",
         room.players
       );
