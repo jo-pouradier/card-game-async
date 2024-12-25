@@ -1,5 +1,17 @@
 # Projet Architecture des S.I.2
 
+- [Projet Architecture des S.I.2](#projet-architecture-des-si2)
+  - [Membres :](#membres-)
+  - [Lien du projet :](#lien-du-projet-)
+  - [Activités réalisées par les personnes du groupe](#activités-réalisées-par-les-personnes-du-groupe)
+    - [Pierre-Louis TELEP](#pierre-louis-telep)
+    - [Hugues FARTHOUAT](#hugues-farthouat)
+    - [Adrien DALBEIGUE](#adrien-dalbeigue)
+    - [Joseph POURADIER DUTEIL](#joseph-pouradier-duteil)
+  - [Elements réalisés](#elements-réalisés)
+  - [Elements non réalisés](#elements-non-réalisés)
+  - [Roadmap](#roadmap)
+
 ## Membres :
 
 - **Pierre-Louis TELEP**
@@ -8,6 +20,7 @@
 - **Joseph POURADIER DUTEIL**
 
 ## Lien du projet :
+
 [Video démo](https://youtu.be/AratjDDY58Y)
 [Projet gitlab](https://gitlab.com/cpelyon/4ETI-2024-2025-ASI-2/groupe-7/atelier1)
 [Projet github](https://github.com/jo-pouradier/card-game-async)
@@ -42,6 +55,7 @@
 
 - Front end
 - Nodejs socket
+- gatling simulation (monolitique)
 
 ## Elements réalisés
 
@@ -54,3 +68,7 @@
 
 - Pendant le jeu, il n'y a pas d'energie pour jouer
 
+## Roadmap
+
+J'ai envie de tester la difference de performance entre le monolitique en java et en Go.
+Pour cela on utilisera gatling pour simuler des utilisateurs/du traffic. Et on visualisera les performances de chaque solution dans Grafana/Prometheus.
