@@ -54,7 +54,7 @@ const scn = scenario("RecordedSimulationAll").exec(
     pause(1),
     http("Get All cards")
       .get("/cards")
-      .check(jsonPath("$[0].id").saveAs("cardId"), status().is(200)),
+      .check(jsonPath("$[0].id").exists().saveAs("cardId"), status().is(200)),
     pause(1),
     http("Get card by id").get(session => `/card/${session.get("cardId")}`).check(status().is(200)),
     pause(1),
