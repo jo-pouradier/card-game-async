@@ -23,7 +23,7 @@ jobs:
           - backend/game-service
           - backend/generation-service
           - backend/logger-service
-          - front
+          # - front
           - mono-go
           - proxy
 
