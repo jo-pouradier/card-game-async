@@ -20,9 +20,9 @@ jobs:
       matrix:
         service:
           - backend/backendmarket-monolithic
-          - backend/gameService
-          - backend/generation
-          - backend/Logger
+          - backend/game-service
+          - backend/generation-service
+          - backend/logger-service
           - front
           - mono-go
           - proxy
