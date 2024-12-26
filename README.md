@@ -11,6 +11,7 @@
   - [Elements réalisés](#elements-réalisés)
   - [Elements non réalisés](#elements-non-réalisés)
   - [Roadmap](#roadmap)
+  - [Github CI](#github-ci)
 
 ## Membres :
 
@@ -72,3 +73,5 @@
 
 J'ai envie de tester la difference de performance entre le monolitique en java et en Go.
 Pour cela on utilisera gatling pour simuler des utilisateurs/du traffic. Et on visualisera les performances de chaque solution dans Grafana/Prometheus.
+
+## Github CI
