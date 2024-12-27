@@ -48,19 +48,19 @@ jobs:
       - name: Upload Backendmarket JAR
         uses: actions/upload-artifact@v4
         with:
-          name: backendmarket-jar
+          name: backendmarket.jar
           path: backend/backendmarket-monolithic/target/*.jar
 
       - name: Upload Generation JAR
         uses: actions/upload-artifact@v4
         with:
-          name: generation-jar
+          name: generation.jar
           path: backend/generation/target/*.jar
 
       - name: Upload Logger JAR
         uses: actions/upload-artifact@v4
         with:
-          name: logger-jar
+          name: logger.jar
           path: backend/Logger/target/*.jar
 
   docker-build-java-based-images:
@@ -75,13 +75,13 @@ jobs:
       matrix:
         service:
           - folder: backend/backendmarket-monolithic
-            jar: backendmarket-monolithic-0.0.1-SNAPSHOT.jar
+            jar: backendmarket.jar
             image_name: backendmarket-monolithic
           - folder: backend/generation
-            jar: generation-0.0.1-SNAPSHOT.jar
+            jar: generation.jar
             image_name: generation-service
           - folder: backend/Logger
-            jar: Logger-0.0.1-SNAPSHOT.jar
+            jar: logger.jar
             image_name: logger-service
 
     steps:
