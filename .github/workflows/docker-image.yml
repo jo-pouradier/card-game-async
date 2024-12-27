@@ -43,19 +43,19 @@ jobs:
 
       # Step 4: Archive built artifacts
       - name: Upload Backendmarket JAR
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: backendmarket-jar
           path: backend/backendmarket-monolithic/target/backendmarket-monolithic-0.0.1-SNAPSHOT.jar
           
       - name: Upload Generation JAR
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: generation-jar
           path: backend/generation/target/generation-1.0-SNAPSHOT.jar
       
       - name: Upload Logger JAR
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: logger-jar
           path: backend/Logger/target/logger-1.0-SNAPSHOT.jar
@@ -80,10 +80,13 @@ jobs:
           path: backend/backendmarket-monolithic/target/backendmarket-monolithic-0.0.1-SNAPSHOT.jar
           if-no-files-found: error    
       # Step 2: Build Docker image
+      - name: login
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
       - name: Build Docker Image
         run: |
           cd backend/backendmarket-monolithic
-          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/backendmarket-monolithic
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/${{ github.repository }}/backendmarket-monolithic
           GIT_SHA=$(git rev-parse --short $GITHUB_SHA)
 
           # Build the Docker image
@@ -100,7 +103,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Copy JAR from Build
         uses: actions/download-artifact@v4
@@ -112,7 +115,7 @@ jobs:
       - name: Build Docker Image
         run: |
           cd backend/generation
-          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/generation-service
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/${{ github.repository}}/generation-service
           GIT_SHA=$(git rev-parse --short $GITHUB_SHA)
 
           # Build the Docker image
@@ -129,7 +132,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Copy JAR from Build
         uses: actions/download-artifact@v4
@@ -138,11 +141,14 @@ jobs:
           path: backend/Logger/target/logger-1.0-SNAPSHOT.jar
           if-no-files-found: error    
 
+      - name: Login to Docker
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
       - name: Build Docker Image
         run: |
           ls -R
           cd backend/Logger
-          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/generation-service
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/${{ github.repository }}/generation-service
           GIT_SHA=$(git rev-parse --short "$GITHUB_SHA")
 
           # Build the Docker image
@@ -165,21 +171,25 @@ jobs:
           - front
           - proxy
           - backend/gameService
+        name:
+          - front
+          - proxy
+          - game-service
 
     steps:
       # checkout the code
       - name: checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # set up docker buildx for better performance
       - name: set up docker buildx
         uses: docker/setup-buildx-action@v2
 
       # build and push the docker image
-      - name: build and push ${{ matrix.service }}
+      - name: build and push ${{ matrix.name }}
         run: |
           cd ${{ matrix.service }}
-          image_name=ghcr.io/${{ github.repository_owner }}/${{ matrix.service }}
+          image_name=ghcr.io/${{ github.repository_owner }}/${{ github.repository }}/${{ matrix.name }}
           git_sha=$(git rev-parse --short $GITHUB_SHA)
 
           # build the docker image
