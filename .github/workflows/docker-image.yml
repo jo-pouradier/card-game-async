@@ -91,7 +91,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: ${{ matrix.service.image_name }}-jar
+          name: ${{ matrix.service.jar }}
           path: ${{ matrix.service.folder }}/target/${{ matrix.service.jar }}
           if-no-files-found: error
 
@@ -108,7 +108,7 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           cd ${{ matrix.service.folder }}
-          cp target/${{ matrix.service.jar }} app.jar
+          cp target/${{ matrix.service.jar }} ${{ matrix.service.jar }}
           IMAGE_NAME=ghcr.io/${{ github.repository }}/${{ matrix.service.image_name }}
           GIT_SHA=$(git rev-parse --short $GITHUB_SHA)
 
