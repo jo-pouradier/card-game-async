@@ -3,7 +3,6 @@ name: CI and Docker Build
 on:
   push:
     branches:
-      - github-ci
       - main
   pull_request:
     branches:
@@ -114,6 +113,12 @@ jobs:
           # Build the Docker image
           docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:$GIT_SHA .
 
+      - name: Push Docker Image
+        if: github.event_name == 'push'  # Push images only on push events
+        run: |
+          IMAGE_NAME=ghcr.io/${{ github.repository }}/${{ matrix.service.image_name }}
+          GIT_SHA=$(git rev-parse --short $GITHUB_SHA)
+
           # Push the Docker image
           docker push $IMAGE_NAME:latest
           docker push $IMAGE_NAME:$GIT_SHA
@@ -159,6 +164,12 @@ jobs:
 
           # build the docker image
           docker build -t $image_name:latest -t $image_name:$git_sha .
+
+      - name: Push Docker Image
+        if: github.event_name == 'push'  # Push images only on push events
+        run: |
+          IMAGE_NAME=ghcr.io/${{ github.repository }}/${{ matrix.service.image_name }}
+          GIT_SHA=$(git rev-parse --short $GITHUB_SHA)
 
           # push the docker image
           docker push $image_name:latest
