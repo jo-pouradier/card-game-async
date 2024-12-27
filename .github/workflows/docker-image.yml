@@ -60,7 +60,7 @@ jobs:
       - name: Upload Logger JAR
         uses: actions/upload-artifact@v4
         with:
-          name: logger.jar
+          name: Logger.jar
           path: backend/Logger/target/*.jar
 
   docker-build-java-based-images:
@@ -81,7 +81,7 @@ jobs:
             jar: generation.jar
             image_name: generation-service
           - folder: backend/Logger
-            jar: logger.jar
+            jar: Logger.jar
             image_name: logger-service
 
     steps:
