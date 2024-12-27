@@ -165,3 +165,22 @@ func (c *UserController) AuthUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(user[0].ID)
 }
+
+
+func (c *UserController) WinBattle(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	err := c.userService.WinBattle(id)
+	if err != nil || id == "" {
+		http.Error(w, fmt.Sprintf("User with ID %s not found", id), http.StatusNotFound)
+		return
+	}
+
+	err = c.userService.WinBattle(id)
+	if err != nil {
+		http.Error(w, "Failed to update user", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(fmt.Sprintf("%v", err != nil)))
+}

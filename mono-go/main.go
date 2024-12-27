@@ -2,17 +2,20 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/jo-pouradier/card-game-async/mono-go/controller"
+	_ "github.com/jo-pouradier/card-game-async/mono-go/docs"
+	"github.com/jo-pouradier/card-game-async/mono-go/middleware"
 	"github.com/jo-pouradier/card-game-async/mono-go/model"
 	"github.com/jo-pouradier/card-game-async/mono-go/repository"
 	"github.com/jo-pouradier/card-game-async/mono-go/router"
 	"github.com/jo-pouradier/card-game-async/mono-go/service"
+	httpSwagger "github.com/swaggo/http-swagger/v2"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"github.com/swaggo/http-swagger/v2"
-	_ "github.com/jo-pouradier/card-game-async/mono-go/docs"
 )
 
 // @title Monolithic Card Game API
@@ -26,6 +29,8 @@ func main() {
 	if err != nil {
 		panic("Failed to connect to database!")
 	}
+
+	logging := log.New(os.Stdout, "MAIN: ", log.LstdFlags)
 
 	// Migrate the schema
 	db.AutoMigrate(&model.Card{})
@@ -53,10 +58,6 @@ func main() {
 
 	// Register the routes
 	mux := http.NewServeMux()
-	// log all requests
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println(r.Method, r.URL)
-	})
 	cardRouter.RegisterRoutes(mux)
 	userRouter.RegisterRoutes(mux)
 	storeRouter.RegisterRoutes(mux)
@@ -64,7 +65,10 @@ func main() {
 		httpSwagger.URL("http://localhost:8080/swagger/doc.json"), //The url pointing to API definition"
 	))
 
+	loggingMiddleware := middleware.LoggingMiddleWare(logging)
+	loggedMux := loggingMiddleware(mux)
+
 	// Start the server
 	fmt.Println("Server running on port 8080")
-	http.ListenAndServe(":8080", mux)
+	http.ListenAndServe(":8080", loggedMux)
 }
