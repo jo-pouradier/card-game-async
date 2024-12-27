@@ -1,5 +1,5 @@
 #Use the official Node.js image as the base image
-FROM node:23.1.0 AS build-stage
+FROM node:22.11.0 AS build-stage
 
 #Set the working directory inside the container
 WORKDIR /app
@@ -21,10 +21,9 @@ FROM nginx:mainline-alpine-perl AS production-stage
 
 #Copy the build output to Nginx's default HTML directory
 COPY --from=build-stage /app/dist /usr/share/nginx/html
-#Add the nginx configuration file
-COPY nginx.conf /etc/nginx/conf.d/default.conf
 #Expose port 80 for the server for nginx
-EXPOSE 80
+ENV PORT=80
+EXPOSE ${PORT}
 
 #Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]
