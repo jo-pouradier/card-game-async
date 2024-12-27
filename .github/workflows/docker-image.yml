@@ -74,11 +74,11 @@ jobs:
 
       # Step 1: Use Maven-built artifacts
       - name: Copy JAR from Build
-        uses: actions/upload-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: backendmarket-jar
           path: backend/backendmarket-monolithic/target/backendmarket-monolithic-0.0.1-SNAPSHOT.jar
-
+          if-no-files-found: error    
       # Step 2: Build Docker image
       - name: Build Docker Image
         run: |
@@ -103,10 +103,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Copy JAR from Build
-        uses: actions/upload-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: generation-jar
           path: backend/generation/target/generation-1.0-SNAPSHOT.jar
+          if-no-files-found: error    
 
       - name: Build Docker Image
         run: |
@@ -131,10 +132,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Copy JAR from Build
-        uses: actions/upload-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: logger-jar
           path: backend/Logger/target/logger-1.0-SNAPSHOT.jar
+          if-no-files-found: error    
 
       - name: Build Docker Image
         run: |
@@ -178,7 +180,7 @@ jobs:
         run: |
           cd ${{ matrix.service }}
           image_name=ghcr.io/${{ github.repository_owner }}/${{ matrix.service }}
-          git_sha=$(git rev-parse --short head)
+          git_sha=$(git rev-parse --short $GITHUB_SHA)
 
           # build the docker image
           docker build -t $image_name:latest -t $image_name:$git_sha .
