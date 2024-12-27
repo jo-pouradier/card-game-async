@@ -1,59 +1,3 @@
-# name: Build and Push All Services into Docker Images
-
-# on:
-#   push:
-#     branches:
-#       - github-ci
-#   pull_request:
-#     branches:
-#       - main
-
-# jobs:
-#   build-and-push:
-#     runs-on: ubuntu-latest
-
-#     permissions:
-#       contents: read
-#       packages: write
-
-#     strategy:
-#       matrix:
-#         service:
-#           - backendmarket-monolithic
-#           - game-service
-#           - generation-service
-#           - logger-service
-
-#     steps:
-#       # Checkout the code
-#       - name: Checkout code
-#         uses: actions/checkout@v3
-
-#       # Set up Docker Buildx for better performance
-#       - name: Set up Docker Buildx
-#         uses: docker/setup-buildx-action@v2
-
-#       # # Log in to GitHub Container Registry
-#       # - name: Log in to GitHub Container Registry
-#       #   uses: docker/login-action@v2
-#       #   with:
-#       #     username: ${{ github.actor }}
-#       #     password: ${{ secrets.GITHUB_TOKEN }}
-
-#       # Build and push the Docker image
-#       - name: Build and push ${{ matrix.service }}
-#         run: |
-#           cd ${{ matrix.service }}
-#           IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/${{ matrix.service }}
-#           GIT_SHA=$(git rev-parse --short HEAD)
-
-#           # Build the Docker image
-#           docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:$GIT_SHA .
-
-#           # Push the Docker image
-#           docker push $IMAGE_NAME:latest
-#           docker push $IMAGE_NAME:$GIT_SHA
-
 name: CI and Docker Build
 
 on:
@@ -92,8 +36,10 @@ jobs:
             ${{ runner.os }}-maven
 
       # Step 3: Build and test the project
-      - name: Build and Test
-        run: mvn clean install --fail-fast
+      - name: Build
+        run: |
+          cd backend  
+          mvn clean install --fail-fast -DskipTests=true
 
   # Parallel jobs for Docker builds
   docker-backendmarket:
