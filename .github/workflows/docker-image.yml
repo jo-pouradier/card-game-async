@@ -46,19 +46,19 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: backendmarket-jar
-          path: backendmarket-monolithic/target/backendmarket-monolithic-0.0.1-SNAPSHOT.jar
+          path: backendmarket-monolithic/target/*.jar
 
       - name: Upload Generation JAR
         uses: actions/upload-artifact@v4
         with:
           name: generation-jar
-          path: generation/target/generation-1.0-SNAPSHOT.jar
+          path: backend/generation/target/*.jar
 
       - name: Upload Logger JAR
         uses: actions/upload-artifact@v4
         with:
           name: logger-jar
-          path: Logger/target/logger-1.0-SNAPSHOT.jar
+          path: backend/Logger/target/*.jar
 
   # Parallel jobs for Docker builds
   docker-backendmarket:
