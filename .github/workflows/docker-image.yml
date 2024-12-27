@@ -55,11 +55,12 @@ jobs:
       - name: Copy JAR from Build
         uses: actions/upload-artifact@v3
         with:
-          path: backendmarket-monolithic/target/backendmarket-monolithic-0.0.1-SNAPSHOT.jar
+          path: backend/backendmarket-monolithic/target/backendmarket-monolithic-0.0.1-SNAPSHOT.jar
 
       # Step 2: Build Docker image
       - name: Build Docker Image
         run: |
+          cd backend/backendmarket-monolithic
           IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/backendmarket-monolithic
           GIT_SHA=$(git rev-parse --short HEAD)
 
@@ -82,10 +83,11 @@ jobs:
       - name: Copy JAR from Build
         uses: actions/upload-artifact@v3
         with:
-          path: generation/target/generation-1.0-SNAPSHOT.jar
+          path: backend/generation/target/generation-1.0-SNAPSHOT.jar
 
       - name: Build Docker Image
         run: |
+          cd backend/generation
           IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/generation-service
           GIT_SHA=$(git rev-parse --short HEAD)
 
@@ -108,10 +110,12 @@ jobs:
       - name: Copy JAR from Build
         uses: actions/upload-artifact@v3
         with:
-          path: Logger/target/logger-1.0-SNAPSHOT.jar
+          path: backend/Logger/target/logger-1.0-SNAPSHOT.jar
 
       - name: Build Docker Image
         run: |
+          ls -R
+          cd backend/Logger
           IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/generation-service
           GIT_SHA=$(git rev-parse --short HEAD)
 
