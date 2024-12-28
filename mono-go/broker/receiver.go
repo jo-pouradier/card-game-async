@@ -52,7 +52,7 @@ func (receiver *ReceiverBroker) Start() {
 		defer receiver.wg.Done()
 		for {
 			msg := <-sub.C
-			log.Printf("Received message from queue %s: %s\n", receiver.queue, msg)
+			log.Printf("Received message from queue %s: %s\n", receiver.queue, string(msg.Body))
 			actualText := string(msg.Body)
 			log.Println(actualText)
 			receiver.callback(msg)
