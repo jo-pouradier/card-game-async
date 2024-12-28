@@ -98,7 +98,12 @@ func (s *CardGeneratorService) ReceiveImageGenerationOutput(imageGenerationDTO *
 	cardGenerator.ImageGenerated = true
 
 	_, err := s.cardRepository.SaveGenerator(cardGenerator)
-	return err
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return s.CreateCardFromCardGenerator(cardGenerator)
 }
 
 func (s *CardGeneratorService) GetCardGeneratorByID(d uint) *model.CardGenerator {
@@ -115,7 +120,11 @@ func (s *CardGeneratorService) ReceiveDescriptionGenerationOutput(descriptionGen
 	cardGenerator.DescriptionGenerated = true
 
 	_, err := s.UpdateCard(cardGenerator)
-	return err
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return s.CreateCardFromCardGenerator(cardGenerator)
 }
 
 func (s *CardGeneratorService) ReceivePropertiesGenerationOutput(propertiesGenerationDTO *model.PropertiesGenerationDTO) error {
@@ -130,6 +139,18 @@ func (s *CardGeneratorService) ReceivePropertiesGenerationOutput(propertiesGener
 	cardGenerator.Attack = propertiesGenerationDTO.Attack
 	cardGenerator.Defence = propertiesGenerationDTO.Defence
 
+	cardGenerator.PropertiesGenerated = true
+	s.UpdateCard(cardGenerator)
+
+	return s.CreateCardFromCardGenerator(cardGenerator)
+}
+
+// Called each time a card generator reiceive new data and create the card if all properties are generated
+func (s *CardGeneratorService) CreateCardFromCardGenerator(cardGenerator *model.CardGenerator) error {
+	// verification that all properties are generated
+	if !cardGenerator.DescriptionGenerated || !cardGenerator.ImageGenerated || !cardGenerator.PropertiesGenerated {
+		return nil
+	}
 	err := s.cardRepository.DeleteGenerator(cardGenerator)
 	if err != nil {
 		return err

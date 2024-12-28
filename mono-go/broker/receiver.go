@@ -29,11 +29,13 @@ func GetBrokerReceiver(queue string, callback func(*stomp.Message)) *ReceiverBro
 
 		instance.Start()
 		receiverInstances[queue] = instance
+		log.Printf("Created new receiver for queue %s\n", queue)
 	}
 	return receiverInstances[queue]
 }
 
 func (receiver *ReceiverBroker) Start() {
+	log.Printf("Starting receiver for queue %s\n", receiver.queue)
 	sub, err := receiver.client.Subscribe(receiver.queue, stomp.AckAuto)
 	if err != nil {
 		println("cannot subscribe to", receiver.queue, err.Error())
@@ -50,6 +52,7 @@ func (receiver *ReceiverBroker) Start() {
 		defer receiver.wg.Done()
 		for {
 			msg := <-sub.C
+			log.Printf("Received message from queue %s: %s\n", receiver.queue, msg)
 			actualText := string(msg.Body)
 			log.Println(actualText)
 			receiver.callback(msg)

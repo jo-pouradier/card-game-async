@@ -23,7 +23,7 @@ var (
 // GetNotificationServiceImp returns the singleton instance of NotificationService.
 func GetNotificationServiceImp() NotificationService {
 	once.Do(func() {
-	brokerSender := GetBrokerSender(os.Getenv("NODEJS_MESSAGING_QUEUE_NAME"))
+		brokerSender := GetBrokerSender(os.Getenv("NODEJS_MESSAGING_QUEUE_NAME"))
 		notificationServiceImpl = &NotificationServiceImp{sender: brokerSender}
 	})
 	return notificationServiceImpl
@@ -34,4 +34,3 @@ func (n *NotificationServiceImp) SendNotification(notification *Notification[any
 	n.sender.Send(notification)
 	return nil
 }
-

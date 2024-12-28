@@ -56,13 +56,14 @@ func initializeBrokerClientConn() (*stomp.Conn, error) {
 }
 
 func GetBrokerSender(queue string) *SenderBroker {
-	if _, ok := senderInstances[queue]; ok {
+ 	instance, ok := senderInstances[queue]
+	if !ok {
 		client, err := initializeBrokerClientConn()
 		if err != nil {
 			log.Fatalf("Failed to connect to the broker: %v", err)
 		}
 
-		instance := &SenderBroker{
+		instance = &SenderBroker{
 			client:      client,
 			queue:       queue,
 			messageChan: make(chan JMSData, 100), // Buffered channel
@@ -70,8 +71,9 @@ func GetBrokerSender(queue string) *SenderBroker {
 
 		instance.Start()
 		senderInstances[queue] = instance
+		log.Printf("Created new sender for queue %s\n", queue)
 	}
-	return senderInstances[queue]
+	return instance
 }
 
 func (sender *SenderBroker) Start() {
@@ -82,8 +84,10 @@ func (sender *SenderBroker) Start() {
 	sender.wg.Add(1)
 	go func() {
 		defer sender.wg.Done()
+		log.Println("Starting sender broker on queue: ", sender.queue)
 		for {
 			message, ok := <-sender.messageChan
+			log.Println("Sending message from broker on queue '", sender.queue, "': ", message)
 			if !ok {
 				return
 			}
