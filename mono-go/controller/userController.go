@@ -166,7 +166,14 @@ func (c *UserController) AuthUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(user[0].ID)
 }
 
-
+// WinBattle godoc
+// @Summary Win a battle
+// @Description Win a battle
+// @Tags users
+// @Param id path string true "User ID"
+// @Success 200 {object} bool
+// @Failure 400 {object} map[string]string
+// @Router /user/winbattle/{id} [get]
 func (c *UserController) WinBattle(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	err := c.userService.WinBattle(id)

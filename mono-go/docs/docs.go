@@ -492,6 +492,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/user/winbattle/{id}": {
+            "get": {
+                "description": "Win a battle",
+                "tags": [
+                    "users"
+                ],
+                "summary": "Win a battle",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/{id}": {
             "get": {
                 "description": "Retrieve a user by its ID",

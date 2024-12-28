@@ -7,21 +7,40 @@ import (
 	"os"
 
 	"github.com/jo-pouradier/card-game-async/mono-go/controller"
-	_ "github.com/jo-pouradier/card-game-async/mono-go/docs"
+	_ "github.com/jo-pouradier/card-game-async/mono-go/docs" // mandatory for swagger docs
 	"github.com/jo-pouradier/card-game-async/mono-go/middleware"
 	"github.com/jo-pouradier/card-game-async/mono-go/model"
 	"github.com/jo-pouradier/card-game-async/mono-go/repository"
 	"github.com/jo-pouradier/card-game-async/mono-go/router"
 	"github.com/jo-pouradier/card-game-async/mono-go/service"
+	"github.com/joho/godotenv"
 	httpSwagger "github.com/swaggo/http-swagger/v2"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
+func init() {
+	// Initialize the logger
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+
+	// load .default-env
+	if err := godotenv.Load(".default-env"); err != nil {
+		log.Println("No .default-env file found")
+		os.Exit(1)
+	}
+	// if .env exists load it
+	if _, err := os.Stat(".env"); os.IsNotExist(err) {
+		log.Println("No .env file found")
+	} else {
+		if err := godotenv.Load(); err != nil {
+			log.Println("No .env file found")
+		}
+	}
+}
+
 // @title Monolithic Card Game API
 // @version 1.0.0
 // @description This is a simple API for a card game.
-
 // @BasePath /
 func main() {
 	// Initialize the database

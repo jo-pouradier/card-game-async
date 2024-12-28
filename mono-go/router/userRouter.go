@@ -21,5 +21,5 @@ func (r *UserRouter) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("POST /user", r.userController.AddUser)
 	mux.HandleFunc("DELETE /user/{id}", r.userController.DeleteUser)
 	mux.HandleFunc("POST /auth", r.userController.AuthUser)
-	mux.HandleFunc("POST /winbattle/{id}", r.userController.WinBattle)
+	mux.HandleFunc("GET /winbattle/{id}", r.userController.WinBattle)
 }

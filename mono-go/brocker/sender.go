@@ -1,0 +1,121 @@
+package brocker
+
+import (
+	"fmt"
+	"log"
+	"os"
+	"sync"
+	"time"
+
+	"github.com/go-stomp/stomp/v3"
+	"github.com/go-stomp/stomp/v3/frame"
+)
+
+// Used to get correct communication between services (java specificaly)
+type JMSData interface {
+	GetJMSType() string
+	GetData() (string, error)
+}
+
+type SenderBroker struct {
+	client      *stomp.Conn
+	messageChan chan JMSData
+	wg          *sync.WaitGroup
+	queue       string
+}
+
+var (
+	senderInstances   map[string]*SenderBroker
+	receiverInstances map[string]*ReceiverBroker
+	client            *stomp.Conn
+	clientErr         error
+	clientOnce        sync.Once
+	brokerAddr        string
+	brokerUser        string
+	brokerPwd         string
+)
+
+func initializeBrokerClientConn() (*stomp.Conn, error) {
+	clientOnce.Do(func() {
+		brokerAddr = os.Getenv("BROKER_ADDRESS")
+		brokerUser = os.Getenv("BROKER_USER")
+		brokerPwd = os.Getenv("BROKER_PWD")
+
+		if brokerAddr == "" {
+			brokerAddr = "localhost:61613" // Default broker address
+		}
+
+		options := []func(*stomp.Conn) error{
+			stomp.ConnOpt.Login(brokerUser, brokerPwd),
+			stomp.ConnOpt.HeartBeat(10*time.Second, 10*time.Second),
+		}
+
+		client, clientErr = stomp.Dial("tcp", brokerAddr, options...)
+	})
+	return client, clientErr
+}
+
+func GetBrokerSender(queue string) *SenderBroker {
+	if _, ok := senderInstances[queue]; ok {
+		client, err := initializeBrokerClientConn()
+		if err != nil {
+			log.Fatalf("Failed to connect to the broker: %v", err)
+		}
+
+		instance := &SenderBroker{
+			client:      client,
+			queue:       queue,
+			messageChan: make(chan JMSData, 100), // Buffered channel
+		}
+
+		instance.Start()
+		senderInstances[queue] = instance
+	}
+	return senderInstances[queue]
+}
+
+func (sender *SenderBroker) Start() {
+	// if already started, return
+	if sender.wg != nil {
+		return
+	}
+	sender.wg.Add(1)
+	go func() {
+		defer sender.wg.Done()
+		for {
+			message, ok := <-sender.messageChan
+			if !ok {
+				return
+			}
+			jsonMessage, err := message.GetData()
+			if err != nil {
+				log.Printf("Failed to marshal message: %v\n", err)
+				continue
+			}
+
+			addHeaders := func(frame *frame.Frame) error {
+				frame.Header.Add("JMSType", fmt.Sprintf("%T", message.GetJMSType()))
+				return nil
+			}
+
+			if err := sender.client.Send(sender.queue, "application/json", []byte(jsonMessage), addHeaders); err != nil {
+				log.Printf("Failed to send message: %v\n", err)
+			} else {
+				log.Printf("Message sent successfully: %s\n", jsonMessage)
+			}
+		}
+	}()
+}
+
+func (sender *SenderBroker) Send(message JMSData) {
+	sender.messageChan <- message
+}
+
+func (sender *SenderBroker) Stop() {
+	close(sender.messageChan)
+	sender.wg.Wait()
+
+	if err := sender.client.Disconnect(); err != nil {
+		log.Printf("Failed to disconnect from broker: %v", err)
+	}
+}
