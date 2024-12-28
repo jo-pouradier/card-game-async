@@ -49,7 +49,7 @@ func (r *UserRepository) FindByID(id string) (*model.User, error) {
 
 func (r *UserRepository) Save(user *model.User) (*model.User, error) {
 	// delete id to avoid overwriting
-	user.ID = nil
+	user.ID = 0
 	err := r.DB.Create(user).Error
 	return user, err
 }

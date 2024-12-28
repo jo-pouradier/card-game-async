@@ -45,12 +45,12 @@ func (s *CardService) UpdateCard(cardModel *model.Card) (*model.Card, error) {
 }
 
 // GetCard retrieves a card by its ID.
-func (s *CardService) GetCard(id int) (*model.Card, error) {
+func (s *CardService) GetCard(id uint) (*model.Card, error) {
 	return s.cardRepository.FindByID(id)
 }
 
 // DeleteCard deletes a card by its ID.
-func (s *CardService) DeleteCard(id int) error {
+func (s *CardService) DeleteCard(id uint) error {
 	return s.cardRepository.DeleteByID(id)
 }
 

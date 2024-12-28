@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 
@@ -8,20 +9,24 @@ import (
 	"github.com/jo-pouradier/card-game-async/mono-go/repository"
 )
 
+const GENERATE_PRICE = 100
+
 type StoreService struct {
 	CardRepo        *repository.CardRepository
 	StoreRepo       *repository.StoreRepository
 	UserService     *UserService
 	CardService     *CardService
+	CardGeneratorService *CardGeneratorService
 	CardGenerateFee float32
 }
 
-func NewStoreService(cardRepo *repository.CardRepository, storeRepo *repository.StoreRepository, userService *UserService, cardService *CardService, cardGenerateFee float32) *StoreService {
+func NewStoreService(cardRepo *repository.CardRepository, storeRepo *repository.StoreRepository, userService *UserService, cardService *CardService, cardGeneratorService *CardGeneratorService, cardGenerateFee float32) *StoreService {
 	return &StoreService{
 		CardRepo:        cardRepo,
 		StoreRepo:       storeRepo,
 		UserService:     userService,
 		CardService:     cardService,
+		CardGeneratorService: cardGeneratorService,
 		CardGenerateFee: cardGenerateFee,
 	}
 }
@@ -30,9 +35,9 @@ func (s StoreService) GetAllTransactions() any {
 	panic("unimplemented")
 }
 
-func (s *StoreService) BuyCard(userID, cardID, storeID int) (bool, error) {
+func (s *StoreService) BuyCard(userID, cardID, storeID uint) (bool, error) {
 	// Retrieve user and card from the repository
-	ID := strconv.Itoa(userID)
+	ID := strconv.FormatUint(uint64(userID), 10)
 	user, err := s.UserService.GetUser(ID)
 	if err != nil {
 		return false, fmt.Errorf("user not found: %v", err)
@@ -49,7 +54,7 @@ func (s *StoreService) BuyCard(userID, cardID, storeID int) (bool, error) {
 
 	// Proceed with the purchase
 	user.Account -= card.Price
-	card.UserID = *user.ID
+	card.UserID = user.ID
 	_, errUpdate := s.UserService.UpdateUser(ID, user)
 	if errUpdate != nil {
 		return false, fmt.Errorf("could not update user: %v", err)
@@ -75,7 +80,7 @@ func (s *StoreService) BuyCard(userID, cardID, storeID int) (bool, error) {
 	return true, nil
 }
 
-func (s *StoreService) BuyCardBtob(userID int, cardID int, storeID int) bool {
+func (s *StoreService) BuyCardBtob(userID, cardID, storeID uint) bool {
 	// Try to fetch the card from the card service
 	card, err := s.CardService.GetCard(cardID)
 	if err != nil {
@@ -104,9 +109,9 @@ func (s *StoreService) BuyCardBtob(userID int, cardID int, storeID int) bool {
 	return err == nil
 }
 
-func (s *StoreService) SellCard(userID, cardID, storeID int) (bool, error) {
+func (s *StoreService) SellCard(userID, cardID, storeID uint) (bool, error) {
 	// Retrieve user and card from the repository
-	ID := strconv.Itoa(userID)
+	ID := strconv.FormatUint(uint64(userID), 10)
 	user, err := s.UserService.GetUser(ID)
 	if err != nil {
 		return false, fmt.Errorf("user not found: %v", err)
@@ -117,7 +122,7 @@ func (s *StoreService) SellCard(userID, cardID, storeID int) (bool, error) {
 	}
 
 	// Remove card from user and update balance
-	card.UserID = -1 // Removing ownership
+	card.UserID = 0 // Removing ownership
 	user.Account += card.Price
 	_, err = s.UserService.UpdateUser(ID, user)
 	if err != nil {
@@ -156,39 +161,38 @@ func (s *StoreService) ListCardsToSellBtob() ([]model.Card, error) {
 }
 
 // GenerateCard handles card generation
-// func (s *StoreService) GenerateCard(cardGenerator model.CardGenerator) (*model.StoreTransaction, error) {
-// 	// Check if user exists
-// 	user, err := s.UserService.GetUser(strconv.Itoa(cardGenerator.UserID))
-// 	if err != nil || user == nil {
-// 		return nil, err
-// 	}
-// 	// Check if the user has enough money
-// 	const GENERATE_PRICE = 10
-// 	if user.Account < GENERATE_PRICE {
-// 		return nil, errors.New("not enough money to generate a card")
-// 	}
-// 	// Generate the card using the CardGenerator service
-// 	cardGeneratorModel, err := s.CardGeneratorService.GenerateCard(cardGenerator.DescriptionPrompt, cardGenerator.ImagePrompt, user)
-// 	if err != nil {
-// 		return nil, errors.Join(err, errors.New("failed to generate card"))
-// 	}
-// 	// Deduct money from the user's account
-// 	user.Account -= GENERATE_PRICE
-// 	if _, err := s.UserService.UpdateUser(strconv.Itoa(*user.ID), user); err != nil {
-// 		return nil, errors.Join(err, errors.New("failed to update user account"))
-// 	}
-// 	// Create the store transaction
-// 	storeTransaction := &model.StoreTransaction{
-// 		UserID:  *user.ID,
-// 		CardID:  cardGeneratorModel.ID,
-// 		StoreID: -1,
-// 		Amount:  GENERATE_PRICE,
-// 		Action:  model.GENERATE,
-// 	}
-// 	// Save the transaction to the store repository
-// 	err = s.StoreRepo.SaveTransaction(storeTransaction)
-// 	if err != nil {
-// 		return nil, errors.New("failed to save store transaction")
-// 	}
-// 	return storeTransaction, nil
-// }
+func (s *StoreService) GenerateCard(cardGenerator model.CardGenerator) (*model.StoreTransaction, error) {
+	// Check if user exists
+	user, err := s.UserService.GetUser(strconv.Itoa(int(cardGenerator.UserID)))
+	if err != nil || user == nil {
+		return nil, err
+	}
+	// Check if the user has enough money
+	if user.Account < GENERATE_PRICE {
+		return nil, errors.New("not enough money to generate a card")
+	}
+	// Generate the card using the CardGenerator service
+	cardGeneratorModel, err := s.CardGeneratorService.GenerateCard(cardGenerator.DescriptionPrompt, cardGenerator.ImagePrompt, user)
+	if err != nil {
+		return nil, errors.Join(err, errors.New("failed to generate card"))
+	}
+	// Deduct money from the user's account
+	user.Account -= GENERATE_PRICE
+	if _, err := s.UserService.UpdateUser(strconv.Itoa(int(user.ID)), user); err != nil {
+		return nil, errors.Join(err, errors.New("failed to update user account"))
+	}
+	// Create the store transaction
+	storeTransaction := &model.StoreTransaction{
+		UserID:  user.ID,
+		CardID:  cardGeneratorModel.ID,
+		StoreID: 0,
+		Amount:  GENERATE_PRICE,
+		Action:  model.GENERATE,
+	}
+	// Save the transaction to the store repository
+	err = s.StoreRepo.SaveTransaction(storeTransaction)
+	if err != nil {
+		return nil, errors.New("failed to save store transaction")
+	}
+	return storeTransaction, nil
+}

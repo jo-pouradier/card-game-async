@@ -72,7 +72,7 @@ func (s *UserService) UpdateUser(id string, user *model.User) (*model.User, erro
 		return nil, errors.New("user not found")
 	}
 	ID, _ := strconv.Atoi(id)
-	if *updatedUser.ID == ID {
+	if updatedUser.ID == uint(ID) {
 		updatedUser.Login = user.Login
 		updatedUser.Pwd = user.Pwd
 		updatedUser.LastName = user.LastName

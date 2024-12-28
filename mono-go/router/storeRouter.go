@@ -21,5 +21,5 @@ func (r *StoreRouter) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /store/transaction", r.storeController.GetTransactions)
 	mux.HandleFunc("GET /store/cards_to_sell", r.storeController.GetCardsToSell)
 	mux.HandleFunc("GET /store/cards_to_sell/btob", r.storeController.GetCardsToSellBtoB)
-
+	mux.HandleFunc("POST /store/generate", r.storeController.GenerateCard)
 }

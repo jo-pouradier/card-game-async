@@ -9,6 +9,16 @@ type CardRepository struct {
 	DB *gorm.DB
 }
 
+func (r *CardRepository) DeleteGenerator(cardGenerator *model.CardGenerator) error {
+	return r.DB.Delete(cardGenerator).Error
+}
+
+func (r *CardRepository) FindGeneratorByID(d uint) *model.CardGenerator {
+	var cardGenerator model.CardGenerator
+	r.DB.First(&cardGenerator, d)
+	return &cardGenerator
+}
+
 // NewCardRepository creates a new instance of CardRepository.
 func NewCardRepository(db *gorm.DB) *CardRepository {
 	return &CardRepository{DB: db}
@@ -34,7 +44,7 @@ func (r *CardRepository) FindAll() ([]model.Card, error) {
 }
 
 // FindByID retrieves a card by its ID.
-func (r *CardRepository) FindByID(id int) (*model.Card, error) {
+func (r *CardRepository) FindByID(id uint) (*model.Card, error) {
 	var card model.Card
 	err := r.DB.First(&card, id).Error
 	if err != nil {
@@ -53,6 +63,20 @@ func (r *CardRepository) Save(card *model.Card) (*model.Card, error) {
 }
 
 // DeleteByID deletes a card by its ID.
-func (r *CardRepository) DeleteByID(id int) error {
+func (r *CardRepository) DeleteByID(id uint) error {
 	return r.DB.Delete(&model.Card{}, id).Error
+}
+
+func (r *CardRepository) CreateEmptyCard() (uint, error) {
+	card := model.Card{}
+	err := r.DB.Create(&card).Error
+	return card.ID, err
+}
+
+func (r *CardRepository) SaveGenerator(cardGenerator *model.CardGenerator) (*model.CardGenerator, error) {
+	err := r.DB.Save(cardGenerator).Error
+	if err != nil {
+		return nil, err
+	}
+	return cardGenerator, nil
 }

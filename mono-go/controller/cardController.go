@@ -46,6 +46,7 @@ func (ctrl *CardController) GetCard(w http.ResponseWriter, r *http.Request) {
 	idStr := r.URL.Path[len("/card/"):]
 
 	// Convert string to integer
+	// id, err := strconv.Atoi(idStr)
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		http.Error(w, "Invalid card ID", http.StatusBadRequest)
@@ -53,7 +54,7 @@ func (ctrl *CardController) GetCard(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Retrieve the card
-	card, err := ctrl.cardService.GetCard(id)
+	card, err := ctrl.cardService.GetCard(uint(id))
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Card with ID %d not found", id), http.StatusNotFound)
 		return
@@ -146,7 +147,7 @@ func (ctrl *CardController) DeleteCard(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Delete the card
-	errDelete := ctrl.cardService.DeleteCard(id)
+	errDelete := ctrl.cardService.DeleteCard(uint(id))
 	if errDelete != nil {
 		http.Error(w, fmt.Sprintf("Card with ID %d not found", id), http.StatusNotFound)
 		return

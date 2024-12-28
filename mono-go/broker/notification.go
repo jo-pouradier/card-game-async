@@ -1,10 +1,9 @@
-package brocker
+package broker
 
 import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
-	"time"
 )
 
 // NotificationSeverity represents the severity of a notification.
@@ -19,7 +18,7 @@ const (
 // Notification represents a notification data transfer object.
 type Notification[T any] struct {
 	ID        int64                `json:"id"`
-	UserID    int                  `json:"userId"`
+	UserID    uint                 `json:"userId"`
 	Message   T                    `json:"message"`
 	Severity  NotificationSeverity `json:"severity"`
 	Sender    string               `json:"sender"`
@@ -28,8 +27,7 @@ type Notification[T any] struct {
 }
 
 // NewNotificationDTO creates a new NotificationDTO instance.
-func NewNotification[T any](userID int, message T, severity NotificationSeverity, sender string) *Notification[T] {
-	rand.Seed(time.Now().UnixNano())
+func NewNotification[T any](userID uint, message T, severity NotificationSeverity, sender string) *Notification[T] {
 	return &Notification[T]{
 		ID:        rand.Int63(),
 		UserID:    userID,

@@ -38,7 +38,7 @@ func (controller *StoreController) BuyCards(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	_, err := controller.storeService.BuyCard(order.UserID, order.CardID, -1)
+	_, err := controller.storeService.BuyCard(order.UserID, order.CardID, 0)
 	if err != nil {
 		http.Error(w, "false", http.StatusBadRequest)
 		return
@@ -92,7 +92,7 @@ func (controller *StoreController) SellCard(w http.ResponseWriter, r *http.Reque
 	}
 	fmt.Println(order)
 
-	success, errSell := controller.storeService.SellCard(order.UserID, order.CardID, -1)
+	success, errSell := controller.storeService.SellCard(order.UserID, order.CardID, 0)
 	if errSell != nil {
 		http.Error(w, "Sale failed", http.StatusBadRequest)
 		return
@@ -159,4 +159,21 @@ func (controller *StoreController) GetCardsToSellBtoB(w http.ResponseWriter, _ *
 	cards, _ := controller.storeService.ListCardsToSellBtob()
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(cards)
+}
+
+func (controller *StoreController) GenerateCard(w http.ResponseWriter, r *http.Request) {
+	var card model.CardGenerator
+	if err := json.NewDecoder(r.Body).Decode(&card); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	transaction, err := controller.storeService.GenerateCard(card)
+	if err != nil {
+		http.Error(w, "Failed to generate card", http.StatusBadRequest)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(transaction)
 }

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/jo-pouradier/card-game-async/mono-go/broker"
 	"github.com/jo-pouradier/card-game-async/mono-go/controller"
 	_ "github.com/jo-pouradier/card-game-async/mono-go/docs" // mandatory for swagger docs
 	"github.com/jo-pouradier/card-game-async/mono-go/middleware"
@@ -24,8 +25,8 @@ func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	// load .default-env
-	if err := godotenv.Load(".default-env"); err != nil {
-		log.Println("No .default-env file found")
+	if err := godotenv.Load(".default.env"); err != nil {
+		log.Println("No .default.env file found")
 		os.Exit(1)
 	}
 	// if .env exists load it
@@ -33,7 +34,7 @@ func init() {
 		log.Println("No .env file found")
 	} else {
 		if err := godotenv.Load(); err != nil {
-			log.Println("No .env file found")
+			log.Println("No .env file found, continue with default values from .default.env file")
 		}
 	}
 }
@@ -55,6 +56,8 @@ func main() {
 	db.AutoMigrate(&model.Card{})
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.StoreTransaction{})
+	db.AutoMigrate(&model.CardGenerator{})
+	db.AutoMigrate(&model.StoreOrder{})
 
 	// Initialize the repository
 	cardRepository := repository.NewCardRepository(db)
@@ -64,7 +67,11 @@ func main() {
 	// Initialize the service
 	cardService := service.NewCardService(cardRepository)
 	userService := service.NewUserService(userRepository, cardService)
-	storeService := service.NewStoreService(cardRepository, storeRepository, userService, cardService, 100)
+
+	generatorBroker := broker.GetBrokerSender("GENERATION-PROPERTIES-INPUT")
+	notificationService := broker.GetNotificationServiceImp()
+	cardGeneratorService := service.NewCardGeneratorService(cardService, cardRepository, generatorBroker, notificationService)
+	storeService := service.NewStoreService(cardRepository, storeRepository, userService, cardService, cardGeneratorService, 100)
 
 	// Initialize the controller
 	cardController := controller.NewCardRestController(cardService)

@@ -3,13 +3,10 @@ package model
 import (
 	"encoding/json"
 	"fmt"
-
-	"gorm.io/gorm"
 )
 
 type User struct {
-	gorm.Model `json:"-"`
-	ID         *int    `json:"id" gorm:"primaryKey;autoIncrement"`
+	ID         uint    `json:"id" gorm:"primaryKey;autoIncrement"`
 	Login      string  `json:"login" gorm:"unique;not null"`
 	Pwd        string  `json:"pwd" gorm:"not null, check:pwd <> '********', check:size(pwd) > 0"`
 	Account    float32 `json:"account" gorm:"default:10000"`
@@ -19,14 +16,14 @@ type User struct {
 	CardList   []Card  `json:"cardList" gorm:"foreignKey:UserID"`
 }
 type UserDTO struct {
-	ID       *int    `json:"id,omitempty"`
+	ID       uint    `json:"id,omitempty"`
 	Login    string  `json:"login"`
 	Pwd      string  `json:"pwd"`
 	Account  float32 `json:"account"`
 	LastName string  `json:"lastName"`
 	SurName  string  `json:"surName"`
 	Email    string  `json:"email"`
-	CardList []int   `json:"cardList"`
+	CardList []uint   `json:"cardList"`
 }
 
 func NewUser() *User {
@@ -45,7 +42,7 @@ func (u *User) ToDTO() *UserDTO {
 		fmt.Println("******** CardList is nil ********")
 		u.CardList = []Card{}
 	}
-	cardIDs := make([]int, len(u.CardList))
+	cardIDs := make([]uint, len(u.CardList))
 	for i, card := range u.CardList {
 		cardIDs[i] = card.ID
 	}
@@ -96,7 +93,7 @@ func (u *UserDTO) ToModel() *User {
 }
 
 func (u *UserDTO) FromModel(model *User) *UserDTO {
-	cardIDs := make([]int, len(model.CardList))
+	cardIDs := make([]uint, len(model.CardList))
 	for i, card := range model.CardList {
 		cardIDs[i] = card.ID
 	}
