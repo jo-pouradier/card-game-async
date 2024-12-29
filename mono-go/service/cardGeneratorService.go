@@ -5,30 +5,36 @@ import (
 	"errors"
 	"log"
 
+	"github.com/go-stomp/stomp/v3"
 	"github.com/jo-pouradier/card-game-async/mono-go/broker"
 	"github.com/jo-pouradier/card-game-async/mono-go/model"
 	"github.com/jo-pouradier/card-game-async/mono-go/repository"
 )
 
 type CardGeneratorService struct {
-	cardmodelervice           *CardService
-	cardRepository            *repository.CardRepository
-	cardGeneratorBrokerSender *broker.SenderBroker
-	notificationService       broker.NotificationService
+	cardmodelervice             *CardService
+	cardRepository              *repository.CardRepository
+	cardGeneratorBrokerSender   *broker.SenderBroker
+	cardGeneratorBrokerReceiver *broker.ReceiverBroker
+	notificationService         broker.NotificationService
 }
 
 func NewCardGeneratorService(
 	cardmodelervice *CardService,
 	cardRepository *repository.CardRepository,
 	cardGeneratorBrokerSender *broker.SenderBroker,
+	cardGeneratorBrokerReceiver *broker.ReceiverBroker,
 	notificationService broker.NotificationService,
 ) *CardGeneratorService {
-	return &CardGeneratorService{
-		cardmodelervice:           cardmodelervice,
-		cardRepository:            cardRepository,
-		cardGeneratorBrokerSender: cardGeneratorBrokerSender,
-		notificationService:       notificationService,
+	cardGeneratorService := &CardGeneratorService{
+		cardmodelervice:             cardmodelervice,
+		cardRepository:              cardRepository,
+		cardGeneratorBrokerSender:   cardGeneratorBrokerSender,
+		cardGeneratorBrokerReceiver: cardGeneratorBrokerReceiver,
+		notificationService:         notificationService,
 	}
+	cardGeneratorService.cardGeneratorBrokerReceiver.Callback = cardGeneratorService.handleMessage
+	return cardGeneratorService
 }
 
 func (s *CardGeneratorService) saveCardGenerator(cardGenerator *model.CardGenerator) (*model.CardGenerator, error) {
@@ -85,6 +91,44 @@ func (s *CardGeneratorService) UpdateCard(cardGenerator *model.CardGenerator) (*
 func (s *CardGeneratorService) generateProperties(cardGenerator *model.CardGenerator) {
 	log.Printf("Generating properties for card with ID: %d\n", cardGenerator.ID)
 	s.SendPropertiesGeneration(cardGenerator)
+}
+
+func (s *CardGeneratorService) handleMessage(message *stomp.Message) {
+	switch message.Header.Get("JMSType") {
+	case "ImageGenerationDTO":
+		var imageGenerationDTO model.ImageGenerationDTO
+		err := json.Unmarshal(message.Body, &imageGenerationDTO)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		err = s.ReceiveImageGenerationOutput(&imageGenerationDTO)
+		if err != nil {
+			log.Println(err)
+		}
+	case "TextGenerationDTO":
+		var textGenerationDTO model.TextGenerationDTO
+		err := json.Unmarshal(message.Body, &textGenerationDTO)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		err = s.ReceiveDescriptionGenerationOutput(&textGenerationDTO)
+		if err != nil {
+			log.Println(err)
+		}
+	case "PropertiesGenerationDTO":
+		var propertiesGenerationDTO model.PropertiesGenerationDTO
+		err := json.Unmarshal(message.Body, &propertiesGenerationDTO)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		err = s.ReceivePropertiesGenerationOutput(&propertiesGenerationDTO)
+		if err != nil {
+			log.Println(err)
+		}
+	}
 }
 
 func (s *CardGeneratorService) ReceiveImageGenerationOutput(imageGenerationDTO *model.ImageGenerationDTO) error {

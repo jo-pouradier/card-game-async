@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/go-stomp/stomp/v3"
 	"github.com/jo-pouradier/card-game-async/mono-go/broker"
 	"github.com/jo-pouradier/card-game-async/mono-go/controller"
 	_ "github.com/jo-pouradier/card-game-async/mono-go/docs" // mandatory for swagger docs
@@ -70,7 +71,8 @@ func main() {
 
 	generatorBroker := broker.GetBrokerSender("GENERATION-PROPERTIES-INPUT")
 	notificationService := broker.GetNotificationServiceImp()
-	cardGeneratorService := service.NewCardGeneratorService(cardService, cardRepository, generatorBroker, notificationService)
+	generatorReceiver := broker.GetBrokerReceiver("GENERATION-PROPERTIES-OUTPUT", func(msg *stomp.Message) {}) // empty callback, generated later when creating the service
+	cardGeneratorService := service.NewCardGeneratorService(cardService, cardRepository, generatorBroker, generatorReceiver, notificationService)
 	storeService := service.NewStoreService(cardRepository, storeRepository, userService, cardService, cardGeneratorService, 100)
 
 	// Initialize the controller

@@ -25,8 +25,8 @@ type SenderBroker struct {
 }
 
 var (
-	senderInstances   map[string]*SenderBroker
-	receiverInstances map[string]*ReceiverBroker
+	senderInstances   = make(map[string]*SenderBroker)
+	receiverInstances = make(map[string]*ReceiverBroker)
 	client            *stomp.Conn
 	clientErr         error
 	clientOnce        sync.Once
@@ -47,7 +47,8 @@ func initializeBrokerClientConn() (*stomp.Conn, error) {
 
 		options := []func(*stomp.Conn) error{
 			stomp.ConnOpt.Login(brokerUser, brokerPwd),
-			stomp.ConnOpt.HeartBeat(10*time.Second, 10*time.Second),
+			stomp.ConnOpt.HeartBeat(10*time.Second, (1<<16)*time.Hour), // basically disable heartbeats, there must be a better way
+			stomp.ConnOpt.Header("client-id", "go-client"),
 		}
 
 		client, clientErr = stomp.Dial("tcp", brokerAddr, options...)
@@ -56,7 +57,7 @@ func initializeBrokerClientConn() (*stomp.Conn, error) {
 }
 
 func GetBrokerSender(queue string) *SenderBroker {
- 	instance, ok := senderInstances[queue]
+	instance, ok := senderInstances[queue]
 	if !ok {
 		client, err := initializeBrokerClientConn()
 		if err != nil {
@@ -67,6 +68,7 @@ func GetBrokerSender(queue string) *SenderBroker {
 			client:      client,
 			queue:       queue,
 			messageChan: make(chan JMSData, 100), // Buffered channel
+			wg:          &sync.WaitGroup{},
 		}
 
 		instance.Start()
@@ -78,9 +80,6 @@ func GetBrokerSender(queue string) *SenderBroker {
 
 func (sender *SenderBroker) Start() {
 	// if already started, return
-	if sender.wg != nil {
-		return
-	}
 	sender.wg.Add(1)
 	go func() {
 		defer sender.wg.Done()
