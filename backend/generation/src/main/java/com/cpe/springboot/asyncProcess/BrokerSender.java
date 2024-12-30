@@ -1,17 +1,18 @@
 package com.cpe.springboot.asyncProcess;
 
-import com.cpe.springboot.generation.GenerationDTOAbstact;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.logging.Logger;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.logging.Logger;
+import com.cpe.springboot.generation.GenerationDTOAbstact;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class BrokerSender {
@@ -42,10 +43,14 @@ public class BrokerSender {
     }
 
     public void sendMessage(GenerationDTOAbstact msg) {
+        try {
         jmsTemplate.convertAndSend(queueName, msg,
                 message -> {
                     message.setJMSType(msg.getClass().getName());
                     return message;
                 });
+        } catch (JmsException e) {
+            log.error("Error while sending message: {}", e.getMessage());
+        }
     }
 }

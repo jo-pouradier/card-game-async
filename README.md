@@ -12,7 +12,6 @@
   - [Elements non réalisés](#elements-non-réalisés)
   - [Roadmap](#roadmap)
   - [Github CI](#github-ci)
-  - [Broker mesage](#broker-mesage)
 
 ## Membres :
 
@@ -76,9 +75,3 @@ J'ai envie de tester la difference de performance entre le monolitique en java e
 Pour cela on utilisera gatling pour simuler des utilisateurs/du traffic. Et on visualisera les performances de chaque solution dans Grafana/Prometheus.
 
 ## Github CI
-
-## Broker mesage
-
-from go: {"cardId":19,"imagePrompt":"o","imgUrl":"","generationType":"IMAGE"}
-from java:  {"cardId":1,"imagePrompt":"","imgUrl":"https://media.istockphoto.com/id/1440592316/vector/king-of-diamonds-playing-card-classic-design.jpg?s=612x612&w=0&k=20&c=oDqEFXm84DSEYkL4BhgxdY5yfLw51o4zkL52YovqZrY=","generationType":"IMAGE"}
- {"cardId":1,"textPrompt":"t","text":"This is a super description","generationType":"TEXT"}

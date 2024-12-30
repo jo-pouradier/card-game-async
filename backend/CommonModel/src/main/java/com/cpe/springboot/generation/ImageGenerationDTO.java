@@ -1,6 +1,8 @@
 package com.cpe.springboot.generation;
 
-public class ImageGenerationDTO extends GenerationDTOAbstact {
+import java.io.Serializable;
+
+public class ImageGenerationDTO extends GenerationDTOAbstact implements Serializable {
     private String imagePrompt;
     private String imgUrl;
 
