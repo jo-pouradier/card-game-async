@@ -15,7 +15,7 @@ func (i ImageGenerationDTO) GetData() (string, error) {
 }
 
 func (i ImageGenerationDTO) GetJMSType() string {
-	return "ImageGenerationDTO"
+	return "com.cpe.springboot.generation.ImageGenerationDTO"
 }
 
 type TextGenerationDTO struct {
@@ -31,7 +31,7 @@ func (t TextGenerationDTO) GetData() (string, error) {
 }
 
 func (t TextGenerationDTO) GetJMSType() string {
-	return "TextGenerationDTO"
+	return "com.cpe.springboot.generation.TextGenerationDTO"
 }
 
 type PropertiesGenerationDTO struct {
@@ -50,5 +50,5 @@ func (p PropertiesGenerationDTO) GetData() (string, error) {
 }
 
 func (p PropertiesGenerationDTO) GetJMSType() string {
-	return "PropertiesGenerationDTO"
+	return "com.cpe.springboot.generation.PropertiesGenerationDTO"
 }

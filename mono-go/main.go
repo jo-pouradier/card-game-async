@@ -26,17 +26,12 @@ func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	// load .default-env
+	if err := godotenv.Load(".env"); err != nil {
+		log.Println("No .env file found, continue with default values from .default.env file")
+	}
 	if err := godotenv.Load(".default.env"); err != nil {
 		log.Println("No .default.env file found")
 		os.Exit(1)
-	}
-	// if .env exists load it
-	if _, err := os.Stat(".env"); os.IsNotExist(err) {
-		log.Println("No .env file found")
-	} else {
-		if err := godotenv.Load(); err != nil {
-			log.Println("No .env file found, continue with default values from .default.env file")
-		}
 	}
 }
 

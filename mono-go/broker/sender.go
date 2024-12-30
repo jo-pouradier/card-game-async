@@ -1,7 +1,6 @@
 package broker
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"sync"
@@ -97,7 +96,7 @@ func (sender *SenderBroker) Start() {
 			}
 
 			addHeaders := func(frame *frame.Frame) error {
-				frame.Header.Add("JMSType", fmt.Sprintf("%T", message.GetJMSType()))
+				frame.Header.Add("type", message.GetJMSType())
 				return nil
 			}
 
