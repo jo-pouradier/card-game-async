@@ -14,7 +14,6 @@ import (
 type CardGeneratorService struct {
 	cardmodelervice             *CardService
 	cardRepository              *repository.CardRepository
-	cardGeneratorBrokerSender   *broker.SenderBroker
 	cardGeneratorBrokerReceiver *broker.ReceiverBroker
 	notificationService         broker.NotificationService
 }
@@ -22,14 +21,12 @@ type CardGeneratorService struct {
 func NewCardGeneratorService(
 	cardmodelervice *CardService,
 	cardRepository *repository.CardRepository,
-	cardGeneratorBrokerSender *broker.SenderBroker,
 	cardGeneratorBrokerReceiver *broker.ReceiverBroker,
 	notificationService broker.NotificationService,
 ) *CardGeneratorService {
 	cardGeneratorService := &CardGeneratorService{
 		cardmodelervice:             cardmodelervice,
 		cardRepository:              cardRepository,
-		cardGeneratorBrokerSender:   cardGeneratorBrokerSender,
 		cardGeneratorBrokerReceiver: cardGeneratorBrokerReceiver,
 		notificationService:         notificationService,
 	}
@@ -69,15 +66,18 @@ func (s *CardGeneratorService) GenerateCard(descriptionPrompt, imagePrompt strin
 }
 
 func (s *CardGeneratorService) SendImageGeneration(cardGenerator *model.CardGenerator) {
-	s.cardGeneratorBrokerSender.Send(model.ImageGenerationDTO{CardID: cardGenerator.ID, ImagePrompt: cardGenerator.ImagePrompt})
+	sender := broker.GetBrokerSender("GENERATION-IMAGE-INPUT")
+	sender.Send(model.ImageGenerationDTO{CardID: cardGenerator.ID, ImagePrompt: &cardGenerator.ImagePrompt, GenerationType: "IMAGE"})
 }
 
 func (s *CardGeneratorService) SendDescriptionGeneration(cardGenerator *model.CardGenerator) {
-	s.cardGeneratorBrokerSender.Send(model.TextGenerationDTO{CardID: cardGenerator.ID, TextPrompt: cardGenerator.DescriptionPrompt})
+	sender := broker.GetBrokerSender("GENERATION-TEXT-INPUT")
+	sender.Send(model.TextGenerationDTO{CardID: cardGenerator.ID, TextPrompt: &cardGenerator.DescriptionPrompt, GenerationType: "TEXT"})
 }
 
 func (s *CardGeneratorService) SendPropertiesGeneration(cardGenerator *model.CardGenerator) {
-	s.cardGeneratorBrokerSender.Send(model.PropertiesGenerationDTO{CardID: cardGenerator.ID})
+	sender := broker.GetBrokerSender("GENERATION-PROPERTY-INPUT")
+	sender.Send(model.PropertiesGenerationDTO{CardID: cardGenerator.ID, GenerationType: "PROPERTY"})
 }
 
 func (s *CardGeneratorService) UpdateCard(cardGenerator *model.CardGenerator) (*model.CardGenerator, error) {
@@ -137,8 +137,8 @@ func (s *CardGeneratorService) ReceiveImageGenerationOutput(imageGenerationDTO *
 		return errors.New("card not found")
 	}
 
-	cardGenerator.ImageURL = imageGenerationDTO.ImageUrl
-	cardGenerator.SmallImageURL = imageGenerationDTO.ImageUrl
+	cardGenerator.ImageURL = *imageGenerationDTO.ImageUrl
+	cardGenerator.SmallImageURL = *imageGenerationDTO.ImageUrl
 	cardGenerator.ImageGenerated = true
 
 	_, err := s.cardRepository.SaveGenerator(cardGenerator)
@@ -160,7 +160,7 @@ func (s *CardGeneratorService) ReceiveDescriptionGenerationOutput(descriptionGen
 		return errors.New("card not found")
 	}
 
-	cardGenerator.Description = descriptionGenerationDTO.Text
+	cardGenerator.Description = *descriptionGenerationDTO.Text
 	cardGenerator.DescriptionGenerated = true
 
 	_, err := s.UpdateCard(cardGenerator)

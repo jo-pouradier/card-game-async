@@ -3,9 +3,10 @@ package model
 import "encoding/json"
 
 type ImageGenerationDTO struct {
-	CardID      uint   `json:"cardId,omitempty"`
-	ImagePrompt string `json:"imagePrompt,omitempty"`
-	ImageUrl    string `json:"imgUrl,omitempty"`
+	CardID         uint   `json:"cardId"`
+	ImagePrompt    *string `json:"imagePrompt"`
+	ImageUrl       *string `json:"imgUrl"`
+	GenerationType string `json:"generationType"`
 }
 
 func (i ImageGenerationDTO) GetData() (string, error) {
@@ -18,9 +19,10 @@ func (i ImageGenerationDTO) GetJMSType() string {
 }
 
 type TextGenerationDTO struct {
-	CardID     uint   `json:"cardId,omitempty"`
-	TextPrompt string `json:"textPrompt,omitempty"`
-	Text       string `json:"text,omitempty"`
+	CardID         uint   `json:"cardId"`
+	TextPrompt     *string `json:"textPrompt"`
+	Text           *string `json:"text"`
+	GenerationType string `json:"generationType"`
 }
 
 func (t TextGenerationDTO) GetData() (string, error) {
@@ -33,11 +35,12 @@ func (t TextGenerationDTO) GetJMSType() string {
 }
 
 type PropertiesGenerationDTO struct {
-	CardID  uint    `json:"cardId,omitempty"`
-	Energy  float32 `json:"energy,omitempty"`
-	HP      float32 `json:"hp,omitempty"`
-	Attack  float32 `json:"attack,omitempty"`
-	Defence float32 `json:"defence,omitempty"`
+	CardID         uint    `json:"cardId"`
+	Energy         float32 `json:"energy"`
+	HP             float32 `json:"hp"`
+	Attack         float32 `json:"attack"`
+	Defence        float32 `json:"defence"`
+	GenerationType string  `json:"generationType"`
 }
 
 func (p PropertiesGenerationDTO) GetData() (string, error) {

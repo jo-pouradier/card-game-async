@@ -9,7 +9,11 @@ import com.cpe.springboot.services.PropertiesGeneration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.Session;
 import jakarta.jms.TextMessage;
+
+import org.apache.activemq.command.ActiveMQBytesMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +40,25 @@ public class BrokerReceiver {
     }
 
     @JmsListener(destination = "${generation-input.queue.name}", containerFactory = "queueConnectionFactory")
-    public void receiveMessage(TextMessage message) {
+    public void receiveMessage(Message message, Session session) {
+        TextMessage textMessage = null;
+        if (message instanceof TextMessage) textMessage = (TextMessage) message;
+        else if (message instanceof ActiveMQBytesMessage){
+            try {
+                ActiveMQBytesMessage bytesMessage = (ActiveMQBytesMessage) message;
+                byte[] bytes = new byte[(int) bytesMessage.getBodyLength()];
+                bytesMessage.readBytes(bytes);
+                // create TextMessage with new data
+                message = session.createTextMessage(new String(bytes));
+                // add headers and all other properties
+                message.setJMSCorrelationID(bytesMessage.getJMSCorrelationID());
+            } catch (JMSException e) {
+                throw new RuntimeException(e);
+            }
+        }
         try {
             String clazz = message.getJMSType();
-            GenerationDTOAbstact object = (GenerationDTOAbstact) objectMapper.readValue(message.getText(), Class.forName(clazz));
+            GenerationDTOAbstact object = (GenerationDTOAbstact) objectMapper.readValue(textMessage.getText(), Class.forName(clazz));
             switch (object.getGenerationType()) {
                 case IMAGE:
                     receiveImage((ImageGenerationDTO) object);

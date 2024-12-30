@@ -69,10 +69,9 @@ func main() {
 	cardService := service.NewCardService(cardRepository)
 	userService := service.NewUserService(userRepository, cardService)
 
-	generatorBroker := broker.GetBrokerSender("GENERATION-PROPERTIES-INPUT")
 	notificationService := broker.GetNotificationServiceImp()
-	generatorReceiver := broker.GetBrokerReceiver("GENERATION-PROPERTIES-OUTPUT", func(msg *stomp.Message) {}) // empty callback, generated later when creating the service
-	cardGeneratorService := service.NewCardGeneratorService(cardService, cardRepository, generatorBroker, generatorReceiver, notificationService)
+	generatorReceiver := broker.GetBrokerReceiver("GENERATION-OUTPUT", func(msg *stomp.Message) {}) // empty callback, generated later when creating the service
+	cardGeneratorService := service.NewCardGeneratorService(cardService, cardRepository, generatorReceiver, notificationService)
 	storeService := service.NewStoreService(cardRepository, storeRepository, userService, cardService, cardGeneratorService, 100)
 
 	// Initialize the controller
@@ -97,6 +96,7 @@ func main() {
 	loggedMux := loggingMiddleware(mux)
 
 	// Start the server
-	fmt.Println("Server running on port 8080")
-	http.ListenAndServe(":8080", loggedMux)
+	port := os.Getenv("PORT")
+	fmt.Println("Server running on port ", port)
+	http.ListenAndServe(":"+port, loggedMux)
 }

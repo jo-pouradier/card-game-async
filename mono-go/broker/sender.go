@@ -101,7 +101,7 @@ func (sender *SenderBroker) Start() {
 				return nil
 			}
 
-			if err := sender.client.Send(sender.queue, "application/json", []byte(jsonMessage), addHeaders); err != nil {
+			if err := sender.client.Send(sender.queue, "application/octet-stream", []byte(jsonMessage), addHeaders); err != nil {
 				log.Printf("Failed to send message: %v\n", err)
 			} else {
 				log.Printf("Message sent successfully: %s\n", jsonMessage)
