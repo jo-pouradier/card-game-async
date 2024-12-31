@@ -5,10 +5,10 @@ import (
 	"errors"
 	"log"
 
-	"github.com/go-stomp/stomp/v3"
 	"github.com/jo-pouradier/card-game-async/mono-go/broker"
 	"github.com/jo-pouradier/card-game-async/mono-go/model"
 	"github.com/jo-pouradier/card-game-async/mono-go/repository"
+	"github.com/jo-pouradier/stomp"
 )
 
 type CardGeneratorService struct {

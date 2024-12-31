@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/go-stomp/stomp/v3"
-	"github.com/go-stomp/stomp/v3/frame"
+	"github.com/jo-pouradier/stomp"
+	"github.com/jo-pouradier/stomp/frame"
 )
 
 // Used to get correct communication between services (java specificaly)
