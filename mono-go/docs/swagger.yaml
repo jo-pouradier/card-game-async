@@ -1,0 +1,499 @@
+basePath: /
+definitions:
+  model.Card:
+    description: Represents a card in the game
+    properties:
+      affinity:
+        type: string
+      attack:
+        type: number
+      defence:
+        type: number
+      description:
+        type: string
+      energy:
+        type: number
+      family:
+        type: string
+      hp:
+        type: number
+      id:
+        type: integer
+      imgUrl:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      smallImgUrl:
+        type: string
+      userId:
+        type: integer
+    type: object
+  model.StoreOrder:
+    properties:
+      card_id:
+        type: integer
+      store_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  model.UserDTO:
+    properties:
+      account:
+        type: number
+      cardList:
+        items:
+          type: integer
+        type: array
+      email:
+        type: string
+      id:
+        type: integer
+      lastName:
+        type: string
+      login:
+        type: string
+      pwd:
+        type: string
+      surName:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a simple API for a card game.
+  title: Monolithic Card Game API
+  version: 1.0.0
+paths:
+  /auth:
+    post:
+      description: Authenticate a user by login and password
+      parameters:
+      - description: User login
+        in: query
+        name: login
+        required: true
+        type: string
+      - description: User password
+        in: query
+        name: pwd
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Authenticate a user
+      tags:
+      - users
+  /card:
+    post:
+      consumes:
+      - application/json
+      description: Create and save a new card
+      parameters:
+      - description: Card object
+        in: body
+        name: card
+        required: true
+        schema:
+          $ref: '#/definitions/model.Card'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Card'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Add a new card
+      tags:
+      - cards
+  /card/{id}:
+    delete:
+      description: Delete a card by its ID
+      parameters:
+      - description: Card ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete a card
+      tags:
+      - cards
+    get:
+      description: Retrieve a card by its ID
+      parameters:
+      - description: Card ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Card'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get a card by ID
+      tags:
+      - cards
+    put:
+      consumes:
+      - application/json
+      description: Update an existing card
+      parameters:
+      - description: Card ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Card object
+        in: body
+        name: card
+        required: true
+        schema:
+          $ref: '#/definitions/model.Card'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Card'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update a card
+      tags:
+      - cards
+  /cards:
+    get:
+      description: Retrieve all cards
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Card'
+            type: array
+      summary: Get all cards
+      tags:
+      - cards
+  /store/buy:
+    post:
+      consumes:
+      - application/json
+      description: Buy cards
+      parameters:
+      - description: Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/model.StoreOrder'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: "true"
+          schema:
+            type: string
+        "400":
+          description: "false"
+          schema:
+            type: string
+      summary: Buy cards
+      tags:
+      - store
+  /store/buy/btob:
+    post:
+      consumes:
+      - application/json
+      description: Buy card B2B
+      parameters:
+      - description: Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/model.StoreOrder'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: "true"
+          schema:
+            type: string
+        "400":
+          description: "false"
+          schema:
+            type: string
+      summary: Buy card B2B
+      tags:
+      - store
+  /store/cards_to_sell:
+    get:
+      consumes:
+      - application/json
+      description: Get cards to sell
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: "true"
+          schema:
+            type: string
+        "400":
+          description: "false"
+          schema:
+            type: string
+      summary: Get cards to sell
+      tags:
+      - store
+  /store/cards_to_sell/btob:
+    get:
+      consumes:
+      - application/json
+      description: Get cards to sell B2B
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: "true"
+          schema:
+            type: string
+        "400":
+          description: "false"
+          schema:
+            type: string
+      summary: Get cards to sell B2B
+      tags:
+      - store
+  /store/sell:
+    post:
+      consumes:
+      - application/json
+      description: Sell card
+      parameters:
+      - description: Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/model.StoreOrder'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: "true"
+          schema:
+            type: string
+        "400":
+          description: "false"
+          schema:
+            type: string
+      summary: Sell card
+      tags:
+      - store
+  /store/transaction:
+    get:
+      consumes:
+      - application/json
+      description: Get transactions
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: "true"
+          schema:
+            type: string
+        "400":
+          description: "false"
+          schema:
+            type: string
+      summary: Get transactions
+      tags:
+      - store
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: Add a new user
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserDTO'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Add a new user
+      tags:
+      - users
+  /user/{id}:
+    delete:
+      description: Update an existing user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: boolean
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update a user
+      tags:
+      - users
+    get:
+      description: Retrieve a user by its ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserDTO'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get a user by ID
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Update an existing user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserDTO'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update a user
+      tags:
+      - users
+  /user/winbattle/{id}:
+    get:
+      description: Win a battle
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: boolean
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Win a battle
+      tags:
+      - users
+  /users:
+    get:
+      description: Retrieve all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.UserDTO'
+            type: array
+      summary: Get all users
+      tags:
+      - users
+swagger: "2.0"

@@ -1,6 +1,8 @@
 package com.cpe.springboot.generation;
 
-public class TextGenerationDTO extends GenerationDTOAbstact {
+import java.io.Serializable;
+
+public class TextGenerationDTO extends GenerationDTOAbstact implements  Serializable {
 
     private String textPrompt;
     private String text;

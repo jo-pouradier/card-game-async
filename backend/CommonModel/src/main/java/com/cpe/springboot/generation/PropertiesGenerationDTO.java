@@ -1,9 +1,8 @@
 package com.cpe.springboot.generation;
 
 import java.io.Serializable;
-import java.util.Map;
 
-public class PropertiesGenerationDTO extends GenerationDTOAbstact {
+public class PropertiesGenerationDTO extends GenerationDTOAbstact implements Serializable {
     private String imgUrl;
     private float energy;
     private float hp;
