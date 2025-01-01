@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/jo-pouradier/stomp"
-	"github.com/jo-pouradier/stomp/frame"
+	"github.com/go-stomp/stomp"
+	"github.com/go-stomp/stomp/frame"
 )
 
 // Used to get correct communication between services (java specificaly)
@@ -100,7 +100,12 @@ func (sender *SenderBroker) Start() {
 				return nil
 			}
 
-			if err := sender.client.Send(sender.queue, "application/octet-stream", []byte(jsonMessage), addHeaders); err != nil {
+			removeConentLength := func(frame *frame.Frame) error {
+				frame.Header.Del("content-length")
+				return nil
+			}
+
+			if err := sender.client.Send(sender.queue, "text/plain", []byte(jsonMessage), addHeaders, removeConentLength); err != nil {
 				log.Printf("Failed to send message: %v\n", err)
 			} else {
 				log.Printf("Message sent successfully: %s\n", jsonMessage)

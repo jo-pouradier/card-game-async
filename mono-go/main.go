@@ -14,7 +14,7 @@ import (
 	"github.com/jo-pouradier/card-game-async/mono-go/repository"
 	"github.com/jo-pouradier/card-game-async/mono-go/router"
 	"github.com/jo-pouradier/card-game-async/mono-go/service"
-	"github.com/jo-pouradier/stomp"
+	"github.com/go-stomp/stomp"
 	"github.com/joho/godotenv"
 	httpSwagger "github.com/swaggo/http-swagger/v2"
 	"gorm.io/driver/sqlite"

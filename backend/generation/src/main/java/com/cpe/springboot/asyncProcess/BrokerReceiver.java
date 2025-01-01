@@ -2,7 +2,6 @@ package com.cpe.springboot.asyncProcess;
 
 import java.util.Map;
 
-import org.apache.activemq.command.ActiveMQBytesMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +16,8 @@ import com.cpe.springboot.generation.TextGenerationDTO;
 import com.cpe.springboot.services.PropertiesGeneration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import jakarta.jms.JMSException;
-import jakarta.jms.Message;
 import jakarta.jms.TextMessage;
 
 // TODO use strategy pattern to avoid switch case
@@ -41,59 +38,20 @@ public class BrokerReceiver {
     }
 
     @JmsListener(destination = "${generation-input.queue.name}", containerFactory = "queueConnectionFactory")
-    public void receiveMessage(Message message) {
-        // public void receiveMessage(TextMessage textMessage) {
-        String text;
-        log.debug("Received message of type {}: {}", message.getClass(), message);
-        try {
-            // get text from Message
-            if (message instanceof TextMessage textMessage) {
-                text = textMessage.getText();
-                log.debug("Message parsed to TextMessage: {}", textMessage);
-            } else if (message instanceof ActiveMQBytesMessage bytesMessage) {
-                byte[] bytes = new byte[(int) bytesMessage.getBodyLength()];
-                bytesMessage.readBytes(bytes, (int) bytesMessage.getBodyLength());
-                // create TextMessage with new data
-                text = new String(bytes);
-                log.debug("Message parsed to BytesMessage: {}", bytesMessage);
-            } else {
-                log.error("Message type not supported: {}", message.getClass());
-                return;
-            }
-
-            // parse text to object
+    public void receiveMessage(TextMessage message) {
             try {
                 String clazz = message.getJMSType(); // this is basicalyy header 'type'
-                log.debug("Received message of type {}", clazz);
-                GenerationDTOAbstact object = null;
-                try {
-                    object = (GenerationDTOAbstact) objectMapper.readValue(text,
-                            Class.forName(clazz));
-                } catch (ClassNotFoundException | MismatchedInputException e) {
-                    // throw new RuntimeException(e);
-                    log.error("Error while receiving message, type not found. {}\n{}\n",
-                            "message type: " + message.getJMSType(),
-                            "message : " + message);
-                    return;
-                }
+                GenerationDTOAbstact object = (GenerationDTOAbstact) objectMapper.readValue(message.getText(), Class.forName(clazz));
+
                 switch (object.getGenerationType()) {
-                    case IMAGE:
-                        receiveImage((ImageGenerationDTO) object);
-                        break;
-                    case TEXT:
-                        receiveDescription((TextGenerationDTO) object);
-                        break;
-                    case PROPERTY:
-                        receiveProperties((PropertiesGenerationDTO) object);
-                        break;
+                    case IMAGE -> receiveImage((ImageGenerationDTO) object);
+                    case TEXT -> receiveDescription((TextGenerationDTO) object);
+                    case PROPERTY -> receiveProperties((PropertiesGenerationDTO) object);
                 }
-            } catch (JMSException | JsonProcessingException e) {
+            } catch (JMSException|ClassNotFoundException|JsonProcessingException e) {
                 // throw new RuntimeException(e);
                 log.error("Error while receiving message", e);
             }
-        } catch (Exception e) {
-            log.error("Error while receiving message {}; {}", message, e);
-        }
     }
 
     public void receiveImage(ImageGenerationDTO message) {

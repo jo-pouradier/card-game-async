@@ -8,7 +8,7 @@ import (
 	"github.com/jo-pouradier/card-game-async/mono-go/broker"
 	"github.com/jo-pouradier/card-game-async/mono-go/model"
 	"github.com/jo-pouradier/card-game-async/mono-go/repository"
-	"github.com/jo-pouradier/stomp"
+	"github.com/go-stomp/stomp"
 )
 
 type CardGeneratorService struct {

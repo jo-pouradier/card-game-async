@@ -4,7 +4,7 @@ import (
 	"log"
 	"sync"
 
-	"github.com/jo-pouradier/stomp"
+	"github.com/go-stomp/stomp"
 )
 
 type ReceiverBroker struct {

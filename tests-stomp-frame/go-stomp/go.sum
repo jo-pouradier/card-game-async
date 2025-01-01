@@ -1,7 +1,5 @@
 github.com/go-stomp/stomp v2.1.4+incompatible h1:D3SheUVDOz9RsjVWkoh/1iCOwD0qWjyeTZMUZ0EXg2Y=
 github.com/go-stomp/stomp v2.1.4+incompatible/go.mod h1:VqCtqNZv1226A1/79yh+rMiFUcfY3R109np+7ke4n0c=
-github.com/jo-pouradier/stomp v0.0.0-20241231155232-113b88307b8b h1:awruvLdaTfuRoSrjkc22I65wEOoNJYYFVL62o3QByGg=
-github.com/jo-pouradier/stomp v0.0.0-20241231155232-113b88307b8b/go.mod h1:K/HNPlREZhUw4t0dYdsKD9nKDWeDw4036wJy9mYSj48=
 github.com/kr/pretty v0.2.1 h1:Fmg33tUaq4/8ym9TJN1x7sLJnHVwhP33CNkpYV/7rwI=
 github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=

@@ -3,7 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/jo-pouradier/stomp"
+	"github.com/go-stomp/stomp"
+	"github.com/go-stomp/stomp/frame"
 )
 
 func main() {
@@ -22,6 +23,12 @@ func main() {
 		"text/plain",               // Content-Type
 		[]byte("Hello, STOMP GO!"), // Message body
 		stomp.SendOpt.Header("content-type", "text/plain"),
+		// remove content-length header
+		func(f *frame.Frame) error {
+			f.Header.Del("content-length")
+			return nil
+		},
+	
 	)
 	if err != nil {
 		log.Fatalf("Failed to send message: %v", err)

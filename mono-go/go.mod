@@ -3,14 +3,12 @@ module github.com/jo-pouradier/card-game-async/mono-go
 go 1.23.3
 
 require (
-	github.com/jo-pouradier/stomp v0.0.0-20241231155232-113b88307b8b
+	github.com/go-stomp/stomp v2.1.4+incompatible
 	github.com/swaggo/http-swagger/v2 v2.0.2
 	github.com/swaggo/swag v1.16.4
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gorm v1.25.12
 )
-
-require github.com/go-stomp/stomp/v3 v3.1.3 // indirect
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
