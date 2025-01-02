@@ -14,10 +14,15 @@ func NewCardRouter(cardController *controller.CardController) *CardRouter {
 	return &CardRouter{cardController: cardController}
 }
 
-func (r *CardRouter) RegisterRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("GET /cards", r.cardController.GetAllCards)
-	mux.HandleFunc("GET /card/{id}", r.cardController.GetCard)
-	mux.HandleFunc("POST /card", r.cardController.AddCard)
-	mux.HandleFunc("DELETE /card/{id}", r.cardController.DeleteCard)
+type RegisterRoutesParams struct {
+	Mux *http.ServeMux
+	MetricWrapper func(string ,func(http.ResponseWriter, *http.Request)) http.Handler
+}
+
+func (r *CardRouter) RegisterRoutes(params RegisterRoutesParams) {
+	params.Mux.Handle("GET /cards", params.MetricWrapper("/cards", r.cardController.GetAllCards))
+	params.Mux.Handle("GET /card/{id}",params.MetricWrapper("/card/:cardId", r.cardController.GetCard))
+	params.Mux.Handle("POST /card",params.MetricWrapper("/card", r.cardController.AddCard))
+	params.Mux.Handle("DELETE /card/{id}",params.MetricWrapper("/card/:cardId", r.cardController.DeleteCard))
 }
 

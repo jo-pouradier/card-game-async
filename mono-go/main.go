@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/go-stomp/stomp"
 	"github.com/jo-pouradier/card-game-async/mono-go/broker"
 	"github.com/jo-pouradier/card-game-async/mono-go/controller"
 	_ "github.com/jo-pouradier/card-game-async/mono-go/docs" // mandatory for swagger docs
@@ -14,8 +15,9 @@ import (
 	"github.com/jo-pouradier/card-game-async/mono-go/repository"
 	"github.com/jo-pouradier/card-game-async/mono-go/router"
 	"github.com/jo-pouradier/card-game-async/mono-go/service"
-	"github.com/go-stomp/stomp"
 	"github.com/joho/godotenv"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/slok/go-http-metrics/middleware/std"
 	httpSwagger "github.com/swaggo/http-swagger/v2"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -78,20 +80,40 @@ func main() {
 	userRouter := router.NewUserRouter(userController)
 	storeRouter := router.NewStoreRouter(storeController)
 
+	// Create the Prometheus recorder
+	metricsMiddleware, promRegistry := middleware.NewMetricsMiddleware()
+	metricWrapper := func(path string, handler func(http.ResponseWriter, *http.Request)) http.Handler {
+		return std.Handler(path, metricsMiddleware, http.HandlerFunc(handler))
+	}
 	// Register the routes
 	mux := http.NewServeMux()
-	cardRouter.RegisterRoutes(mux)
-	userRouter.RegisterRoutes(mux)
-	storeRouter.RegisterRoutes(mux)
+	cardRouter.RegisterRoutes(router.RegisterRoutesParams{
+		Mux: mux,
+		MetricWrapper: metricWrapper,
+	})
+	userRouter.RegisterRoutes(router.RegisterRoutesParams{
+		Mux: mux,
+		MetricWrapper: metricWrapper,
+	})
+	storeRouter.RegisterRoutes(router.RegisterRoutesParams{
+		Mux: mux,
+		MetricWrapper: metricWrapper,
+	})
 	mux.Handle("/swagger/", httpSwagger.Handler(
 		httpSwagger.URL("http://localhost:8080/swagger/doc.json"), //The url pointing to API definition"
 	))
+	mux.Handle("/metrics", promhttp.HandlerFor(promRegistry, promhttp.HandlerOpts{Registry: promRegistry}))
 
 	loggingMiddleware := middleware.LoggingMiddleWare(logging)
-	loggedMux := loggingMiddleware(mux)
+	loggedHandler := loggingMiddleware(mux)
 
 	// Start the server
 	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	if err := http.ListenAndServe(":"+port, loggedHandler); err != nil {
+		log.Fatal(err)
+	}
 	fmt.Println("Server running on port ", port)
-	http.ListenAndServe(":"+port, loggedMux)
 }
