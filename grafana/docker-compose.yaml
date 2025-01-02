@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000" # Exposes Grafana on localhost:3000
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin       # Default admin username
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Default admin password
+    volumes:
+      - grafana_data:/var/lib/grafana       # Persistent storage for Grafana
+      - ./provisioning:/etc/grafana/provisioning # Load custom configs
+      - ./config:/etc/grafana       # Additional configs
+    restart: always
+
+volumes:
+  grafana_data:
