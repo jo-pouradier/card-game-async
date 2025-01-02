@@ -3,6 +3,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.androidpit</groupId>
-  <artifactId>colorToProperties</artifactId>
+  <artifactId>colorToproperties</artifactId>
   <version>1.1.2</version>
 </project>
