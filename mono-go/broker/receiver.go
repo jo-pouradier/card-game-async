@@ -55,8 +55,6 @@ func (receiver *ReceiverBroker) Start() {
 				continue
 			}
 			log.Printf("Received message from queue %s: %s\n", receiver.queue, string(msg.Body))
-			actualText := string(msg.Body)
-			log.Println(actualText)
 			receiver.Callback(msg)
 		}
 	}()

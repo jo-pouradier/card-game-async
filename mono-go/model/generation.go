@@ -3,10 +3,10 @@ package model
 import "encoding/json"
 
 type ImageGenerationDTO struct {
-	CardID         uint   `json:"cardId"`
+	CardID         uint    `json:"cardId"`
 	ImagePrompt    *string `json:"imagePrompt"`
 	ImageUrl       *string `json:"imgUrl"`
-	GenerationType string `json:"generationType"`
+	GenerationType string  `json:"generationType"`
 }
 
 func (i ImageGenerationDTO) GetData() (string, error) {
@@ -19,10 +19,10 @@ func (i ImageGenerationDTO) GetJMSType() string {
 }
 
 type TextGenerationDTO struct {
-	CardID         uint   `json:"cardId"`
+	CardID         uint    `json:"cardId"`
 	TextPrompt     *string `json:"textPrompt"`
 	Text           *string `json:"text"`
-	GenerationType string `json:"generationType"`
+	GenerationType string  `json:"generationType"`
 }
 
 func (t TextGenerationDTO) GetData() (string, error) {
@@ -36,6 +36,7 @@ func (t TextGenerationDTO) GetJMSType() string {
 
 type PropertiesGenerationDTO struct {
 	CardID         uint    `json:"cardId"`
+	ImageUrl       string  `json:"imgUrl"`
 	Energy         float32 `json:"energy"`
 	HP             float32 `json:"hp"`
 	Attack         float32 `json:"attack"`
@@ -46,7 +47,6 @@ type PropertiesGenerationDTO struct {
 func (p PropertiesGenerationDTO) GetData() (string, error) {
 	data, err := json.Marshal(p)
 	return string(data), err
-
 }
 
 func (p PropertiesGenerationDTO) GetJMSType() string {
