@@ -1,8 +1,8 @@
 package com.cpe.springboot.services;
 
-import com.cpe.springboot.model.LoggerModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.cpe.springboot.model.LoggerModel;
 
 @Service
 public class LoggerService {
@@ -11,8 +11,6 @@ public class LoggerService {
 
         this.loggerRepository = loggerRepository;
     }
-
-
 
     public void save(LoggerModel log) {
         if (log.getText().length() > 1000) {
