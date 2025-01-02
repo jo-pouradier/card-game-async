@@ -4,7 +4,7 @@ import (
 	"log"
 	"sync"
 
-	"github.com/go-stomp/stomp/v3"
+	"github.com/go-stomp/stomp"
 )
 
 type ReceiverBroker struct {
@@ -15,8 +15,8 @@ type ReceiverBroker struct {
 }
 
 func GetBrokerReceiver(queue string, callback func(*stomp.Message)) *ReceiverBroker {
-	instance, ok := receiverInstances[queue];
-	if  !ok {
+	instance, ok := receiverInstances[queue]
+	if !ok {
 		client, err := initializeBrokerClientConn()
 		if err != nil {
 			log.Fatalf("Failed to connect to the broker: %v", err)
@@ -55,8 +55,6 @@ func (receiver *ReceiverBroker) Start() {
 				continue
 			}
 			log.Printf("Received message from queue %s: %s\n", receiver.queue, string(msg.Body))
-			actualText := string(msg.Body)
-			log.Println(actualText)
 			receiver.Callback(msg)
 		}
 	}()

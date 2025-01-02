@@ -82,11 +82,6 @@ func (s *CardService) GetRandCard(nbr int) ([]model.Card, error) {
 	return cardList, nil
 }
 
-// GetAllCardToSell retrieves all cards not owned by a user (i.e., available for sale).
-func (s *CardService) GetAllCardToSell() ([]model.Card, error) {
-	return s.cardRepository.FindByUser("")
-}
-
 func (s *CardService) GetAllCards() ([]model.Card, error) {
 	return s.cardRepository.FindAll()
 }

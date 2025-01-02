@@ -8,30 +8,37 @@ import { socket } from "../../socket/socket.ts";
 import { useAppDispatch } from "../../hooks.ts";
 
 const ShopCreate = () => {
-    const [generatedCard, setGeneratedCard] = useState<ICard>({
-      id: 0,
-      name: "",
-      family: "",
-      description: "",
-      hp: 0,
-      energy: 0,
-      defence: 0,
-      attack: 0,
-      price: 0,
-      imgUrl: "",
-      affinity: "",
-      smallImgUrl: "",
-      userId: 0
-    });
-    const [isWaitingForGeneration, setIsWaitingForGeneration] = useState(false);
-    const dispatch = useAppDispatch();
+  const [generatedCard, setGeneratedCard] = useState<ICard>({
+    id: 0,
+    name: "",
+    family: "",
+    description: "",
+    hp: 0,
+    energy: 0,
+    defence: 0,
+    attack: 0,
+    price: 0,
+    imgUrl: "",
+    affinity: "",
+    smallImgUrl: "",
+    userId: 0,
+  });
+  const [isWaitingForGeneration, setIsWaitingForGeneration] = useState(false);
+  const dispatch = useAppDispatch();
 
   const onCardGeneratedReceived = useCallback(
     (data: object) => {
       console.info("Card generated:", data);
       // {"cardId":12,"userId":1} format it, get the card and set it
-      const messageJson = JSON.parse(data.toString());
-      fetch(`/api/card/${messageJson.cardId}`)
+      let messageJson: { cardId: number; userId: number }| null = null;
+      try {
+        messageJson = JSON.parse(data.toString());
+      } catch (error) {
+        console.error("Error:", error);
+        messageJson = data as { cardId: number; userId: number };
+      }
+
+      fetch(`/api/card/${messageJson?.cardId}`)
         .then((response) => response.json())
         .then((data) => {
           setGeneratedCard(data);
@@ -74,28 +81,25 @@ const ShopCreate = () => {
       });
   };
 
-
-    return (
-      <Container>
-        <CardForm
-          generateCardHanlder={generateCardHanlder}
-          isWaitingForGeneration={isWaitingForGeneration}
-        />
-        <CardSimpleDisplay
-          id={generatedCard.id}
-          name={generatedCard.name}
-          family={generatedCard.family}
-          description={generatedCard.description}
-          hp={generatedCard.hp}
-          energy={generatedCard.energy}
-          defence={generatedCard.defence}
-          attack={generatedCard.attack}
-          price={generatedCard.price}
-          imgUrl={generatedCard.imgUrl}
-        />
-      </Container>
-    );
-  }
-;
-
+  return (
+    <Container>
+      <CardForm
+        generateCardHanlder={generateCardHanlder}
+        isWaitingForGeneration={isWaitingForGeneration}
+      />
+      <CardSimpleDisplay
+        id={generatedCard.id}
+        name={generatedCard.name}
+        family={generatedCard.family}
+        description={generatedCard.description}
+        hp={generatedCard.hp}
+        energy={generatedCard.energy}
+        defence={generatedCard.defence}
+        attack={generatedCard.attack}
+        price={generatedCard.price}
+        imgUrl={generatedCard.imgUrl}
+      />
+    </Container>
+  );
+};
 export default ShopCreate;

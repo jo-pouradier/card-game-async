@@ -6,9 +6,10 @@ import userRepository from "../socket/userRepository";
 export const initNotification = (io: Server, connectOptions: ConnectOptions) => {
     stompit.connect(connectOptions, (error, client) => {
         if (error) {
-            console.error("Connection error: " + error.message);
+            console.error("Connection to borker error: " + error.message);
             return;
         }
+        console.log("Connected to broker");
 
         const subscribeHeaders = {
             "destination": "fr.cpe.nodejs-app.in",

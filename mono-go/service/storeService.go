@@ -153,11 +153,11 @@ func (s *StoreService) SellCard(userID, cardID, storeID uint) (bool, error) {
 
 // List card to sell
 func (s *StoreService) ListCardToSell() ([]model.Card, error) {
-	return s.CardRepo.FindByUser("-1")
+	return s.CardRepo.FindByUser("0")
 }
 
 func (s *StoreService) ListCardsToSellBtob() ([]model.Card, error) {
-	return s.CardRepo.FindByUser("-1")
+	return s.CardRepo.FindByUser("0")
 }
 
 // GenerateCard handles card generation

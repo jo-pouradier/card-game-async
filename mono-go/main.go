@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/go-stomp/stomp/v3"
 	"github.com/jo-pouradier/card-game-async/mono-go/broker"
 	"github.com/jo-pouradier/card-game-async/mono-go/controller"
 	_ "github.com/jo-pouradier/card-game-async/mono-go/docs" // mandatory for swagger docs
@@ -15,6 +14,7 @@ import (
 	"github.com/jo-pouradier/card-game-async/mono-go/repository"
 	"github.com/jo-pouradier/card-game-async/mono-go/router"
 	"github.com/jo-pouradier/card-game-async/mono-go/service"
+	"github.com/go-stomp/stomp"
 	"github.com/joho/godotenv"
 	httpSwagger "github.com/swaggo/http-swagger/v2"
 	"gorm.io/driver/sqlite"

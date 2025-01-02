@@ -5,7 +5,7 @@ import (
 	"errors"
 	"log"
 
-	"github.com/go-stomp/stomp/v3"
+	"github.com/go-stomp/stomp"
 	"github.com/jo-pouradier/card-game-async/mono-go/broker"
 	"github.com/jo-pouradier/card-game-async/mono-go/model"
 	"github.com/jo-pouradier/card-game-async/mono-go/repository"
@@ -77,12 +77,14 @@ func (s *CardGeneratorService) SendDescriptionGeneration(cardGenerator *model.Ca
 
 func (s *CardGeneratorService) SendPropertiesGeneration(cardGenerator *model.CardGenerator) {
 	sender := broker.GetBrokerSender("GENERATION-PROPERTY-INPUT")
-	sender.Send(model.PropertiesGenerationDTO{CardID: cardGenerator.ID, GenerationType: "PROPERTY"})
+	sender.Send(model.PropertiesGenerationDTO{CardID: cardGenerator.ID, ImageUrl: cardGenerator.ImageURL, GenerationType: "PROPERTY"})
 }
 
-func (s *CardGeneratorService) UpdateCard(cardGenerator *model.CardGenerator) (*model.CardGenerator, error) {
+func (s *CardGeneratorService) UpdateCardGenerator(cardGenerator *model.CardGenerator) (*model.CardGenerator, error) {
+	log.Println("Updating card generator:", cardGenerator)
 	if cardGenerator.DescriptionGenerated && cardGenerator.ImageGenerated && !cardGenerator.PropertiesGenerated {
 		s.generateProperties(cardGenerator)
+		log.Println("Generating card properties")
 	}
 
 	return s.saveCardGenerator(cardGenerator)
@@ -94,40 +96,46 @@ func (s *CardGeneratorService) generateProperties(cardGenerator *model.CardGener
 }
 
 func (s *CardGeneratorService) handleMessage(message *stomp.Message) {
-	switch message.Header.Get("JMSType") {
-	case "ImageGenerationDTO":
+	log.Printf("Handling message from queue: %s; %s; type=%s", message.Header.Get("type"), string(message.Body), message.Header.Get("type"))
+	switch message.Header.Get("type") {
+	case "com.cpe.springboot.generation.ImageGenerationDTO":
 		var imageGenerationDTO model.ImageGenerationDTO
 		err := json.Unmarshal(message.Body, &imageGenerationDTO)
 		if err != nil {
 			log.Println(err)
 			return
 		}
+		log.Printf("Received image generation output: %+v", imageGenerationDTO)
 		err = s.ReceiveImageGenerationOutput(&imageGenerationDTO)
 		if err != nil {
 			log.Println(err)
 		}
-	case "TextGenerationDTO":
+	case "com.cpe.springboot.generation.TextGenerationDTO":
 		var textGenerationDTO model.TextGenerationDTO
 		err := json.Unmarshal(message.Body, &textGenerationDTO)
 		if err != nil {
 			log.Println(err)
 			return
 		}
+		log.Printf("Received image generation output: %+v", textGenerationDTO)
 		err = s.ReceiveDescriptionGenerationOutput(&textGenerationDTO)
 		if err != nil {
 			log.Println(err)
 		}
-	case "PropertiesGenerationDTO":
+	case "com.cpe.springboot.generation.PropertiesGenerationDTO":
 		var propertiesGenerationDTO model.PropertiesGenerationDTO
 		err := json.Unmarshal(message.Body, &propertiesGenerationDTO)
 		if err != nil {
 			log.Println(err)
 			return
 		}
+		log.Printf("Received image generation output: %v", propertiesGenerationDTO)
 		err = s.ReceivePropertiesGenerationOutput(&propertiesGenerationDTO)
 		if err != nil {
 			log.Println(err)
 		}
+	case "":
+		log.Println("Empty message type")
 	}
 }
 
@@ -141,7 +149,7 @@ func (s *CardGeneratorService) ReceiveImageGenerationOutput(imageGenerationDTO *
 	cardGenerator.SmallImageURL = *imageGenerationDTO.ImageUrl
 	cardGenerator.ImageGenerated = true
 
-	_, err := s.cardRepository.SaveGenerator(cardGenerator)
+	_, err := s.UpdateCardGenerator(cardGenerator)
 	if err != nil {
 		log.Println(err)
 		return err
@@ -163,7 +171,7 @@ func (s *CardGeneratorService) ReceiveDescriptionGenerationOutput(descriptionGen
 	cardGenerator.Description = *descriptionGenerationDTO.Text
 	cardGenerator.DescriptionGenerated = true
 
-	_, err := s.UpdateCard(cardGenerator)
+	_, err := s.UpdateCardGenerator(cardGenerator)
 	if err != nil {
 		log.Println(err)
 		return err
@@ -184,7 +192,7 @@ func (s *CardGeneratorService) ReceivePropertiesGenerationOutput(propertiesGener
 	cardGenerator.Defence = propertiesGenerationDTO.Defence
 
 	cardGenerator.PropertiesGenerated = true
-	s.UpdateCard(cardGenerator)
+	s.UpdateCardGenerator(cardGenerator)
 
 	return s.CreateCardFromCardGenerator(cardGenerator)
 }
@@ -204,6 +212,7 @@ func (s *CardGeneratorService) CreateCardFromCardGenerator(cardGenerator *model.
 	if err != nil {
 		return err
 	}
+	log.Println("Card generated with ID: ", card.ID)
 
 	notification := broker.NewNotification[any](card.UserID, CardGenerationNotificationMessage{CardID: card.ID}, broker.SeverityInfo, "card-generator")
 
@@ -220,5 +229,5 @@ func (m CardGenerationNotificationMessage) GetData() (string, error) {
 }
 
 func (m CardGenerationNotificationMessage) GetJMSType() string {
-	return "CardGenerationNotificationMessage"
+	return "com.cpe.springboot.CardGenerationNotificationMessage"
 }
