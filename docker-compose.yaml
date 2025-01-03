@@ -1,0 +1,85 @@
+version: '3.9'
+
+services:
+  web:
+    build: front/
+    ports:
+      - "5173:80"
+    networks:
+      - app_network
+
+  broker:
+    build: ActiveMQConf/
+    ports:
+      - "61613:61613"
+      - "61616:61616"
+      - "8161:8161"
+    networks:
+      - app_network
+
+  mono-java:
+    build: backend/backendmarket-monolithic/
+    ports:
+      - "8083:8083"
+    depends_on:
+      - broker
+    networks:
+      - app_network
+
+  mono-go:
+    build: mono-go/
+    ports:
+      - "8084:8084"
+    depends_on:
+      - broker
+    networks:
+      - app_network
+
+  generation:
+    build: backend/generation/
+    depends_on:
+      - broker
+    networks:
+      - app_network
+
+  proxy:
+    build: proxy/
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mono-java
+      - mono-go
+      - generation
+    networks:
+      - app_network
+  
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+    networks:
+      - app_network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/config:/etc/grafana
+    networks:
+      - app_network
+
+volumes:
+  grafana_data:
+
+networks:
+  app_network:
+    driver: bridge
